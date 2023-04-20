@@ -405,3 +405,4 @@ MonoBehaviour:
   _speed: 5.33
   _laserPrefab: {fileID: 4438354229721719021, guid: cbbcae0e8186feb49bc017390dad604d,
     type: 3}
+  _fireRate: 0.5
