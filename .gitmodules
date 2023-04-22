@@ -1,0 +1,3 @@
+[submodule "Assets/space-shooter"]
+	path = Assets/space-shooter
+	url = https://github.com/scottiesoreal/space-shooter.git
