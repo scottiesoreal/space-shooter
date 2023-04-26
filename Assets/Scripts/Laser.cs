@@ -21,4 +21,11 @@ public class Laser : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+    //Testing contact
+    private void OnTriggerEnter(Collider other)
+    {
+        
+        
+    }
+
 }

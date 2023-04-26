@@ -28,7 +28,30 @@ public class Enemy : MonoBehaviour
             float randomX = Random.Range(-9.50f, 9.50f);
             transform.position = new Vector3(Random.Range(randomX, 9.50f), 7.60f, 0);
         }
-        
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {       
+        if (other.tag == "Player")
+        {
+            //damage player
+            Player player = other.transform.GetComponent<Player>();
+            
+            //null check
+            if (player != null)
+            {
+                player.Damage();
+            }
+
+            Destroy(this.gameObject);
+        }
+       
+        if (other.tag == "Laser")
+        {
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
+        }
+
 
     }
 }

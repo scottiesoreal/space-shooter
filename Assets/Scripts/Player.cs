@@ -13,10 +13,11 @@ public class Player : MonoBehaviour
     private float _speed = 3.5f;
     [SerializeField]
     private GameObject _laserPrefab;
-    //New Vector3 variable created to add to player
     [SerializeField]
     private float _fireRate = 0.8f;
     private float _canFire = -1f;
+    [SerializeField]
+    private int _lives = 3;
     
     
     
@@ -89,6 +90,17 @@ public class Player : MonoBehaviour
             _canFire = Time.time + _fireRate;
             Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.6f, 0), Quaternion.identity);
         }
+    }
+
+    public void Damage()
+    {
+        _lives--;
+        
+        if (_lives < 1)
+        {
+            Destroy(this.gameObject);            
+        }
+        
     }
 
 }
