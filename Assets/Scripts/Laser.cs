@@ -12,7 +12,7 @@ public class Laser : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //translate laser up
+        //translate = laser move up
         transform.Translate(Vector3.up * _speed * Time.deltaTime);
 
     
@@ -22,7 +22,7 @@ public class Laser : MonoBehaviour
         }
     }
     //Testing contact
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         
         
