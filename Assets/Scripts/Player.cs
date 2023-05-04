@@ -4,30 +4,36 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-     //Time.delta = Real time
-     // public or private reference
-     //data type (Int, float, bool, string)
-     //Every variable has a name
-     //optional: Value assigned
+    //Time.delta = Real time
+    // public or private reference
+    //data type (Int, float, bool, string)
+    //Every variable has a name
+    //optional: Value assigned
     [SerializeField]
     private float _speed = 3.5f;
     [SerializeField]
     private GameObject _laserPrefab;
+    [SerializeField]
+    private GameObject _tripleShotPrefab;
+
     [SerializeField]
     private float _fireRate = 0.4f;
     private float _canFire = -1f;
     [SerializeField]
     private int _lives = 3;
     private Spawn_Manager _spawnManager;
-    
-    
+
+    //variable: IsTripleShotActive
+    [SerializeField]
+    private bool _isTripleShotActive = false;
+
     // Start is called before the first frame update
     void Start()
-    {   
+    {
         //take the current position = new position (0x, 0y, 0z)
         transform.position = new Vector3(0, 1, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>(); //find the object.
-        
+
         if (_spawnManager == null)
         {
             Debug.LogError("The Spawn Manager is NULL.");
@@ -36,7 +42,7 @@ public class Player : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {                  
+    {
         CalculateMovement();
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
@@ -44,7 +50,7 @@ public class Player : MonoBehaviour
             FireLaser();
         }
 
-       
+
 
     }
 
@@ -72,7 +78,7 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, -3.8f, 0);
         }
-        
+
         //if plwyer on the x >11.25f
         //x pos = -11.25f
         //if player on the x  < -9.25
@@ -90,23 +96,57 @@ public class Player : MonoBehaviour
 
     void FireLaser()
     {
-         
-        {   
-            _canFire = Time.time + _fireRate;
-            Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.6f, 0), Quaternion.identity);
+        
+        
+        _canFire = Time.time + _fireRate;
+
+        if (_isTripleShotActive == true)
+        {           
+            Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
         }
+        else
+        {
+            Instantiate(_laserPrefab, transform.position + Vector3.up * .6f, Quaternion.identity);
+        }
+
+
+
+        
+
+        //if space key press,
+        //if tripleshotActive is true
+            //fire 3 lasters (triple shot prefab)
+        
+        //else fire 1 laser
+
+        //instantiate 3 lasers (triple shot prefab
     }
+
 
     public void Damage()
     {
         _lives--;
-        
+
         if (_lives < 1)
-        {           
+        {
             _spawnManager.OnPlayerDeath();
-            Destroy(this.gameObject);            
+            Destroy(this.gameObject);
         }
-        
+
+    }
+
+    public void TripleShotActive()
+    {
+        _isTripleShotActive = true;
+        StartCoroutine(TripleShotPowerDownRoutine());
+
+        //start the power down coroutine for triple shot
+    }
+
+    IEnumerator TripleShotPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _isTripleShotActive = false;
     }
 
 }
