@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8171825694113925649}
   m_Layer: 0
   m_Name: TripleShotPowerup
-  m_TagString: Player
+  m_TagString: Triple_Shot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,4 +134,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
-  _PowerUp: {fileID: 0}
+  powerupID: 0
+  _PowerUp: {fileID: 5089483055536481030}

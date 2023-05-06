@@ -6,8 +6,11 @@ public class PowerUp : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 3.0f;
+    //ID for Powerups
+    [SerializeField] // 0 = TripSh, 1 = _speed, 2 = Shields
+    private int powerupID;
     [SerializeField]
-    private GameObject _PowerUp;
+    private GameObject _PowerUpPrefab;
 
 
     void Update()
@@ -17,12 +20,46 @@ public class PowerUp : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("Collider");
         if (other.tag == "Player")
         {
+            Debug.Log("Player");
             Player player = other.transform.GetComponent<Player>();
             if (player != null)
             {
-                player.TripleShotActive();
+                //if powerUP is 0
+                //if (powerupID == 0)
+                //player.TripleShotActive();
+                //else if powerUP is 1
+                //else if (powerupID == 1)
+                //{
+                //    Debug.Log("collected Speed");
+                //}
+                //else if (powerupID == 2)
+                //{
+                //    Debug.Log("Shield collected");
+                //}
+                
+                switch(powerupID)
+                {
+                    case 0:
+                        player.TripleShotActive();
+                        break;
+                    case 1:
+                        player.SpeedBoostActive();
+                        Debug.Log("Collected Speed boost");
+                        break;
+                    case 2:
+                        Debug.Log("collected Sheild");
+                        break;
+                    default:
+                        Debug.Log("Default Value:)");
+                        break;
+                }
+                //speed PU activate
+                
+                //else if PU is 2
+                //shields powerup
             }
             Destroy(this.gameObject);
         }
@@ -40,6 +77,4 @@ public class PowerUp : MonoBehaviour
         }
 
     }
-
-
 }

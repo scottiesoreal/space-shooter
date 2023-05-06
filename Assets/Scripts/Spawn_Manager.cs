@@ -10,6 +10,10 @@ public class Spawn_Manager : MonoBehaviour
     private GameObject _enemyContainer;
     [SerializeField]
     private GameObject _TripleShotPU_Prefab;
+    [SerializeField]    
+    private GameObject _speed_PU_Prefab;
+    [SerializeField]
+    private GameObject _Shield_PU_Prefab;
 
     private bool _stopSpawning = false;
     
