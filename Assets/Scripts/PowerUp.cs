@@ -20,10 +20,10 @@ public class PowerUp : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Collider");
+        //Debug.Log("Collider");
         if (other.tag == "Player")
         {
-            Debug.Log("Player");
+            //Debug.Log("Player");
             Player player = other.transform.GetComponent<Player>();
             if (player != null)
             {
@@ -47,10 +47,11 @@ public class PowerUp : MonoBehaviour
                         break;
                     case 1:
                         player.SpeedBoostActive();
-                        Debug.Log("Collected Speed boost");
+                        Debug.Log("Speed");
                         break;
                     case 2:
-                        Debug.Log("collected Sheild");
+                        player.ShieldActive();
+                        Debug.Log("Got it");
                         break;
                     default:
                         Debug.Log("Default Value:)");

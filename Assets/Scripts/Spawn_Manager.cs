@@ -9,11 +9,7 @@ public class Spawn_Manager : MonoBehaviour
     [SerializeField]
     private GameObject _enemyContainer;
     [SerializeField]
-    private GameObject _TripleShotPU_Prefab;
-    [SerializeField]    
-    private GameObject _speed_PU_Prefab;
-    [SerializeField]
-    private GameObject _Shield_PU_Prefab;
+    private GameObject[] powerups;
 
     private bool _stopSpawning = false;
     
@@ -53,18 +49,17 @@ public class Spawn_Manager : MonoBehaviour
         while (_stopSpawning == false)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 7.6f, 0f);
-            Instantiate(_TripleShotPU_Prefab, posToSpawn, Quaternion.identity);
+            int randomPowerUp = Random.Range(0, 3);
+            Instantiate(powerups[randomPowerUp], posToSpawn, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(3, 8));
 
         }
+
+       
     }
 
     public void OnPlayerDeath()
     {
         _stopSpawning = true;
     }
-
-    
-
-
 }

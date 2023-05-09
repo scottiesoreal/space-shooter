@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Time.delta = Real time
-    // public or private reference
-    // data type (Int, float, bool, string)
-    // Every variable has a name
-    // optional: Value assigned
     [SerializeField]
     private float _speed = 3.5f;
     [SerializeField]
@@ -26,9 +21,12 @@ public class Player : MonoBehaviour
 
     // variable: Is[powerup]Active
     private bool _isTripleShotActive = false;
-    [SerializeField]
     private bool _isSpeedBoostActive = false;
+    [SerializeField]
     private bool _isShieldActive = false;
+
+    [SerializeField]
+    private GameObject _shieldVisualizer;//variable reference to the shield visualizer
 
     // Start is called before the first frame update
     void Start()
@@ -47,7 +45,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         CalculateMovement();
-
+        
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
             FireLaser();
@@ -105,6 +103,19 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
+        //if shields is active
+        //do nothing 
+        //deactivate shields
+        //return;
+
+        if (_isShieldActive == true)
+        {
+            _isShieldActive = false;
+            _shieldVisualizer.SetActive(false);
+            //disable visualizer
+            return;
+        }
+
         _lives--;
 
         if (_lives < 1)
@@ -112,6 +123,8 @@ public class Player : MonoBehaviour
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
         }
+
+        
     }
 
     public void TripleShotActive()
@@ -143,20 +156,10 @@ public class Player : MonoBehaviour
 
     public void ShieldActive()
     {
-        if (_isShieldActive)
+        if (_isShieldActive == false)
         {
             _isShieldActive = true;
-            //increase health
-            StartCoroutine(ShieldPowerDownRoutine());
-        }
-    }
-
-    IEnumerator ShieldPowerDownRoutine()
-    {
-        yield return new WaitForSeconds(7f);
-        if (_isShieldActive)
-        {
-            _isShieldActive = false;
+            _shieldVisualizer.SetActive(true);//enabled the visualaizer
         }
     }
 }
