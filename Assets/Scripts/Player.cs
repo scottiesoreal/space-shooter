@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Player : MonoBehaviour
 {
     [SerializeField]
@@ -22,11 +23,18 @@ public class Player : MonoBehaviour
     // variable: Is[powerup]Active
     private bool _isTripleShotActive = false;
     private bool _isSpeedBoostActive = false;
-    [SerializeField]
     private bool _isShieldActive = false;
 
     [SerializeField]
     private GameObject _shieldVisualizer;//variable reference to the shield visualizer
+
+    [SerializeField]
+    private int _score;
+
+    private UI_Manager _uiManager;
+    
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -34,11 +42,18 @@ public class Player : MonoBehaviour
         // take the current position = new position (0x, 0y, 0z)
         transform.position = new Vector3(0, 1, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>(); // find the object.
+        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
 
         if (_spawnManager == null)
         {
             Debug.LogError("The Spawn Manager is NULL.");
         }
+
+        if (_uiManager == null)
+        {
+            Debug.LogError("UI Manager is NULL.");
+        }
+
     }
 
     // Update is called once per frame
@@ -103,20 +118,16 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        //if shields is active
-        //do nothing 
-        //deactivate shields
-        //return;
-
         if (_isShieldActive == true)
         {
             _isShieldActive = false;
-            _shieldVisualizer.SetActive(false);
-            //disable visualizer
-            return;
+            _shieldVisualizer.SetActive(false);//disable visualizer
+            return;//retruns program
         }
 
         _lives--;
+
+        _uiManager.UpdateLives(_lives);
 
         if (_lives < 1)
         {
@@ -162,4 +173,12 @@ public class Player : MonoBehaviour
             _shieldVisualizer.SetActive(true);//enabled the visualaizer
         }
     }
+
+    public void AddScore(int points)
+    {
+        _score += points;
+        _uiManager.UpdateScore(_score);
+    }
+    //communicate with UI to update score
+
 }

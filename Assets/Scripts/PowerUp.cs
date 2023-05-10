@@ -32,13 +32,8 @@ public class PowerUp : MonoBehaviour
                 //player.TripleShotActive();
                 //else if powerUP is 1
                 //else if (powerupID == 1)
-                //{
-                //    Debug.Log("collected Speed");
-                //}
-                //else if (powerupID == 2)
-                //{
-                //    Debug.Log("Shield collected");
-                //}
+                
+                
                 
                 switch(powerupID)
                 {
@@ -47,11 +42,9 @@ public class PowerUp : MonoBehaviour
                         break;
                     case 1:
                         player.SpeedBoostActive();
-                        Debug.Log("Speed");
                         break;
                     case 2:
-                        player.ShieldActive();
-                        Debug.Log("Got it");
+                        player.ShieldActive();                        
                         break;
                     default:
                         Debug.Log("Default Value:)");
