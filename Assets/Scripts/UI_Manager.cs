@@ -19,8 +19,9 @@ public class UI_Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _scoreText.text = "Score:" + 0; //assign text component to handle
+        _scoreText.text = "Score: " + 0; //assign text component to handle
         _gameOverTxt.gameObject.SetActive(false);
+        StartCoroutine(FlashText());
     }
 
     // Update is called once per frame
@@ -30,13 +31,24 @@ public class UI_Manager : MonoBehaviour
     }
     public void UpdateLives(int currentLives)
     {
-        
+
         _LivesImage.sprite = _livesSprites[currentLives];
 
         if (currentLives == 0)
         {
             _gameOverTxt.gameObject.SetActive(true);
-        }      
-       
+        }
     }
+
+    IEnumerator FlashText()
+    {
+        while (true)
+        {
+            _gameOverTxt.text = "";
+            yield return new WaitForSeconds(0.5f);
+            _gameOverTxt.text = "GAME OVER";
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+    
 }
