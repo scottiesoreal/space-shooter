@@ -8,9 +8,18 @@ public class Asteroid : MonoBehaviour
     private float _rotationSpeed = 3.0f;    
     [SerializeField]
     private GameObject _explosionPrefab;
+    private Spawn_Manager _spawn_Manager;
+
+    private void Start()
+    {
+        _spawn_Manager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
+        if (_spawn_Manager == null)
+        {
+            Debug.LogError("Spawn Manager is Null.");//good habits for GetComponent.
+        }
+    }
 
 
-   
     void Update()
     {
         transform.Rotate(Vector3.forward * _rotationSpeed * Time.deltaTime);
@@ -24,7 +33,8 @@ public class Asteroid : MonoBehaviour
         {
             Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
             Destroy(other.gameObject);
-            Destroy(this.gameObject);
+            _spawn_Manager.StartSpawning();
+            Destroy(this.gameObject, .25f);
         }
 
     }

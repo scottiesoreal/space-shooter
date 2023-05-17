@@ -13,19 +13,14 @@ public class Spawn_Manager : MonoBehaviour
 
     private bool _stopSpawning = false;
     
-    // Start is called before the first frame update
-    void Start()
+  
+    public void StartSpawning()
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
     }
 
-    //spawn game objects every five seconds
-    //create a coroutine of type IEnumerator -- Yield Events
-    //while loop (infinite game loop) -- will run as long as condition remains true
-    // "while (true) will crash the computer because it won't stop running, and will take up memory
-    // use a Yield Event
-
+    
     IEnumerator SpawnEnemyRoutine()
     {
         while (_stopSpawning == false)
