@@ -25,8 +25,19 @@ public class Player : MonoBehaviour
     private bool _isSpeedBoostActive = false;
     private bool _isShieldActive = false;
 
+    //damage variable: isDamageActive
+    [SerializeField] 
+    private bool _isRightDamagedActive = false;
     [SerializeField]
-    private GameObject _shieldVisualizer;//variable reference to the shield visualizer
+    private bool _isLeftDamagedActive = false;
+
+    //visualizers
+    [SerializeField]
+    private GameObject _shieldVisualizer; //variable reference to the shield visualizer
+    [SerializeField]
+    private GameObject _rightDamageVisualizer;
+    [SerializeField]
+    private GameObject _leftDamageVisualizer;
 
     [SerializeField]
     private int _score;
@@ -126,6 +137,23 @@ public class Player : MonoBehaviour
         }
 
         _lives--;
+
+        if (_lives == 2)
+        {
+            _isLeftDamagedActive = true;
+            _leftDamageVisualizer.SetActive(true);//enables visual
+        }   
+        
+        if (_lives == 1)
+        {
+            _isRightDamagedActive = true;
+            _rightDamageVisualizer.SetActive(true);
+        }
+
+            //if lives is = 2
+        //enable right engine
+        //if lives = 1
+        //enable left engine
 
         _uiManager.UpdateLives(_lives);
 
