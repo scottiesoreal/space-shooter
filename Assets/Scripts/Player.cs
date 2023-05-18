@@ -38,9 +38,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _rightDamageVisualizer, _leftDamageVisualizer;
 
-    //variable to play the audio clip
+    //audio
     [SerializeField]
     private AudioClip _laserSoundClip;
+    [SerializeField]
+    private AudioClip _explosionSoundClip;
     [SerializeField]
     private AudioSource _audioSource;
 
@@ -179,7 +181,8 @@ public class Player : MonoBehaviour
 
         if (_lives < 1)
         {
-            _spawnManager.OnPlayerDeath();
+            _audioSource.Play();
+            _spawnManager.OnPlayerDeath();            
             Destroy(this.gameObject);
         }
 

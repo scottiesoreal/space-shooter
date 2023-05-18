@@ -10,8 +10,16 @@ public class Enemy : MonoBehaviour
     private Player _player;
     private Animator _anim;
 
+    //audio
+    [SerializeField]
+    private AudioSource _audioSource;
+    [SerializeField]
+    private AudioClip _explosionSoundClip;
+
     private void Start()
     {
+
+        _audioSource = GetComponent<AudioSource>();
         _player = GameObject.Find("Player").GetComponent<Player>();
         if (_player == null)
         {
@@ -24,6 +32,15 @@ public class Enemy : MonoBehaviour
         if (_anim == null)
         {
             Debug.LogError("animator is null");//assign component to Anim
+        }
+
+        if (_audioSource == null)
+        {
+            Debug.LogError("Audio for Enemy is Null.");
+        }
+        else
+        {
+            _audioSource.clip = _explosionSoundClip;
         }
 
     }
