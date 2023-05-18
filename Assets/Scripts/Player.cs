@@ -26,18 +26,24 @@ public class Player : MonoBehaviour
     private bool _isShieldActive = false;
 
     //damage variable: isDamageActive
-    [SerializeField] 
+    [SerializeField]
     private bool _isRightDamagedActive = false;
     [SerializeField]
     private bool _isLeftDamagedActive = false;
+
 
     //visualizers
     [SerializeField]
     private GameObject _shieldVisualizer; //variable reference to the shield visualizer
     [SerializeField]
-    private GameObject _rightDamageVisualizer;
+    private GameObject _rightDamageVisualizer, _leftDamageVisualizer;
+
+    //variable to play the audio clip
     [SerializeField]
-    private GameObject _leftDamageVisualizer;
+    private AudioClip _laserSoundClip;
+    [SerializeField]
+    private AudioSource _audioSource;
+
 
     [SerializeField]
     private int _score;
@@ -54,6 +60,7 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(0, 1, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>(); // find the object.
         _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
+        _audioSource = GetComponent<AudioSource>();
 
         if (_spawnManager == null)
         {
@@ -64,6 +71,16 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("UI Manager is NULL.");
         }
+
+        if (_audioSource == null)
+        {
+            Debug.LogError("AudioSource on player is Null!");
+        }
+        else
+        {
+            _audioSource.clip = _laserSoundClip;
+        }
+
 
     }
 
@@ -125,6 +142,9 @@ public class Player : MonoBehaviour
         {
             Instantiate(_laserPrefab, transform.position + Vector3.up * .6f, Quaternion.identity);
         }
+
+        _audioSource.Play();//play laser audio clip
+
     }
 
     public void Damage()
