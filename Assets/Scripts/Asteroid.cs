@@ -10,12 +10,27 @@ public class Asteroid : MonoBehaviour
     private GameObject _explosionPrefab;
     private Spawn_Manager _spawn_Manager;
 
+    //audio
+    [SerializeField]
+    private AudioSource _audioSource;
+    [SerializeField]
+    private AudioClip _explosionSoundClip;
+
     private void Start()
     {
         _spawn_Manager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
         if (_spawn_Manager == null)
         {
             Debug.LogError("Spawn Manager is Null.");//good habits for GetComponent.
+        }
+
+        if (_audioSource == null)
+        {
+            Debug.LogError("Audio for Enemy is Null.");
+        }
+        else
+        {
+            _audioSource.clip = _explosionSoundClip;
         }
     }
 

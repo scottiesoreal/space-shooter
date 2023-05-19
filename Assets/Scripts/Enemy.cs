@@ -34,14 +34,13 @@ public class Enemy : MonoBehaviour
             Debug.LogError("animator is null");//assign component to Anim
         }
 
+        
+
         if (_audioSource == null)
         {
             Debug.LogError("Audio for Enemy is Null.");
         }
-        else
-        {
-            _audioSource.clip = _explosionSoundClip;
-        }
+        
 
     }
     // Update is called once per frame
@@ -68,6 +67,7 @@ public class Enemy : MonoBehaviour
 
              _anim.SetTrigger("OnEnemyDeath");//trigger anim
             _speed = 0;
+            _audioSource.Play();
              Destroy(this.gameObject, 2.8f);
         }
 
@@ -82,6 +82,7 @@ public class Enemy : MonoBehaviour
 
              _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
+            _audioSource.Play();
             Destroy(this.gameObject, 2.8f);
         }
 

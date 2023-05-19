@@ -12,6 +12,23 @@ public class PowerUp : MonoBehaviour
     [SerializeField]
     private GameObject _PowerUpPrefab;
 
+    ///audio
+    [SerializeField]
+    private AudioSource _audioSource;
+    [SerializeField]
+    private AudioClip _power_up_sound;
+
+
+    private void Start()
+    {
+        _audioSource = GetComponent<AudioSource>();
+
+        if (_audioSource == null)
+        {
+            Debug.LogError("Audio for PowerUp is Null.");
+        }
+        
+    }
 
     void Update()
     {
@@ -37,10 +54,10 @@ public class PowerUp : MonoBehaviour
                 
                 switch(powerupID)
                 {
-                    case 0:
+                    case 0:                        
                         player.TripleShotActive();
                         break;
-                    case 1:
+                    case 1:                        
                         player.SpeedBoostActive();
                         break;
                     case 2:
@@ -50,12 +67,11 @@ public class PowerUp : MonoBehaviour
                         Debug.Log("Default Value:)");
                         break;
                 }
-                //speed PU activate
                 
-                //else if PU is 2
-                //shields powerup
             }
-            Destroy(this.gameObject);
+            Destroy(this.gameObject, 3f);
+            
+            
         }
         
     }

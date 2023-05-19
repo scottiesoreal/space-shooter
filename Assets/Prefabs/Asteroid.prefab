@@ -120,6 +120,8 @@ MonoBehaviour:
   _rotationSpeed: 8
   _explosionPrefab: {fileID: 2033747764868403220, guid: 9d43ca0ad98dbc7419ccb14e148bda9d,
     type: 3}
+  _audioSource: {fileID: 0}
+  _explosionSoundClip: {fileID: 0}
 --- !u!58 &-204418227794357925
 CircleCollider2D:
   m_ObjectHideFlags: 0
