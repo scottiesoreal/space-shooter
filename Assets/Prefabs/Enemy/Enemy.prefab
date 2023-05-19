@@ -49,8 +49,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 4
+  _enemyLaserPrefab: {fileID: 3706858412097723479, guid: 62bbf3d624b6ee143885c483c6ffb48b,
+    type: 3}
   _audioSource: {fileID: 0}
-  _explosionSoundClip: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
 --- !u!212 &7040661601629902118
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -8,15 +8,15 @@ public class PowerUp : MonoBehaviour
     private float _speed = 3.0f;
     //ID for Powerups
     [SerializeField] // 0 = TripSh, 1 = _speed, 2 = Shields
-    private int powerupID;
+    private int powerUpID;
     [SerializeField]
-    private GameObject _PowerUpPrefab;
+    private GameObject _powerUpPrefab;
 
     ///audio
     [SerializeField]
     private AudioSource _audioSource;
     [SerializeField]
-    private AudioClip _power_up_sound;
+    private AudioClip _powerUpClip;
 
 
     private void Start()
@@ -52,13 +52,13 @@ public class PowerUp : MonoBehaviour
                 
                 
                 
-                switch(powerupID)
+                switch(powerUpID)
                 {
                     case 0:                        
                         player.TripleShotActive();
                         break;
                     case 1:                        
-                        player.SpeedBoostActive();
+                        player.SpeedBoostActive();                        
                         break;
                     case 2:
                         player.ShieldActive();                        
@@ -69,7 +69,8 @@ public class PowerUp : MonoBehaviour
                 }
                 
             }
-            Destroy(this.gameObject, 3f);
+            AudioSource.PlayClipAtPoint(_powerUpClip, transform.position);
+            Destroy(this.gameObject);
             
             
         }

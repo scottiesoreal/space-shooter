@@ -10,6 +10,7 @@ TagManager:
   - Speed_Powerup
   - Shield
   - Shield_PU
+  - Enemy_Laser
   layers:
   - Default
   - TransparentFX

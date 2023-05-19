@@ -161,22 +161,16 @@ public class Player : MonoBehaviour
         _lives--;
 
         if (_lives == 2)
-        {
-            _isLeftDamagedActive = true;
+        {            
             _leftDamageVisualizer.SetActive(true);//enables visual
         }   
         
         if (_lives == 1)
-        {
-            _isRightDamagedActive = true;
+        {            
             _rightDamageVisualizer.SetActive(true);
         }
 
-            //if lives is = 2
-        //enable right engine
-        //if lives = 1
-        //enable left engine
-
+         
         _uiManager.UpdateLives(_lives);
 
         if (_lives < 1)
