@@ -163,11 +163,13 @@ public class Player : MonoBehaviour
         if (_lives == 2)
         {            
             _leftDamageVisualizer.SetActive(true);//enables visual
+            _isLeftDamagedActive = true;
         }   
         
         if (_lives == 1)
         {            
             _rightDamageVisualizer.SetActive(true);
+            _isRightDamagedActive = true;
         }
 
          

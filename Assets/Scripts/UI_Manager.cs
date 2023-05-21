@@ -40,15 +40,25 @@ public class UI_Manager : MonoBehaviour
     {        
         _scoreText.text = "Score: " + playerScore.ToString();
     }
+
     public void UpdateLives(int currentLives)
     {
 
         _LivesImage.sprite = _livesSprites[currentLives];
 
+        if (currentLives >= 0 && currentLives < _livesSprites.Length)
+        {
+            _LivesImage.sprite = _livesSprites[currentLives];
+        }
+        else
+        {
+            Debug.LogError("Invalid Lives");
+        }
         if (currentLives == 0)
         {
-            GameOverSequence();            
-        }
+            GameOverSequence();
+        }                     
+        
 
      void GameOverSequence()
         {
