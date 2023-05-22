@@ -101,7 +101,7 @@ public class UI_Manager : MonoBehaviour
     {
         while (true)
         {
-            _escText.text = "Press 'Esc' Key to Quit";
+            _escText.text = "Press 'Esc' to Quit";
             yield return new WaitForSeconds(0.5f);
             _escText.text = "";
             yield return new WaitForSeconds(0.5f);
