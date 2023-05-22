@@ -17,6 +17,8 @@ public class UI_Manager : MonoBehaviour
     private Text _gameOverTxt;
     [SerializeField]
     private Text _restartTxt;
+    [SerializeField]
+    private Text _escText;
 
     private GameManager _gameManager;
     
@@ -67,6 +69,8 @@ public class UI_Manager : MonoBehaviour
             StartCoroutine(FlashText());//game over            
             _restartTxt.gameObject.SetActive(true);
             StartCoroutine(RestartFlicker());
+            _escText.gameObject.SetActive(true);
+            StartCoroutine(EscFlicker());
         }
 
     }
@@ -89,6 +93,17 @@ public class UI_Manager : MonoBehaviour
             _restartTxt.text = "Press 'R' Key to restart the Level";
             yield return new WaitForSeconds(0.5f);
             _restartTxt.text = "";
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    IEnumerator EscFlicker()
+    {
+        while (true)
+        {
+            _escText.text = "Press 'Esc' Key to Quit";
+            yield return new WaitForSeconds(0.5f);
+            _escText.text = "";
             yield return new WaitForSeconds(0.5f);
         }
     }

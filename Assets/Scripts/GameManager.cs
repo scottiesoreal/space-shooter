@@ -13,12 +13,17 @@ public class GameManager : MonoBehaviour
         //if the r key is pressed
         if (Input.GetKeyDown(KeyCode.R) && _isGameOver == true)
         SceneManager.LoadScene(1);//current Game Scene
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
+
+    
 
     public void GameOver()
     {
-        Debug.Log("GameManager: :Gameover() Called");
         _isGameOver = true;
-
     }
 }
