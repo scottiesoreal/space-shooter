@@ -6,7 +6,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 3.5f;
+    private float _speedBase = 3.5f;
+    [SerializeField]
+    private float _thrusterSpeed = 6.5f;
     [SerializeField]
     private float _speedMultiplier = 2f;
     [SerializeField]
@@ -30,6 +32,8 @@ public class Player : MonoBehaviour
     private bool _isRightDamagedActive = false;
     [SerializeField]
     private bool _isLeftDamagedActive = false;
+    [SerializeField]
+    private bool _isThrusterSpeedActive = false;
 
 
     //visualizers
@@ -102,15 +106,21 @@ public class Player : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
+        Vector3 inputDirection = new Vector3(horizontalInput, verticalInput, 0);
 
         if (_isSpeedBoostActive == false)
         {
-            transform.Translate(direction * _speed * Time.deltaTime);
+            transform.Translate(inputDirection * _speedBase * Time.deltaTime);
+        }
+        else if (Input.GetKey(KeyCode.LeftShift))
+        {
+            Debug.Log("Shift Boost Active");
+            _isThrusterSpeedActive = true;
+            transform.Translate(inputDirection * _speedMultiplier * Time.deltaTime);
         }
         else
         {
-            transform.Translate(direction * (_speed * _speedMultiplier) * Time.deltaTime);
+            transform.Translate(inputDirection * (_speedBase * _speedMultiplier) * Time.deltaTime);
         }
 
         if (transform.position.y >= 0)
@@ -201,7 +211,7 @@ public class Player : MonoBehaviour
     {
 
         _isSpeedBoostActive = true;
-        _speed *= _speedMultiplier;
+        _speedBase *= _speedMultiplier;
         StartCoroutine(SpeedBoostPowerDownRoutine());
 
     }
