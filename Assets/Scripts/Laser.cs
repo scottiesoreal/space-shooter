@@ -69,6 +69,7 @@ public class Laser : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+               
         if (other.tag == "Player" && _isEnemyLaser && !_hasDamagedPlayer == true)
         {
             
@@ -77,8 +78,10 @@ public class Laser : MonoBehaviour
             if (player != null)
             {
                 player.Damage();
+               
             }
         }
+
     }
 
 }
