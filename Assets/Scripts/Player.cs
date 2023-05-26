@@ -18,19 +18,19 @@ public class Player : MonoBehaviour
     private float _canFire = -1f;
     [SerializeField]
     private int _lives = 3;
-    private Spawn_Manager _spawnManager;
+    private SpawnManager _spawnManager;
 
     // variable: Is[powerup]Active
     private bool _isTripleShotActive = false;
-    private bool _isSpeedBoostActive = false;
     private bool _isShieldActive = false;
+    [SerializeField]
+    private bool _isSpeedBoostActive = false;
 
-    //damage variable: isDamageActive
+    //damage variable: isVariableActive
     [SerializeField]
     private bool _isRightDamagedActive = false;
     [SerializeField]
     private bool _isLeftDamagedActive = false;
-
 
     //visualizers
     [SerializeField]
@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _score;
 
-    private UI_Manager _uiManager;
+    private UIManager _uiManager;
     
 
     
@@ -60,8 +60,8 @@ public class Player : MonoBehaviour
     {
         // take the current position = new position (0x, 0y, 0z)
         transform.position = new Vector3(0, 1, 0);
-        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>(); // find the object.
-        _uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
+        _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>(); // find the object.
+        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
 
         if (_spawnManager == null)
@@ -95,6 +95,10 @@ public class Player : MonoBehaviour
         {
             FireLaser();
         }
+
+        ShiftBoost();
+
+
     }
 
     void CalculateMovement()
@@ -130,7 +134,12 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(-9.25f, transform.position.y, 0);
         }
+
+
+
     }
+
+    
 
     void FireLaser()
     {
@@ -206,6 +215,7 @@ public class Player : MonoBehaviour
 
     }
 
+   
     IEnumerator SpeedBoostPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
@@ -226,6 +236,21 @@ public class Player : MonoBehaviour
         _score += points;
         _uiManager.UpdateScore(_score);
     }
-    //communicate with UI to update score
+    
+    public void ShiftBoost()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            _isSpeedBoostActive = true; //flame visualizer (true);
+            StartCoroutine(SpeedBoostPowerDownRoutine());
+        }
+        else
+        {
+            _isSpeedBoostActive = false; //normal flame visualiser;
+        }
+    }
+
+
+        //communicate with UI to update speed boost
 
 }

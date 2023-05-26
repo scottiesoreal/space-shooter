@@ -25,6 +25,7 @@ public class Laser : MonoBehaviour
     }
 
 
+
     void MoveUp()
     {
         //translate = laser move up

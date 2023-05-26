@@ -8,7 +8,8 @@ public class Asteroid : MonoBehaviour
     private float _rotationSpeed = 3.0f;    
     [SerializeField]
     private GameObject _explosionPrefab;
-    private Spawn_Manager _spawn_Manager;
+    [SerializeField]
+    private SpawnManager _spawn_Manager;
 
     //audio
     [SerializeField]
@@ -18,7 +19,7 @@ public class Asteroid : MonoBehaviour
 
     private void Start()
     {
-        _spawn_Manager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
+        _spawn_Manager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         if (_spawn_Manager == null)
         {
             Debug.LogError("Spawn Manager is Null.");//good habits for GetComponent.

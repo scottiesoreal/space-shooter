@@ -86,10 +86,7 @@ public class Enemy : MonoBehaviour
         if (other.tag == "Player")
         {
             //damage player
-            Player player = other.transform.GetComponent<Player>();
-            
-
-            //null check
+            Player player = other.transform.GetComponent<Player>();         
             if (player != null)
             {
                 player.Damage();
@@ -104,7 +101,7 @@ public class Enemy : MonoBehaviour
         if (other.tag == "Laser")
         {
             Destroy(other.gameObject);
-            //Player player = GameObject.Find("Player").GetComponent<Player>();
+            Player player = GameObject.Find("Player").GetComponent<Player>();
             if (_player != null)
             {
                 _player.AddScore(10);

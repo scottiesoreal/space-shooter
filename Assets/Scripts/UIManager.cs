@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Manager : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
-
-    //handle to Text
     [SerializeField]
     private Text _scoreText;
     [SerializeField]
@@ -21,31 +19,27 @@ public class UI_Manager : MonoBehaviour
     private Text _escText;
 
     private GameManager _gameManager;
-    
-    // Start is called before the first frame update
+
     void Start()
     {
-        _scoreText.text = "Score: " + 0; //assign text component to handle
+        _scoreText.text = "Score: " + 0;
         _gameOverTxt.gameObject.SetActive(false);
         _restartTxt.gameObject.SetActive(false);
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
-        
-        if (_gameManager == null )
+
+        if (_gameManager == null)
         {
             Debug.LogError("Game Manager Null!");
         }
-
     }
 
-    // Update is called once per frame
     public void UpdateScore(int playerScore)
-    {        
+    {
         _scoreText.text = "Score: " + playerScore.ToString();
     }
 
     public void UpdateLives(int currentLives)
     {
-
         _LivesImage.sprite = _livesSprites[currentLives];
 
         if (currentLives >= 0 && currentLives < _livesSprites.Length)
@@ -56,23 +50,22 @@ public class UI_Manager : MonoBehaviour
         {
             Debug.LogError("Invalid Lives");
         }
+
         if (currentLives == 0)
         {
             GameOverSequence();
-        }                     
-        
-
-     void GameOverSequence()
-        {
-            _gameManager.GameOver();
-            _gameOverTxt.gameObject.SetActive(true);
-            StartCoroutine(FlashText());//game over            
-            _restartTxt.gameObject.SetActive(true);
-            StartCoroutine(RestartFlicker());
-            _escText.gameObject.SetActive(true);
-            StartCoroutine(EscFlicker());
         }
+    }
 
+    void GameOverSequence()
+    {
+        _gameManager.GameOver();
+        _gameOverTxt.gameObject.SetActive(true);
+        StartCoroutine(FlashText());
+        _restartTxt.gameObject.SetActive(true);
+        StartCoroutine(RestartFlicker());
+        _escText.gameObject.SetActive(true);
+        StartCoroutine(EscFlicker());
     }
 
     IEnumerator FlashText()
@@ -82,10 +75,10 @@ public class UI_Manager : MonoBehaviour
             _gameOverTxt.text = "GAME OVER";
             yield return new WaitForSeconds(0.5f);
             _gameOverTxt.text = "";
-            yield return new WaitForSeconds(0.5f);            
+            yield return new WaitForSeconds(0.5f);
         }
     }
-    
+
     IEnumerator RestartFlicker()
     {
         while (true)
@@ -107,5 +100,4 @@ public class UI_Manager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
     }
-
 }
