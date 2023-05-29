@@ -117,7 +117,6 @@ public class Player : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.LeftShift))
         {
-            Debug.Log("Shift Boost Active");
             _isSpeedBoostActive = true;
             transform.Translate(inputDirection * _speedBase * _speedMultiplier * Time.deltaTime);
         }
