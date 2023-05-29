@@ -6,9 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float _speedBase = 3.5f;
-    [SerializeField]
-    private float _thrusterSpeed = 6.5f;
+    private float _speedBase = 3.5f;    
     [SerializeField]
     private float _speedMultiplier = 2f;
     [SerializeField]
@@ -33,14 +31,15 @@ public class Player : MonoBehaviour
     private bool _isRightDamagedActive = false;
     [SerializeField]
     private bool _isLeftDamagedActive = false;
-    [SerializeField]
-    private bool _isThrusterSpeedActive = false;
+    //[SerializeField]
+    //private bool _isThrusterSpeedActive = false;
 
     //visualizers
     [SerializeField]
     private GameObject _shieldVisualizer; //variable reference to the shield visualizer
     [SerializeField]
     private GameObject _rightDamageVisualizer, _leftDamageVisualizer;
+    //thruster visualizer
 
     //audio
     [SerializeField]
@@ -119,8 +118,8 @@ public class Player : MonoBehaviour
         else if (Input.GetKey(KeyCode.LeftShift))
         {
             Debug.Log("Shift Boost Active");
-            _isThrusterSpeedActive = true;
-            transform.Translate(inputDirection * _speedMultiplier * Time.deltaTime);
+            _isSpeedBoostActive = true;
+            transform.Translate(inputDirection * _speedBase * _speedMultiplier * Time.deltaTime);
         }
         else
         {
