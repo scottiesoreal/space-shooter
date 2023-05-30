@@ -81,7 +81,28 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-         
+        
+        
+        if (other.tag == "Shields")
+        {
+            //damage shield
+            Shields shields = other.transform.GetComponent<Shields>();
+            if (shields != null)
+            {
+                shields.ShieldDamage();
+            }
+
+            
+            _anim.SetTrigger("OnEnemyDeath");//trigger anim
+            _speed = 0;
+            Destroy(GetComponent<Collider2D>());
+            _audioSource.Play();
+            Destroy(this.gameObject, 2.8f);
+           
+
+        }
+
+
         
         if (other.tag == "Player")
         {
@@ -92,10 +113,13 @@ public class Enemy : MonoBehaviour
                 player.Damage();
             }
 
-             _anim.SetTrigger("OnEnemyDeath");//trigger anim
+            
+            _anim.SetTrigger("OnEnemyDeath");//trigger anim
             _speed = 0;
+            Destroy(GetComponent<Collider2D>());
             _audioSource.Play();
              Destroy(this.gameObject, 2.8f);
+            
         }
 
         if (other.tag == "Laser")
@@ -109,9 +133,8 @@ public class Enemy : MonoBehaviour
 
              _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
-            _audioSource.Play();
-
             Destroy(GetComponent<Collider2D>());
+            _audioSource.Play();            
             Destroy(this.gameObject, 2.8f);
         }
 

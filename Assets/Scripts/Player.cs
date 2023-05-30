@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     private GameObject _laserPrefab;
     [SerializeField]
     private GameObject _tripleShotPrefab;
+
     [SerializeField]
     private float _fireRate = 0.4f;
     private float _canFire = -1f;
@@ -22,7 +23,12 @@ public class Player : MonoBehaviour
 
     // variable: Is[powerup]Active
     private bool _isTripleShotActive = false;
+    [SerializeField]
+
+    private int _shieldLives = 3;
     private bool _isShieldActive = false;
+    private Shields _shields;
+       
     [SerializeField]
     private bool _isSpeedBoostActive = false;
 
@@ -67,6 +73,8 @@ public class Player : MonoBehaviour
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
 
+        _shields = GetComponentInChildren<Shields>();
+
         if (_spawnManager == null)
         {
             Debug.LogError("The Spawn Manager is NULL.");
@@ -103,6 +111,8 @@ public class Player : MonoBehaviour
 
 
     }
+
+   
 
     void CalculateMovement()
     {
@@ -168,12 +178,12 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if (_isShieldActive == true)
+        if (_isShieldActive)
         {
-            _isShieldActive = false;
-            _shieldVisualizer.SetActive(false);//disable visualizer
-            return;//retruns program
+            _shields.ShieldDamage();
+            return;
         }
+
 
         _lives--;
 
@@ -202,6 +212,12 @@ public class Player : MonoBehaviour
         
     }
 
+    public void ShieldActive()
+    {
+        _isShieldActive = true;
+        _shields.ActivateShield();
+    }
+
     public void TripleShotActive()
     {
         _isTripleShotActive = true;
@@ -228,15 +244,6 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5.0f);
         _isSpeedBoostActive = false;
-    }
-
-    public void ShieldActive()
-    {
-        if (_isShieldActive == false)
-        {
-            _isShieldActive = true;
-            _shieldVisualizer.SetActive(true);//enabled the visualaizer
-        }
     }
 
     public void AddScore(int points)
