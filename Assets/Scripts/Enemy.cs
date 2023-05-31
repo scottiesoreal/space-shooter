@@ -92,7 +92,8 @@ public class Enemy : MonoBehaviour
                 player.Damage();
             }
 
-             _anim.SetTrigger("OnEnemyDeath");//trigger anim
+            Destroy(GetComponent<Collider2D>());
+            _anim.SetTrigger("OnEnemyDeath");//trigger anim
             _speed = 0;
             _audioSource.Play();
              Destroy(this.gameObject, 2.8f);
@@ -107,7 +108,8 @@ public class Enemy : MonoBehaviour
                 _player.AddScore(10);
             }
 
-             _anim.SetTrigger("OnEnemyDeath");
+            Destroy(GetComponent<Collider2D>());
+            _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
             _audioSource.Play();
 

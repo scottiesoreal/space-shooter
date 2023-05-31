@@ -18,10 +18,13 @@ public class Player : MonoBehaviour
     private float _canFire = -1f;
     [SerializeField]
     private int _lives = 3;
+    [SerializeField]
+    private int _shieldStrength = 3;
     private SpawnManager _spawnManager;
 
     // variable: Is[powerup]Active
     private bool _isTripleShotActive = false;
+    [SerializeField]
     private bool _isShieldActive = false;
     [SerializeField]
     private bool _isSpeedBoostActive = false;
@@ -39,6 +42,8 @@ public class Player : MonoBehaviour
     private GameObject _shieldVisualizer; //variable reference to the shield visualizer
     [SerializeField]
     private GameObject _rightDamageVisualizer, _leftDamageVisualizer;
+    [SerializeField]
+    private SpriteRenderer _shieldRenderer;
     //thruster visualizer
 
     //audio
@@ -52,7 +57,7 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private int _score;
-
+    
     private UIManager _uiManager;
     
 
@@ -168,12 +173,38 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if (_isShieldActive == true)
+        if (_isShieldActive == true && _shieldStrength >= 1)
         {
-            _isShieldActive = false;
-            _shieldVisualizer.SetActive(false);//disable visualizer
-            return;//retruns program
+            //isShieldActive = false;
+            //_shieldVisualizer.SetActive(false);//disable visualizer
+            //return;//retruns program
+            _shieldStrength--;
+
+
+            switch (_shieldStrength)
+            {
+                case 0:
+                    _isShieldActive = false;
+                    _shieldVisualizer.SetActive(false);
+                    
+                    break;
+                case 1:
+                    _shieldRenderer.color = Color.white;
+
+                    break;
+                case 2:
+                    _shieldRenderer.color = Color.yellow;
+                    
+                    break;
+
+            }
+            return;
+
+           
         }
+
+        
+        _shieldStrength = 3;
 
         _lives--;
 
