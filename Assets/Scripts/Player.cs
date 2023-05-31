@@ -192,28 +192,8 @@ public class Player : MonoBehaviour
                 case 0:
                     _isShieldActive = false;
                     _shieldVisualizer.SetActive(false);
-                    break;
-            }
-
-            return;
-            //switch (_shieldStrength)
-            //{
-              //  case 0:
-                    
-
-                //    break;
-                //case 1:
-                  //  _shieldRenderer.color = Color.yellow;
-
-                    //break;
-                //case 2:
-                  //  _shieldRenderer.color = Color.white;
-
-
-                    //break;
-
-            //}         
-                       
+                    break;          }
+            return;                                   
         }
 
         
