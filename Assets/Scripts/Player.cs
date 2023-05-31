@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 
@@ -173,38 +174,50 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if (_isShieldActive == true && _shieldStrength >= 1)
+        if (_isShieldActive && _shieldStrength > 0)
         {
-            //isShieldActive = false;
-            //_shieldVisualizer.SetActive(false);//disable visualizer
-            //return;//retruns program
             _shieldStrength--;
-
 
             switch (_shieldStrength)
             {
-                case 0:
-                    _isShieldActive = false;
-                    _shieldVisualizer.SetActive(false);
-                    
-                    break;
-                case 1:
+                case 3:
                     _shieldRenderer.color = Color.white;
-
                     break;
                 case 2:
                     _shieldRenderer.color = Color.yellow;
-                    
                     break;
-
+                case 1:
+                    _shieldRenderer.color = Color.red;
+                    break;
+                case 0:
+                    _isShieldActive = false;
+                    _shieldVisualizer.SetActive(false);
+                    break;
             }
-            return;
 
-           
+            return;
+            //switch (_shieldStrength)
+            //{
+              //  case 0:
+                    
+
+                //    break;
+                //case 1:
+                  //  _shieldRenderer.color = Color.yellow;
+
+                    //break;
+                //case 2:
+                  //  _shieldRenderer.color = Color.white;
+
+
+                    //break;
+
+            //}         
+                       
         }
 
         
-        _shieldStrength = 3;
+        
 
         _lives--;
 
@@ -266,7 +279,9 @@ public class Player : MonoBehaviour
         if (_isShieldActive == false)
         {
             _isShieldActive = true;
-            _shieldVisualizer.SetActive(true);//enabled the visualaizer
+            _shieldVisualizer.SetActive(true);
+            _shieldRenderer.color = Color.white;
+            _shieldStrength = 3;
         }
     }
 

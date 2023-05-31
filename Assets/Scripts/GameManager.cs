@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField]
     private bool _isGameOver;
+    [SerializeField]
+    private bool _isGamePaused = false;
 
     private void Update()
     {
@@ -18,6 +20,18 @@ public class GameManager : MonoBehaviour
         {
             Application.Quit();
         }
+
+        if (Input.GetKeyDown(KeyCode.P) && _isGamePaused == false)
+        {
+            PauseGame();
+            
+        }
+        else if (Input.GetKeyDown(KeyCode.P) && _isGamePaused == true) 
+        {
+            ResumeGame();
+        }
+        
+
     }
 
     
@@ -26,4 +40,17 @@ public class GameManager : MonoBehaviour
     {
         _isGameOver = true;
     }
+
+    void PauseGame()
+    {
+        Time.timeScale = 0;
+        _isGamePaused = true;
+    }
+
+    void ResumeGame()
+    {
+        Time.timeScale = 1;
+        _isGamePaused = false;
+    }
+
 }
