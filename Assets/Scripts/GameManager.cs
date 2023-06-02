@@ -34,8 +34,9 @@ public class GameManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.P) && _isGamePaused == true) 
         {
-            ResumeGame();
             _uiManager.StopPauseFlicker();
+            ResumeGame();
+            
         }
         
 

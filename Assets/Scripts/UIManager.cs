@@ -79,9 +79,9 @@ public class UIManager : MonoBehaviour
         while (true)
         {
             _pauseTxt.text = "GAME PAUSED";
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSecondsRealtime(1.9f);
             _pauseTxt.text = "";
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSecondsRealtime(1.5f);
         }
     }
 

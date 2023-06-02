@@ -152,7 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isGameOver: 0
   _isGamePaused: 0
-  _uiManager: {fileID: 0}
+  _uiManager: {fileID: 422916665}
 --- !u!4 &228848141
 Transform:
   m_ObjectHideFlags: 0
