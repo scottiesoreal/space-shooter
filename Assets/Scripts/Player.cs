@@ -7,7 +7,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float _speedBase = 3.5f;    
+    private float _speedBase = 3.5f;
     [SerializeField]
     private float _speedMultiplier = 2f;
     [SerializeField]
@@ -21,6 +21,9 @@ public class Player : MonoBehaviour
     private int _lives = 3;
     [SerializeField]
     private int _shieldStrength = 3;
+    [SerializeField]
+    public int _ammoCount = 15;
+
     private SpawnManager _spawnManager;
 
     // variable: Is[powerup]Active
@@ -54,6 +57,10 @@ public class Player : MonoBehaviour
     private AudioClip _explosionSoundClip;
     [SerializeField]
     private AudioSource _audioSource;
+    [SerializeField]
+    private AudioClip _noAmmoClip;
+    //[SerializeField]
+    //private AudioClip _lowAmmoSoundClip;
 
 
     [SerializeField]
@@ -102,13 +109,24 @@ public class Player : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
+            if (_ammoCount ==  0)
+            {
+                AudioSource.PlayClipAtPoint(_noAmmoClip, transform.position);//play empty clip sound
+                return;
+            }
+            
+            if (_ammoCount <= 5)
+            {
+                Debug.Log("Ammo Low!");                
+            }
+
             FireLaser();
         }
 
         ShiftBoost();
 
 
-    }
+    
 
     void CalculateMovement()
     {
@@ -157,6 +175,7 @@ public class Player : MonoBehaviour
 
     void FireLaser()
     {
+        AmmoCount(-1);        
         _canFire = Time.time + _fireRate;
 
         if (_isTripleShotActive == true)
@@ -169,7 +188,6 @@ public class Player : MonoBehaviour
         }
 
         _audioSource.Play();//play laser audio clip
-
     }
 
     public void Damage()
@@ -192,7 +210,8 @@ public class Player : MonoBehaviour
                 case 0:
                     _isShieldActive = false;
                     _shieldVisualizer.SetActive(false);
-                    break;          }
+                    break;          
+            }
             return;                                   
         }
 
@@ -202,15 +221,15 @@ public class Player : MonoBehaviour
         _lives--;
 
         if (_lives == 2)
-        {            
-            _leftDamageVisualizer.SetActive(true);//enables visual
+        {
             _isLeftDamagedActive = true;
-        }   
-        
+            _leftDamageVisualizer.SetActive(true);//enables visual
+        }
+
         if (_lives == 1)
-        {            
-            _rightDamageVisualizer.SetActive(true);
+        {
             _isRightDamagedActive = true;
+            _rightDamageVisualizer.SetActive(true);           
         }
 
          
@@ -224,6 +243,12 @@ public class Player : MonoBehaviour
         }
 
         
+    }
+
+    public void AmmoCount(int lasers)
+    {
+        _ammoCount += lasers;
+        _uiManager.UpdateAmmoCount(_ammoCount);
     }
 
     public void TripleShotActive()

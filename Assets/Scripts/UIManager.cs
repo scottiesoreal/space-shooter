@@ -19,6 +19,8 @@ public class UIManager : MonoBehaviour
     private Text _escTxt;
     [SerializeField]
     private Text _pauseTxt;
+    [SerializeField]
+    private Text _ammoTxt;
 
     private Coroutine _pauseFlickerCoroutine;
 
@@ -28,6 +30,7 @@ public class UIManager : MonoBehaviour
     {
         
         _scoreTxt.text = "Score: " + 0;
+        _ammoTxt.text = 15.ToString();
         _pauseTxt.gameObject.SetActive(false);
         _gameOverTxt.gameObject.SetActive(false);
         _restartTxt.gameObject.SetActive(false);
@@ -39,6 +42,11 @@ public class UIManager : MonoBehaviour
             Debug.LogError("Game Manager Null!");
             return;
         }
+    }
+
+    public void UpdateAmmoCount(int playerAmmo)
+    {
+        _ammoTxt.text = playerAmmo.ToString();
     }
 
     public void UpdateScore(int playerScore)
@@ -84,12 +92,6 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(1.5f);
         }
     }
-
-    //public void StartPauseFlicker()
-    //{
-      //  _pauseFlickerCoroutine = StartCoroutine(PauseFlicker());
-        //_pauseTxt.gameObject.SetActive(true);
-    //}
 
     public void StopPauseFlicker()
     {
