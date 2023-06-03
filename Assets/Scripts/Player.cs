@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _shieldStrength = 3;
     [SerializeField]
-    public int _ammoCount = 15;
+    public int _maxAmmo = 15;
 
     private SpawnManager _spawnManager;
 
@@ -106,19 +106,19 @@ public class Player : MonoBehaviour
     void Update()
     {
         CalculateMovement();
-        
+
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
-            if (_ammoCount ==  0)
+            if (_maxAmmo <= 5)
+            {
+                Debug.Log("Ammo Low!");
+            }
+
+            if (_maxAmmo == 0)
             {
                 AudioSource.PlayClipAtPoint(_noAmmoClip, transform.position);//play empty clip sound
                 return;
-            }
-            
-            if (_ammoCount <= 5)
-            {
-                Debug.Log("Ammo Low!");                
-            }
+            }            
 
             FireLaser();
         }
@@ -126,7 +126,7 @@ public class Player : MonoBehaviour
         ShiftBoost();
 
 
-    
+    }
 
     void CalculateMovement()
     {
@@ -247,8 +247,16 @@ public class Player : MonoBehaviour
 
     public void AmmoCount(int lasers)
     {
-        _ammoCount += lasers;
-        _uiManager.UpdateAmmoCount(_ammoCount);
+        if(lasers >= _maxAmmo)
+        {
+            _maxAmmo = 15;
+        }
+        else
+        {
+            _maxAmmo += lasers;
+        }
+                
+        _uiManager.UpdateAmmoCount(_maxAmmo);
     }
 
     public void TripleShotActive()

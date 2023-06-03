@@ -22,6 +22,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Text _ammoTxt;
 
+    
+
     private Coroutine _pauseFlickerCoroutine;
 
     private GameManager _gameManager;
@@ -43,6 +45,8 @@ public class UIManager : MonoBehaviour
             return;
         }
     }
+
+    public Text colorChangeFont;
 
     public void UpdateAmmoCount(int playerAmmo)
     {
