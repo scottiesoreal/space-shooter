@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     private float _canFire = -1f;
     [SerializeField]
     private int _lives = 3;
-    [SerializeField]
+   [SerializeField]
     private int _shieldStrength = 3;
     [SerializeField]
     public int _maxAmmo = 15;
@@ -118,13 +118,14 @@ public class Player : MonoBehaviour
             {
                 AudioSource.PlayClipAtPoint(_noAmmoClip, transform.position);//play empty clip sound
                 return;
-            }            
+            }
 
             FireLaser();
         }
 
         ShiftBoost();
 
+        
 
     }
 
@@ -243,6 +244,14 @@ public class Player : MonoBehaviour
         }
 
         
+    }
+
+    public void RestoreLives()
+    {
+        _lives = 3;
+        _uiManager.UpdateLives(_lives);
+        _rightDamageVisualizer.SetActive(false);
+        _leftDamageVisualizer.SetActive(false);
     }
 
     public void AmmoCount(int lasers)
