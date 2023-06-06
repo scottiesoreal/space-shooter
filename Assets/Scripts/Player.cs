@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     private int _shieldStrength = 3;
     [SerializeField]
     public int _maxAmmo = 15;
+    
 
     private SpawnManager _spawnManager;
 
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
     private bool _isShieldActive = false;
     [SerializeField]
     private bool _isSpeedBoostActive = false;
+
 
     //damage variable: isVariableActive
     [SerializeField]
@@ -48,6 +50,8 @@ public class Player : MonoBehaviour
     private GameObject _rightDamageVisualizer, _leftDamageVisualizer;
     [SerializeField]
     private SpriteRenderer _shieldRenderer;
+
+
     //thruster visualizer
 
     //audio
@@ -65,9 +69,8 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private int _score;
-    
     private UIManager _uiManager;
-    
+    private ShakeCamera _camera;
 
     
 
@@ -79,6 +82,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>(); // find the object.
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
+        _camera = Camera.main.GetComponent<ShakeCamera>();
 
         if (_spawnManager == null)
         {
@@ -196,6 +200,7 @@ public class Player : MonoBehaviour
         if (_isShieldActive && _shieldStrength > 0)
         {
             _shieldStrength--;
+            _camera.StartShaking();
 
             switch (_shieldStrength)
             {
@@ -220,6 +225,7 @@ public class Player : MonoBehaviour
         
 
         _lives--;
+        _camera.StartShaking();
 
         if (_lives == 2)
         {
@@ -249,7 +255,7 @@ public class Player : MonoBehaviour
     public void RestoreLives()
     {
         _lives = 3;
-        _uiManager.UpdateLives(_lives);
+        _uiManager.UpdateLives(_lives);        
         _rightDamageVisualizer.SetActive(false);
         _leftDamageVisualizer.SetActive(false);
     }
