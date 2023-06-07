@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     private GameObject _laserPrefab;
     [SerializeField]
     private GameObject _tripleShotPrefab;
+    //[SerializeField]
+    //private GameObject _homingLaserPrefab;
     [SerializeField]
     private float _fireRate = 0.4f;
     private float _canFire = -1f;
@@ -23,6 +25,12 @@ public class Player : MonoBehaviour
     private int _shieldStrength = 3;
     [SerializeField]
     public int _maxAmmo = 15;
+    [SerializeField]
+    private float _thrusterScaleMax = 10f;
+    private float _thrusterScale;
+    
+
+    
     
 
     private SpawnManager _spawnManager;
@@ -33,6 +41,8 @@ public class Player : MonoBehaviour
     private bool _isShieldActive = false;
     [SerializeField]
     private bool _isSpeedBoostActive = false;
+    //[SerializeField]
+    //private bool _isHomingLaserActive = false;
 
 
     //damage variable: isVariableActive
@@ -81,6 +91,7 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(0, 1, 0);
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>(); // find the object.
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        _thrusterScale = _thrusterScaleMax;
         _audioSource = GetComponent<AudioSource>();
         _camera = Camera.main.GetComponent<ShakeCamera>();
 
@@ -180,8 +191,17 @@ public class Player : MonoBehaviour
 
     void FireLaser()
     {
-        AmmoCount(-1);        
         _canFire = Time.time + _fireRate;
+
+        //if (_isHomingLaserActive)
+        //{
+          //  GameObject homingLaser = Instantiate(_homingLaserPrefab, transform.position, Quaternion.identity);
+            //HomingLaser homingLaserScript = homingLaser.GetComponent<HomingLaser>();
+            //GameObject enemy = GameObject.FindWithTag("Enemy"); // tag "Enemy"
+            //homingLaserScript.target = enemy.transform;
+
+        //}
+
 
         if (_isTripleShotActive == true)
         {
@@ -192,6 +212,7 @@ public class Player : MonoBehaviour
             Instantiate(_laserPrefab, transform.position + Vector3.up * .6f, Quaternion.identity);
         }
 
+        AmmoCount(-1);
         _audioSource.Play();//play laser audio clip
     }
 
@@ -321,15 +342,20 @@ public class Player : MonoBehaviour
     
     public void ShiftBoost()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && _thrusterScale > 0f)
         {
             _isSpeedBoostActive = true; //flame visualizer (true);
+            _thrusterScale -= Time.deltaTime;
             StartCoroutine(SpeedBoostPowerDownRoutine());
         }
         else
         {
             _isSpeedBoostActive = false; //normal flame visualiser;
+            _thrusterScale = Mathf.Min(_thrusterScale + Time.deltaTime, _thrusterScaleMax);
         }
+
+        _uiManager.UpdateThrusterScale(Time.deltaTime, _thrusterScale);
+
     }
 
 

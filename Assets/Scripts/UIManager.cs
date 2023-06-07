@@ -22,6 +22,8 @@ public class UIManager : MonoBehaviour
     private Text _pauseTxt;
     [SerializeField]
     private Text _ammoTxt;
+    [SerializeField]
+    private Slider _thrusterSlider;
     
 
 
@@ -47,6 +49,40 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void UpdateThrusterScale(float elapsedTime, float thrusterScale)
+    {
+        _thrusterSlider.value = thrusterScale;
+        
+        if (_thrusterSlider.maxValue != thrusterScale)
+        {
+            _thrusterSlider.maxValue = thrusterScale;
+        }
+        
+        thrusterScale = thrusterScale - elapsedTime;
+        _thrusterSlider.value = thrusterScale;
+
+        if (thrusterScale > 9.0f && thrusterScale <= 10.0f)
+        {
+            _thrusterSlider.gameObject.transform.Find("FillArea").Find("Fill").GetComponent<Image>().color = Color.green;
+        }
+        else if (thrusterScale > 7.0 && thrusterScale <= 9.0f)
+        {
+            _thrusterSlider.gameObject.transform.Find("FillArea").Find("Fill").GetComponent<Image>().color = Color.yellow;
+        }
+        else if (thrusterScale > 5.0 && thrusterScale <= 7.0f)
+        {
+            _thrusterSlider.gameObject.transform.Find("FillArea").Find("Fill").GetComponent<Image>().color = Color.cyan;
+        }
+        else if (thrusterScale > 3.0 && thrusterScale <= 5.0f)
+        {
+            _thrusterSlider.gameObject.transform.Find("FillArea").Find("Fill").GetComponent<Image>().color = Color.blue;
+        }
+        else if (thrusterScale <= 3.0f)
+        {
+            _thrusterSlider.gameObject.transform.Find("FillArea").Find("Fill").GetComponent<Image>().color = Color.red;
+        }
+    }
+    
     public Text colorChangeFont;
 
     public void UpdateAmmoCount(int playerAmmo)
