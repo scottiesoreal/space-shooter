@@ -26,12 +26,16 @@ public class Player : MonoBehaviour
     [SerializeField]
     public int _maxAmmo = 15;
     [SerializeField]
-    private float _thrusterScaleMax = 10f;
+    private float _thrusterScaleMax = 6f;
+    [SerializeField]
     private float _thrusterScale;
-    
+    [SerializeField]
+    private bool _isThrusterRecharging = false;
 
-    
-    
+
+
+
+
 
     private SpawnManager _spawnManager;
 
@@ -270,6 +274,7 @@ public class Player : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+
         
     }
 
@@ -339,26 +344,36 @@ public class Player : MonoBehaviour
         _score += points;
         _uiManager.UpdateScore(_score);
     }
-    
+
     public void ShiftBoost()
     {
-        if (Input.GetKey(KeyCode.LeftShift) && _thrusterScale > 0f)
+        if (Input.GetKey(KeyCode.LeftShift) && _thrusterScale > 0f && !_isThrusterRecharging)
         {
-            _isSpeedBoostActive = true; //flame visualizer (true);
+            _isSpeedBoostActive = true;
             _thrusterScale -= Time.deltaTime;
-            StartCoroutine(SpeedBoostPowerDownRoutine());
+
+            if (_thrusterScale <= 0f)
+            {
+                _thrusterScale = 0f;
+                _isThrusterRecharging = true;
+                StartCoroutine(ThrusterRechargeRoutine());
+            }
         }
         else
         {
-            _isSpeedBoostActive = false; //normal flame visualiser;
+            _isSpeedBoostActive = false;
             _thrusterScale = Mathf.Min(_thrusterScale + Time.deltaTime, _thrusterScaleMax);
         }
 
         _uiManager.UpdateThrusterScale(Time.deltaTime, _thrusterScale);
-
     }
 
+    private IEnumerator ThrusterRechargeRoutine()
+    {
+        yield return new WaitForSeconds(5f); // Adjust the recharge delay as needed
+        _isThrusterRecharging = false;
+    }
 
-        //communicate with UI to update speed boost
+    //communicate with UI to update speed boost
 
 }

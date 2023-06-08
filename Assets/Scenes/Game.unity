@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &9040456
 RectTransform:
   m_ObjectHideFlags: 0
@@ -983,7 +983,9 @@ MonoBehaviour:
   _lives: 3
   _shieldStrength: 0
   _maxAmmo: 15
-  _thrusterScaleMax: 10
+  _thrusterScaleMax: 2
+  _thrusterScale: 5
+  _isThrusterRecharging: 0
   _isShieldActive: 0
   _isSpeedBoostActive: 0
   _isRightDamagedActive: 0
@@ -1304,7 +1306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7735849, g: 0.06549864, b: 0.036489848, a: 1}
+  m_Color: {r: 0.1254902, g: 0.1254902, b: 0.1254902, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2817,7 +2819,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.09251513, g: 0.9339623, b: 0.118957005, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2878,11 +2880,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.5283019, g: 0.1254902, b: 0.03488785, a: 1}
-    m_HighlightedColor: {r: 0.55659884, g: 0.5943396, b: 0.07849769, a: 1}
+    m_NormalColor: {r: 0.124426655, g: 0.8018868, b: 0.04160734, a: 1}
+    m_HighlightedColor: {r: 0.9895041, g: 0.990566, b: 0.97654855, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.5849056, g: 0.50802517, b: 0.09932359, a: 0.5019608}
+    m_DisabledColor: {r: 0.74612856, g: 0.764151, b: 0.7616715, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -2896,7 +2898,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 711477599}
   m_FillRect: {fileID: 1937299129}
   m_HandleRect: {fileID: 711477597}

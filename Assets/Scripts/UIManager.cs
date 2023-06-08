@@ -24,8 +24,6 @@ public class UIManager : MonoBehaviour
     private Text _ammoTxt;
     [SerializeField]
     private Slider _thrusterSlider;
-    
-
 
     private Coroutine _pauseFlickerCoroutine;
 
@@ -33,14 +31,12 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        
         _scoreTxt.text = "Score: " + 0;
         _ammoTxt.text = 15.ToString();
         _pauseTxt.gameObject.SetActive(false);
         _gameOverTxt.gameObject.SetActive(false);
         _restartTxt.gameObject.SetActive(false);
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        
 
         if (_gameManager == null)
         {
@@ -52,12 +48,12 @@ public class UIManager : MonoBehaviour
     public void UpdateThrusterScale(float elapsedTime, float thrusterScale)
     {
         _thrusterSlider.value = thrusterScale;
-        
+
         if (_thrusterSlider.maxValue != thrusterScale)
         {
             _thrusterSlider.maxValue = thrusterScale;
         }
-        
+
         thrusterScale = thrusterScale - elapsedTime;
         _thrusterSlider.value = thrusterScale;
 
@@ -82,7 +78,7 @@ public class UIManager : MonoBehaviour
             _thrusterSlider.gameObject.transform.Find("FillArea").Find("Fill").GetComponent<Image>().color = Color.red;
         }
     }
-    
+
     public Text colorChangeFont;
 
     public void UpdateAmmoCount(int playerAmmo)
@@ -159,9 +155,9 @@ public class UIManager : MonoBehaviour
         {
             Debug.LogError("Game Manager Null!");
         }
-       
+
     }
-    
+
     IEnumerator GameOverFlicker()
     {
         while (true)
