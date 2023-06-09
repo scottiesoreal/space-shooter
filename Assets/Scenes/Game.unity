@@ -396,6 +396,7 @@ MonoBehaviour:
   - {fileID: 1358995824889079409, guid: 415df735bb1af50468d987c5b3f700cd, type: 3}
   - {fileID: 6977235944024854000, guid: 3c0e83d4a592b0a489539abf4847d7e2, type: 3}
   - {fileID: 1634269795311744797, guid: f0edefbdb57f8194e9597e96a4569de8, type: 3}
+  - {fileID: 549866794534375169, guid: 4dda8ddd2b9087f4a92dc8cc5b86dc53, type: 3}
 --- !u!4 &324143138
 Transform:
   m_ObjectHideFlags: 0
@@ -409,7 +410,7 @@ Transform:
   m_Children:
   - {fileID: 414003720}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &389455728
 GameObject:
@@ -979,15 +980,18 @@ MonoBehaviour:
     type: 3}
   _tripleShotPrefab: {fileID: 3586177642046643699, guid: 4f145d970d0e6f5479ff7f66e1ab50d5,
     type: 3}
+  _omniShotPrefab: {fileID: 908628544923368562, guid: 3568263e7402e6046a15d685701b42f5,
+    type: 3}
   _fireRate: 0.15
   _lives: 3
   _shieldStrength: 0
   _maxAmmo: 15
-  _thrusterScaleMax: 2
-  _thrusterScale: 5
+  _thrusterScaleMax: 10
+  _thrusterScale: 7
   _isThrusterRecharging: 0
   _isShieldActive: 0
   _isSpeedBoostActive: 0
+  _isOmniShotActive: 0
   _isRightDamagedActive: 0
   _isLeftDamagedActive: 0
   _shieldVisualizer: {fileID: 940136997}
@@ -999,6 +1003,7 @@ MonoBehaviour:
   _audioSource: {fileID: -5963888564253355047, guid: 9d43ca0ad98dbc7419ccb14e148bda9d,
     type: 3}
   _noAmmoClip: {fileID: 8300000, guid: 661dc5709f04e4343bf88cc36e462f70, type: 3}
+  _lowAmmoSoundClip: {fileID: 8300000, guid: 1fefc7a186ecf134b988572501dbda75, type: 3}
   _score: 0
 --- !u!212 &737323854
 SpriteRenderer:
@@ -1081,7 +1086,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.04202342, y: 0.16809845}
+  m_Offset: {x: 0.048436344, y: -0.35097575}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1092,7 +1097,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.3549695, y: 4.783803}
+  m_Size: {x: 3.0343213, y: 3.7456546}
   m_EdgeRadius: 0
 --- !u!82 &737323857
 AudioSource:
@@ -1112,7 +1117,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 8
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -2169,7 +2174,7 @@ PrefabInstance:
     - target: {fileID: 2017036957851167425, guid: e174135c664ff8e4e930955804c3a3e4,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2017036957851167425, guid: e174135c664ff8e4e930955804c3a3e4,
         type: 3}
@@ -2323,7 +2328,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &1440631167
 PrefabInstance:
@@ -2905,7 +2910,7 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 1
-  m_WholeNumbers: 0
+  m_WholeNumbers: 1
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:

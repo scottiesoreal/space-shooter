@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     private GameObject _laserPrefab;
     [SerializeField]
     private GameObject _tripleShotPrefab;
+    [SerializeField]
+    private GameObject _omniShotPrefab;
     //[SerializeField]
     //private GameObject _homingLaserPrefab;
     [SerializeField]
@@ -32,11 +34,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private bool _isThrusterRecharging = false;
 
-
-
-
-
-
     private SpawnManager _spawnManager;
 
     // variable: Is[powerup]Active
@@ -45,6 +42,8 @@ public class Player : MonoBehaviour
     private bool _isShieldActive = false;
     [SerializeField]
     private bool _isSpeedBoostActive = false;
+    [SerializeField]
+    private bool _isOmniShotActive = false;
     //[SerializeField]
     //private bool _isHomingLaserActive = false;
 
@@ -70,11 +69,11 @@ public class Player : MonoBehaviour
 
     //audio
     [SerializeField]
+    private AudioSource _audioSource;
+    [SerializeField]
     private AudioClip _laserSoundClip;
     [SerializeField]
-    private AudioClip _explosionSoundClip;
-    [SerializeField]
-    private AudioSource _audioSource;
+    private AudioClip _explosionSoundClip;    
     [SerializeField]
     private AudioClip _noAmmoClip;
     //[SerializeField]
@@ -128,11 +127,6 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
-            if (_maxAmmo <= 5)
-            {
-                Debug.Log("Ammo Low!");
-            }
-
             if (_maxAmmo == 0)
             {
                 AudioSource.PlayClipAtPoint(_noAmmoClip, transform.position);//play empty clip sound
@@ -145,8 +139,9 @@ public class Player : MonoBehaviour
         ShiftBoost();
 
         
+    
 
-    }
+}
 
     void CalculateMovement()
     {
@@ -155,18 +150,15 @@ public class Player : MonoBehaviour
 
         Vector3 inputDirection = new Vector3(horizontalInput, verticalInput, 0);
 
-        if (_isSpeedBoostActive == false)
-        {
-            transform.Translate(inputDirection * _speedBase * Time.deltaTime);
-        }
-        else if (Input.GetKey(KeyCode.LeftShift))
-        {
-            _isSpeedBoostActive = true;
+        _isSpeedBoostActive = Input.GetKey(KeyCode.LeftShift);
+
+        if (_isSpeedBoostActive)
+        {                    
             transform.Translate(inputDirection * _speedBase * _speedMultiplier * Time.deltaTime);
         }
         else
         {
-            transform.Translate(inputDirection * (_speedBase * _speedMultiplier) * Time.deltaTime);
+            transform.Translate(inputDirection * _speedBase * Time.deltaTime);
         }
 
         if (transform.position.y >= 0)
@@ -211,12 +203,17 @@ public class Player : MonoBehaviour
         {
             Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
         }
+        else if (_isOmniShotActive == true)
+        {
+            Instantiate(_omniShotPrefab, transform.position, Quaternion.identity);
+        }        
         else
         {
             Instantiate(_laserPrefab, transform.position + Vector3.up * .6f, Quaternion.identity);
         }
 
         AmmoCount(-1);
+
         _audioSource.Play();//play laser audio clip
     }
 
@@ -300,9 +297,24 @@ public class Player : MonoBehaviour
         _uiManager.UpdateAmmoCount(_maxAmmo);
     }
 
+    public void OmniShotActive()
+    {
+        _isOmniShotActive = true;
+        _isTripleShotActive = false;
+        StartCoroutine(OmniShotPowerDownRoutine());
+
+    }
+
+    IEnumerator OmniShotPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _isOmniShotActive = false;
+    }
+
     public void TripleShotActive()
     {
         _isTripleShotActive = true;
+        _isOmniShotActive = false;
         StartCoroutine(TripleShotPowerDownRoutine());
     }
 
@@ -316,7 +328,7 @@ public class Player : MonoBehaviour
     {
 
         _isSpeedBoostActive = true;
-        _speedBase *= _speedMultiplier;
+        _speedBase += _speedMultiplier;
         StartCoroutine(SpeedBoostPowerDownRoutine());
 
     }
@@ -349,7 +361,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift) && _thrusterScale > 0f && !_isThrusterRecharging)
         {
-            _isSpeedBoostActive = true;
+            
             _thrusterScale -= Time.deltaTime;
 
             if (_thrusterScale <= 0f)

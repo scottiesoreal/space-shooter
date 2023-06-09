@@ -49,12 +49,11 @@ public class UIManager : MonoBehaviour
     {
         _thrusterSlider.value = thrusterScale;
 
-        if (_thrusterSlider.maxValue != thrusterScale)
-        {
-            _thrusterSlider.maxValue = thrusterScale;
-        }
-
         thrusterScale = thrusterScale - elapsedTime;
+        if (thrusterScale < 0)
+        {
+            thrusterScale = 0;
+        }
         _thrusterSlider.value = thrusterScale;
 
         if (thrusterScale > 9.0f && thrusterScale <= 10.0f)

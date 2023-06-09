@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6808927032464712219}
   - component: {fileID: 5944618372295524740}
+  - component: {fileID: -5726273196807581288}
   m_Layer: 0
   m_Name: ShieldsPrefab
   m_TagString: Untagged
@@ -81,3 +82,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-5726273196807581288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2823565701475957400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23795a8e1a21ad340b37a4b79b207d68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 3
+  powerUpID: 0
+  _powerUpPrefab: {fileID: 0}
+  _audioSource: {fileID: 0}
+  _powerUpClip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}

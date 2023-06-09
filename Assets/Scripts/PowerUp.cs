@@ -51,13 +51,16 @@ public class PowerUp : MonoBehaviour
                         player.SpeedBoostActive();
                         break;
                     case 2:
-                        player.ShieldActive();
+                        player.ShieldActive();                        
                         break;
                     case 3:
                         player.AmmoCount(15);
                         break;
                     case 4:                        
                         player.RestoreLives();
+                        break;
+                    case 5:
+                        player.OmniShotActive();
                         break;
                     default:
                         Debug.LogError("Unknown powerup ID: " + powerUpID);

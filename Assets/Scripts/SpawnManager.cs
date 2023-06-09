@@ -45,6 +45,10 @@ public class SpawnManager : MonoBehaviour
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 7.6f, 0f);
             int randomPowerUp = Random.Range(0, 5);
+            if (randomPowerUp >= 4)
+            {
+                randomPowerUp = 5; //set random power up to 5 (6th power up) if the random number is 4 or higher
+            }
             Instantiate(powerups[randomPowerUp], posToSpawn, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(3, 8));
 
