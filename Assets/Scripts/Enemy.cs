@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
     private Animator _anim;
     private float _fireRate = 3.0f;
     private float _canFire = -1;
-    private bool _isAlive = false;
+
 
     //audio
     [SerializeField]
@@ -57,27 +57,22 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_isAlive)
+        CalculateMovement();
+        
+        if (Time.time > _canFire)
         {
-            CalculateMovement();
-
-            if (Time.time > _canFire)
+            _fireRate = Random.Range(3f, 7f);
+            _canFire = Time.time + _fireRate;
+            GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+            
+            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+            
+            for (int i = 0; i < lasers.Length; i ++)
             {
-                _fireRate = Random.Range(3f, 7f);
-                _canFire = Time.time + _fireRate;
-                GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
-
-                Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
-
-                for (int i = 0; i < lasers.Length; i++)
-                {
-                    lasers[i].AssignEnemyLaser();
-                }
+                lasers[i].AssignEnemyLaser();
             }
         }
     }
-        
-       
 
     void CalculateMovement()
     {
@@ -117,7 +112,6 @@ public class Enemy : MonoBehaviour
             if (player != null)
             {
                 player.Damage();
-                _isAlive = false;
             }
 
             Destroy(GetComponent<Collider2D>());
@@ -134,7 +128,6 @@ public class Enemy : MonoBehaviour
             if (_player != null)
             {
                 _player.AddScore(10);
-                _isAlive = false;
             }
 
             Destroy(GetComponent<Collider2D>());
