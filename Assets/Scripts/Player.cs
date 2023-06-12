@@ -189,16 +189,7 @@ public class Player : MonoBehaviour
     {
         _canFire = Time.time + _fireRate;
 
-        //if (_isHomingLaserActive)
-        //{
-          //  GameObject homingLaser = Instantiate(_homingLaserPrefab, transform.position, Quaternion.identity);
-            //HomingLaser homingLaserScript = homingLaser.GetComponent<HomingLaser>();
-            //GameObject enemy = GameObject.FindWithTag("Enemy"); // tag "Enemy"
-            //homingLaserScript.target = enemy.transform;
-
-        //}
-
-
+       
         if (_isTripleShotActive == true)
         {
             Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);

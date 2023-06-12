@@ -7,6 +7,11 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float _speed = 4.0f;
     [SerializeField]
+    private float _rotationSpeed = 60.0f;
+    [SerializeField]
+    private float _radius = 3.0f;
+    private float _angle = 0f;
+    [SerializeField]
     private GameObject _laserPrefab;
     private Player _player;
     private Animator _anim;
@@ -70,13 +75,29 @@ public class Enemy : MonoBehaviour
 
     void CalculateMovement()
     {
+        // Apply downward movement
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
+
+        // Apply circular movement
+        float x = Mathf.Cos(_angle * Mathf.Deg2Rad) * _radius;
+        float y = Mathf.Sin(_angle * Mathf.Deg2Rad) * _radius;
+
+        Vector3 circularMotion = new Vector3(x, y, 0);
+        transform.position += circularMotion * Time.deltaTime;
+
+        // Update angle within 360 degrees
+        _angle += _rotationSpeed * Time.deltaTime;
+        if (_angle >= 360.0f)
+        {
+            _angle -= 360.0f;
+        }
+
+        // Wrap position vertically
         if (transform.position.y <= -10.55f)
         {
             float randomX = Random.Range(-9.50f, 9.50f);
-            transform.position = new Vector3(Random.Range(randomX, 9.50f), 7.60f, 0);
-        }
-
+            transform.position = new Vector3(randomX, 7.60f, 0);
+        }    
     }
 
     private void OnTriggerEnter2D(Collider2D other)

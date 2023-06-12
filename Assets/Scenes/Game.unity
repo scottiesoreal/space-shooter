@@ -986,7 +986,7 @@ MonoBehaviour:
   _lives: 3
   _shieldStrength: 0
   _maxAmmo: 15
-  _thrusterScaleMax: 10
+  _thrusterScaleMax: 1.5
   _thrusterScale: 7
   _isThrusterRecharging: 0
   _isShieldActive: 0
@@ -998,12 +998,11 @@ MonoBehaviour:
   _rightDamageVisualizer: {fileID: 389455728}
   _leftDamageVisualizer: {fileID: 1281575915}
   _shieldRenderer: {fileID: 940136998}
-  _laserSoundClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
-  _explosionSoundClip: {fileID: 0}
   _audioSource: {fileID: -5963888564253355047, guid: 9d43ca0ad98dbc7419ccb14e148bda9d,
     type: 3}
+  _laserSoundClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  _explosionSoundClip: {fileID: 0}
   _noAmmoClip: {fileID: 8300000, guid: 661dc5709f04e4343bf88cc36e462f70, type: 3}
-  _lowAmmoSoundClip: {fileID: 8300000, guid: 1fefc7a186ecf134b988572501dbda75, type: 3}
   _score: 0
 --- !u!212 &737323854
 SpriteRenderer:
