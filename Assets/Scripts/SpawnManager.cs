@@ -10,6 +10,11 @@ public class SpawnManager : MonoBehaviour
     private GameObject _enemyContainer;
     [SerializeField]
     private GameObject[] powerups;
+    [SerializeField]
+    private GameObject _bigPlanetPrefab;
+    [SerializeField]
+    private GameObject _smallPlanetPrefab;
+
 
     private bool _stopSpawning = false;
     
@@ -18,25 +23,7 @@ public class SpawnManager : MonoBehaviour
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
-    }
-
-    
-    IEnumerator SpawnEnemyRoutine()
-    {
-        while (_stopSpawning == false)
-        {
-            Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 9f, 0f);
-            GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
-            newEnemy.transform.parent = _enemyContainer.transform;
-            yield return new WaitForSeconds(5.0f);
-        }      
-        
-        //Then this line is called
-        //while loop (infinite)
-            //Instantiate enemy prefab
-            //yield wait for 5 seconds.
-
-        
+        SpawnBackgroundObjectsRoutine();
     }
 
     IEnumerator SpawnPowerupRoutine()
@@ -54,7 +41,42 @@ public class SpawnManager : MonoBehaviour
 
         }
 
-       
+    }
+
+    IEnumerator SpawnEnemyRoutine()
+    {
+        while (_stopSpawning == false)
+        {
+            Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
+            GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
+            newEnemy.transform.parent = _enemyContainer.transform;
+            yield return new WaitForSeconds(5.0f);
+        }
+    }
+
+    IEnumerator SpawnBackgroundObjectsRoutine()
+    {
+      while (_stopSpawning == false)
+       {
+            Vector3 posToSpawn = new Vector3(Random.Range(-10f, 10f), 4f, Random.Range(-7f, 30f)); 
+            GameObject newBigPlanet = Instantiate(_bigPlanetPrefab, posToSpawn, Quaternion.identity);
+            GameObject newLittlePlanet = Instantiate(_smallPlanetPrefab, posToSpawn, Quaternion.identity);
+            
+            SpriteRenderer bigPlanetRenderer = newBigPlanet.GetComponent<SpriteRenderer>();
+            if (bigPlanetRenderer != null)
+            {
+                bigPlanetRenderer.color = Random.ColorHSV();
+            }
+
+
+            SpriteRenderer smallPlanetRenderer = newLittlePlanet.GetComponent<SpriteRenderer>();
+            if (bigPlanetRenderer != null)
+            {
+                bigPlanetRenderer.color = Random.ColorHSV();
+            }
+
+            yield return new WaitForSeconds(Random.Range(7, 16));
+        }
     }
 
     public void OnPlayerDeath()
