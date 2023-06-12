@@ -23,10 +23,12 @@ public class Player : MonoBehaviour
     private float _canFire = -1f;
     [SerializeField]
     private int _lives = 3;
-   [SerializeField]
+    [SerializeField]
     private int _shieldStrength = 3;
     [SerializeField]
-    public int _maxAmmo = 15;
+    private int _ammoCount = 15;
+    [SerializeField]
+    public int _maxAmmo = 35;
     [SerializeField]
     private float _thrusterScaleMax = 6f;
     [SerializeField]
@@ -251,7 +253,6 @@ public class Player : MonoBehaviour
             _isRightDamagedActive = true;
             _rightDamageVisualizer.SetActive(true);           
         }
-
          
         _uiManager.UpdateLives(_lives);
 
@@ -285,7 +286,7 @@ public class Player : MonoBehaviour
             _maxAmmo += lasers;
         }
                 
-        _uiManager.UpdateAmmoCount(_maxAmmo);
+        _uiManager.UpdateAmmoCount(_ammoCount, _maxAmmo);
     }
 
     public void OmniShotActive()

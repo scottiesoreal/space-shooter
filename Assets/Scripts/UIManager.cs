@@ -80,9 +80,9 @@ public class UIManager : MonoBehaviour
 
     public Text colorChangeFont;
 
-    public void UpdateAmmoCount(int playerAmmo)
+    public void UpdateAmmoCount(int playerAmmo, int maxAmmo)
     {
-        _ammoTxt.text = playerAmmo.ToString();
+        _ammoTxt.text = maxAmmo.ToString() + "/" + playerAmmo.ToString();
     }
 
     public void UpdateScore(int playerScore)

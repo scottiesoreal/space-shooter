@@ -118,7 +118,9 @@ public class Enemy : MonoBehaviour
             _anim.SetTrigger("OnEnemyDeath");//trigger anim
             _speed = 0;
             _audioSource.Play();
-             Destroy(this.gameObject, 2.8f);
+
+            DestroyChildrenObjects();
+            Destroy(this.gameObject, 2.8f);
         }
 
         if (other.tag == "Laser")
@@ -136,8 +138,20 @@ public class Enemy : MonoBehaviour
             _audioSource.Play();
 
             Destroy(GetComponent<Collider2D>());
+            DestroyChildrenObjects();
             Destroy(this.gameObject, 2.8f);
         }
 
     }
+    
+    private void DestroyChildrenObjects()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+
+
 }
