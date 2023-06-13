@@ -341,6 +341,13 @@ public class Player : MonoBehaviour
             _shieldRenderer.color = Color.white;
             _shieldStrength = 3;
         }
+        else
+        {
+            _isShieldActive = true;
+            _shieldVisualizer.SetActive(true);
+            _shieldRenderer.color = Color.white;
+            _shieldStrength = 3;
+        }
     }
 
     public void AddScore(int points)

@@ -7,9 +7,8 @@ public class BackgroundObjects : MonoBehaviour
     
     [SerializeField]
     private float _movementSpeed = 1f;
-    [SerializeField]
-    private float _speedMultiplier = 2;
-    [SerializeField]
+    
+    
 
     //public SpriteRenderer planetSpriteRenderer;
     //public Color[] spriteColors;
