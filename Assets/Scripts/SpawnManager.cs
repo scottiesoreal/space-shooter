@@ -21,11 +21,12 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private int _currentWave = 1; // Current Wave number
     [SerializeField]
-    private int _deadEnemiesCount = 0; // number of enemies needed dead per spawn.
+    private int _initialEnemiesPerSpawm = 5;
+    [SerializeField]
+    private int _enemiesPerWaveIncrement = 5;
     [SerializeField]
     private int _totalEnemyWaveCount = 3;//number of waves to spawn
-    [SerializeField]
-    private int _deadEnemyTotalCount = 5;
+    
 
     private bool _stopSpawning = false;
     
@@ -64,10 +65,13 @@ public class SpawnManager : MonoBehaviour
     {
         while (_currentWave <= _totalEnemyWaveCount)
         {
-            yield return new WaitForSeconds(9.5f); // Wave delay
+            yield return new WaitForSeconds(20.5f); // Wave delay
 
             _stopSpawning = false;
             _enemySpawnedCount = 0; //reset spawn count for each wave
+
+            // Increase enemies per wave
+            _enemiesPerSpawn += _enemiesPerWaveIncrement;
 
             // start spawning enemies for the current wave
             StartCoroutine(SpawnEnemyRoutine());
