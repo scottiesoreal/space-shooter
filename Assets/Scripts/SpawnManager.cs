@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -14,24 +15,66 @@ public class SpawnManager : MonoBehaviour
 
     //wave
     [SerializeField]
-    private int _enemySpawnedCount = 0;//number of enemies spawned (in wave)
+    private int _enemySpawnedCount = 0;//current number of enemies spawned (in wave)
     [SerializeField]
-    private int _enemiesPerpawn = 5;
+    private int _enemiesPerSpawn = 5; //number of enemy to spawn per wave
     [SerializeField]
-    private int _enemyWaveCount = 3;//number of waves to spawn
-   
+    private int _currentWave = 1; // Current Wave number
     [SerializeField]
-    private int _totalWaveSpawn = 3;// total number of waves
-
+    private int _deadEnemiesCount = 0; // number of enemies needed dead per spawn.
+    [SerializeField]
+    private int _totalEnemyWaveCount = 3;//number of waves to spawn
+    [SerializeField]
+    private int _deadEnemyTotalCount = 5;
 
     private bool _stopSpawning = false;
     
   
     public void StartSpawning()
     {
-        StartCoroutine(SpawnEnemyRoutine());
+
         StartCoroutine(SpawnPowerupRoutine());
-       
+        StartCoroutine(SpawnEnemyRoutine());
+        StartCoroutine(SpawnWavesRoutine());
+
+    }
+
+    IEnumerator SpawnEnemyRoutine()
+    {
+        while (_stopSpawning == false)
+        {
+            Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
+            GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
+            newEnemy.transform.parent = _enemyContainer.transform;
+
+            _enemySpawnedCount++;
+
+            //check if desired number of enemies have spawned
+            if (_enemySpawnedCount >= _enemiesPerSpawn)
+            {
+                _stopSpawning = true;
+               
+            }
+
+            yield return new WaitForSeconds(10.0f);
+        }
+    }
+
+    IEnumerator SpawnWavesRoutine()
+    {
+        while (_currentWave <= _totalEnemyWaveCount)
+        {
+            yield return new WaitForSeconds(9.5f); // Wave delay
+
+            _stopSpawning = false;
+            _enemySpawnedCount = 0; //reset spawn count for each wave
+
+            // start spawning enemies for the current wave
+            StartCoroutine(SpawnEnemyRoutine());
+
+            // Increment the wave # for next iteration
+            _currentWave++;
+        }
     }
 
     IEnumerator SpawnPowerupRoutine()
@@ -51,28 +94,6 @@ public class SpawnManager : MonoBehaviour
 
     }
 
-    IEnumerator SpawnEnemyRoutine()
-    {
-        while (_stopSpawning == false)
-        {
-            Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
-            GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
-            newEnemy.transform.parent = _enemyContainer.transform;
-
-            _enemySpawnedCount++;
-
-            //check if desired number of enemies have spawned
-            if (_enemySpawnedCount >= 5)
-            {
-                _stopSpawning = true;
-                //EnemyWaveReset();
-
-                //reset counter to 0 for next wave
-            }
-
-            yield return new WaitForSeconds(5.0f);
-        }
-    }
 
     //public void EnemyWaveReset()
    // {
