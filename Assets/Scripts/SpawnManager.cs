@@ -10,10 +10,18 @@ public class SpawnManager : MonoBehaviour
     private GameObject _enemyContainer;
     [SerializeField]
     private GameObject[] powerups;
+    
+
+    //wave
     [SerializeField]
-    private GameObject _bigPlanetPrefab;
+    private int _enemySpawnedCount = 0;//number of enemies spawned (in wave)
     [SerializeField]
-    private GameObject _smallPlanetPrefab;
+    private int _enemiesPerpawn = 5;
+    [SerializeField]
+    private int _enemyWaveCount = 3;//number of waves to spawn
+   
+    [SerializeField]
+    private int _totalWaveSpawn = 3;// total number of waves
 
 
     private bool _stopSpawning = false;
@@ -23,7 +31,7 @@ public class SpawnManager : MonoBehaviour
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
-        SpawnBackgroundObjectsRoutine();
+       
     }
 
     IEnumerator SpawnPowerupRoutine()
@@ -50,34 +58,26 @@ public class SpawnManager : MonoBehaviour
             Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
             GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
+
+            _enemySpawnedCount++;
+
+            //check if desired number of enemies have spawned
+            if (_enemySpawnedCount >= 5)
+            {
+                _stopSpawning = true;
+                //EnemyWaveReset();
+
+                //reset counter to 0 for next wave
+            }
+
             yield return new WaitForSeconds(5.0f);
         }
     }
 
-    IEnumerator SpawnBackgroundObjectsRoutine()
-    {
-      while (_stopSpawning == false)
-       {
-            Vector3 posToSpawn = new Vector3(Random.Range(-10f, 10f), 4f, Random.Range(-7f, 30f)); 
-            GameObject newBigPlanet = Instantiate(_bigPlanetPrefab, posToSpawn, Quaternion.identity);
-            GameObject newLittlePlanet = Instantiate(_smallPlanetPrefab, posToSpawn, Quaternion.identity);
-            
-            SpriteRenderer bigPlanetRenderer = newBigPlanet.GetComponent<SpriteRenderer>();
-            if (bigPlanetRenderer != null)
-            {
-                bigPlanetRenderer.color = Random.ColorHSV();
-            }
-
-
-            SpriteRenderer smallPlanetRenderer = newLittlePlanet.GetComponent<SpriteRenderer>();
-            if (bigPlanetRenderer != null)
-            {
-                bigPlanetRenderer.color = Random.ColorHSV();
-            }
-
-            yield return new WaitForSeconds(Random.Range(7, 16));
-        }
-    }
+    //public void EnemyWaveReset()
+   // {
+    //    _enemySpawnedCount = 0;
+   // }
 
     public void OnPlayerDeath()
     {
