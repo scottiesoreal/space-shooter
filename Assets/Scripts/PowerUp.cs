@@ -62,6 +62,10 @@ public class PowerUp : MonoBehaviour
                     case 5:
                         player.OmniShotActive();
                         break;
+                    case 6://negative ammo power up
+                        player.AmmoCount(0);
+                        break;
+                        
                     default:
                         Debug.LogError("Unknown powerup ID: " + powerUpID);
                         break;

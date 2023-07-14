@@ -1,95 +1,75 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro.EditorUtilities;
 using UnityEngine;
-
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField] 
     private float _speedBase = 3.5f;
-    [SerializeField]
+    [SerializeField] 
     private float _speedMultiplier = 2f;
-    [SerializeField]
+    [SerializeField] 
     private GameObject _laserPrefab;
-    [SerializeField]
+    [SerializeField] 
     private GameObject _tripleShotPrefab;
-    [SerializeField]
+    [SerializeField] 
     private GameObject _omniShotPrefab;
-    //[SerializeField]
-    //private GameObject _homingLaserPrefab;
-    [SerializeField]
+    [SerializeField] 
     private float _fireRate = 0.4f;
     private float _canFire = -1f;
-    [SerializeField]
+    [SerializeField] 
     private int _lives = 3;
-    [SerializeField]
+    [SerializeField] 
     private int _shieldStrength = 3;
-    [SerializeField]
-    private int _ammoCount = 15;
-    [SerializeField]
-    public int _maxAmmo = 35;
-    [SerializeField]
+    [SerializeField] 
+    private int _ammoCount = 30;
+    [SerializeField] 
+    public int _maxAmmo = 30;
+
+    [SerializeField] 
     private float _thrusterScaleMax = 6f;
-    [SerializeField]
+    [SerializeField] 
     private float _thrusterScale;
-    [SerializeField]
+    [SerializeField] 
     private bool _isThrusterRecharging = false;
 
     private SpawnManager _spawnManager;
 
-    // variable: Is[powerup]Active
     private bool _isTripleShotActive = false;
-    [SerializeField]
+    [SerializeField] 
     private bool _isShieldActive = false;
-    [SerializeField]
+    [SerializeField] 
     private bool _isSpeedBoostActive = false;
-    [SerializeField]
+    [SerializeField] 
     private bool _isOmniShotActive = false;
-    //[SerializeField]
-    //private bool _isHomingLaserActive = false;
+    [SerializeField] 
+    private bool _isAntiAmmoActive = false;
 
-
-    //damage variable: isVariableActive
-    [SerializeField]
+    [SerializeField] 
     private bool _isRightDamagedActive = false;
-    [SerializeField]
+    [SerializeField] 
     private bool _isLeftDamagedActive = false;
-    //[SerializeField]
-    //private bool _isThrusterSpeedActive = false;
 
-    //visualizers
-    [SerializeField]
-    private GameObject _shieldVisualizer; //variable reference to the shield visualizer
-    [SerializeField]
+    [SerializeField] 
+    private GameObject _shieldVisualizer;
+    [SerializeField] 
     private GameObject _rightDamageVisualizer, _leftDamageVisualizer;
-    [SerializeField]
+    [SerializeField] 
     private SpriteRenderer _shieldRenderer;
 
-
-    //thruster visualizer
-
-    //audio
-    [SerializeField]
+    [SerializeField] 
     private AudioSource _audioSource;
-    [SerializeField]
+    [SerializeField] 
     private AudioClip _laserSoundClip;
-    [SerializeField]
-    private AudioClip _explosionSoundClip;    
-    [SerializeField]
+    [SerializeField] 
+    private AudioClip _explosionSoundClip;
+    [SerializeField] 
     private AudioClip _noAmmoClip;
-    //[SerializeField]
-    //private AudioClip _lowAmmoSoundClip;
 
-
-    [SerializeField]
+    [SerializeField] 
     private int _score;
     private UIManager _uiManager;
     private ShakeCamera _camera;
 
-    
-
-    // Start is called before the first frame update
     void Start()
     {
         // take the current position = new position (0x, 0y, 0z)
@@ -118,11 +98,8 @@ public class Player : MonoBehaviour
         {
             _audioSource.clip = _laserSoundClip;
         }
-
-
     }
 
-    // Update is called once per frame
     void Update()
     {
         CalculateMovement();
@@ -131,7 +108,7 @@ public class Player : MonoBehaviour
         {
             if (_maxAmmo == 0)
             {
-                AudioSource.PlayClipAtPoint(_noAmmoClip, transform.position);//play empty clip sound
+                AudioSource.PlayClipAtPoint(_noAmmoClip, transform.position); // play empty clip sound
                 return;
             }
 
@@ -139,11 +116,7 @@ public class Player : MonoBehaviour
         }
 
         ShiftBoost();
-
-        
-    
-
-}
+    }
 
     void CalculateMovement()
     {
@@ -155,7 +128,7 @@ public class Player : MonoBehaviour
         _isSpeedBoostActive = Input.GetKey(KeyCode.LeftShift);
 
         if (_isSpeedBoostActive)
-        {                    
+        {
             transform.Translate(inputDirection * _speedBase * _speedMultiplier * Time.deltaTime);
         }
         else
@@ -180,18 +153,12 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(-9.25f, transform.position.y, 0);
         }
-
-
-
     }
-
-    
 
     void FireLaser()
     {
         _canFire = Time.time + _fireRate;
 
-       
         if (_isTripleShotActive == true)
         {
             Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
@@ -199,7 +166,7 @@ public class Player : MonoBehaviour
         else if (_isOmniShotActive == true)
         {
             Instantiate(_omniShotPrefab, transform.position, Quaternion.identity);
-        }        
+        }
         else
         {
             Instantiate(_laserPrefab, transform.position + Vector3.up * .6f, Quaternion.identity);
@@ -207,7 +174,7 @@ public class Player : MonoBehaviour
 
         AmmoCount(-1);
 
-        _audioSource.Play();//play laser audio clip
+        _audioSource.Play(); // play laser audio clip
     }
 
     public void Damage()
@@ -231,13 +198,10 @@ public class Player : MonoBehaviour
                 case 0:
                     _isShieldActive = false;
                     _shieldVisualizer.SetActive(false);
-                    break;          
+                    break;
             }
-            return;                                   
+            return;
         }
-
-        
-        
 
         _lives--;
         _camera.StartShaking();
@@ -245,47 +209,50 @@ public class Player : MonoBehaviour
         if (_lives == 2)
         {
             _isLeftDamagedActive = true;
-            _leftDamageVisualizer.SetActive(true);//enables visual
+            _leftDamageVisualizer.SetActive(true); // enables visual
         }
 
         if (_lives == 1)
         {
             _isRightDamagedActive = true;
-            _rightDamageVisualizer.SetActive(true);           
+            _rightDamageVisualizer.SetActive(true);
         }
-         
+
         _uiManager.UpdateLives(_lives);
 
         if (_lives < 1)
         {
             _audioSource.Play();
-            _spawnManager.OnPlayerDeath();            
+            _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
         }
-
-
-        
     }
 
     public void RestoreLives()
     {
         _lives = 3;
-        _uiManager.UpdateLives(_lives);        
+        _uiManager.UpdateLives(_lives);
         _rightDamageVisualizer.SetActive(false);
         _leftDamageVisualizer.SetActive(false);
     }
 
     public void AmmoCount(int lasers)
     {
-        if(lasers >= _maxAmmo)
+        if (lasers >= _maxAmmo)
         {
-            _maxAmmo = 15;
+            _maxAmmo = 30;
         }
         else
         {
             _maxAmmo += lasers;
         }
-                
+
+        _uiManager.UpdateAmmoCount(_ammoCount, _maxAmmo);
+    }
+
+    public void AntiAmmo()
+    {
+        _maxAmmo = 0;
         _uiManager.UpdateAmmoCount(_ammoCount, _maxAmmo);
     }
 
@@ -294,7 +261,6 @@ public class Player : MonoBehaviour
         _isOmniShotActive = true;
         _isTripleShotActive = false;
         StartCoroutine(OmniShotPowerDownRoutine());
-
     }
 
     IEnumerator OmniShotPowerDownRoutine()
@@ -308,7 +274,6 @@ public class Player : MonoBehaviour
         _isTripleShotActive = true;
         _isOmniShotActive = false;
         StartCoroutine(TripleShotPowerDownRoutine());
-
     }
 
     IEnumerator TripleShotPowerDownRoutine()
@@ -319,14 +284,11 @@ public class Player : MonoBehaviour
 
     public void SpeedBoostActive()
     {
-
         _isSpeedBoostActive = true;
         _speedBase += _speedMultiplier;
         StartCoroutine(SpeedBoostPowerDownRoutine());
-
     }
 
-   
     IEnumerator SpeedBoostPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
@@ -335,7 +297,7 @@ public class Player : MonoBehaviour
 
     public void ShieldActive()
     {
-        if (_isShieldActive == false)
+        if (!_isShieldActive)
         {
             _isShieldActive = true;
             _shieldVisualizer.SetActive(true);
@@ -361,7 +323,6 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftShift) && _thrusterScale > 0f && !_isThrusterRecharging)
         {
-            
             _thrusterScale -= Time.deltaTime;
 
             if (_thrusterScale <= 0f)
@@ -385,7 +346,4 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5f); // Adjust the recharge delay as needed
         _isThrusterRecharging = false;
     }
-
-    //communicate with UI to update speed boost
-
 }
