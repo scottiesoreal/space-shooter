@@ -20,10 +20,12 @@ public class Player : MonoBehaviour
     private int _lives = 3;
     [SerializeField] 
     private int _shieldStrength = 3;
-    [SerializeField] 
-    private int _ammoCount = 30;
-    [SerializeField] 
+
+    [SerializeField]
     public int _maxAmmo = 30;
+    [SerializeField]
+    private int _ammoCount = 30;
+
 
     [SerializeField] 
     private float _thrusterScaleMax = 6f;
@@ -34,6 +36,7 @@ public class Player : MonoBehaviour
 
     private SpawnManager _spawnManager;
 
+    [SerializeField]
     private bool _isTripleShotActive = false;
     [SerializeField] 
     private bool _isShieldActive = false;
@@ -240,7 +243,7 @@ public class Player : MonoBehaviour
     {
         if (lasers >= _maxAmmo)
         {
-            _maxAmmo = 30;
+            _maxAmmo = 15;
         }
         else
         {
@@ -252,7 +255,8 @@ public class Player : MonoBehaviour
 
     public void AntiAmmo()
     {
-        _maxAmmo = 0;
+        _isAntiAmmoActive = true;
+        _ammoCount = 0;
         _uiManager.UpdateAmmoCount(_ammoCount, _maxAmmo);
     }
 

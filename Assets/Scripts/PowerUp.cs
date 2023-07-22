@@ -63,7 +63,7 @@ public class PowerUp : MonoBehaviour
                         player.OmniShotActive();
                         break;
                     case 6://negative ammo power up
-                        player.AmmoCount(0);
+                        player.AntiAmmo();
                         break;
                         
                     default:
