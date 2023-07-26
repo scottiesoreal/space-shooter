@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         _scoreTxt.text = "Score: " + 0;
-        _ammoTxt.text = 15.ToString();
+        _ammoTxt.text = 30.ToString();
         _pauseTxt.gameObject.SetActive(false);
         _gameOverTxt.gameObject.SetActive(false);
         _restartTxt.gameObject.SetActive(false);
@@ -82,7 +82,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateAmmoCount(int playerAmmo, int maxAmmo)
     {
-        _ammoTxt.text = maxAmmo.ToString() + "/" + playerAmmo.ToString();
+        _ammoTxt.text = playerAmmo.ToString() + "/" + maxAmmo.ToString();
     }
 
     public void UpdateScore(int playerScore)

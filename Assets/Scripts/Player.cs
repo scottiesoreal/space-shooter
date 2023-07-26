@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     public int _maxAmmo = 30;
     [SerializeField]
-    private int _ammoCount = 30;
+    private int _ammoCount = 0;
 
 
     [SerializeField] 
@@ -109,7 +109,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
-            if (_maxAmmo == 0)
+            if (_ammoCount == 0)
             {
                 AudioSource.PlayClipAtPoint(_noAmmoClip, transform.position); // play empty clip sound
                 return;
@@ -160,13 +160,18 @@ public class Player : MonoBehaviour
 
     void FireLaser()
     {
+        if (_ammoCount <= 0)
+        {
+            return;
+        }
+
         _canFire = Time.time + _fireRate;
 
-        if (_isTripleShotActive == true)
+        if (_isTripleShotActive)
         {
             Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
         }
-        else if (_isOmniShotActive == true)
+        else if (_isOmniShotActive)
         {
             Instantiate(_omniShotPrefab, transform.position, Quaternion.identity);
         }
@@ -175,10 +180,12 @@ public class Player : MonoBehaviour
             Instantiate(_laserPrefab, transform.position + Vector3.up * .6f, Quaternion.identity);
         }
 
+        
         AmmoCount(-1);
-
         _audioSource.Play(); // play laser audio clip
     }
+
+
 
     public void Damage()
     {
@@ -241,13 +248,13 @@ public class Player : MonoBehaviour
 
     public void AmmoCount(int lasers)
     {
-        if (lasers >= _maxAmmo)
+        if (_ammoCount + lasers > _maxAmmo)
         {
-            _maxAmmo = 15;
+            _ammoCount = _maxAmmo;
         }
         else
         {
-            _maxAmmo += lasers;
+            _ammoCount += lasers;
         }
 
         _uiManager.UpdateAmmoCount(_ammoCount, _maxAmmo);
