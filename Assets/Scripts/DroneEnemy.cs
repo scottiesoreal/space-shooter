@@ -13,13 +13,17 @@ public class DroneEnemy : MonoBehaviour
     private float _zigzagSpeed = 3.0f;
     [SerializeField]
     private float _zigzagRange = 3.0f;
-    
-    
+
+
     //fire variable
-    
-    //[SerializeField]//this is the time between shots
-    //private float _fireRate = 3.0f;
-    //private float _canFire = -1;//when to start shooting
+    [SerializeField]
+    private GameObject _laserPrefab;
+    private float _fireRate = 3.0f;//3 seconds between fire
+    private float _canFire = -1;//time stamp
+
+    //Damage
+    //[SerializeField]
+    //private int _damage = 2;//Enemy "lives"/"health
 
     //shield
     //[SerializeField]
@@ -42,6 +46,7 @@ public class DroneEnemy : MonoBehaviour
     void Update()
     {
         CalculateMovement();
+        FireLaser();
     }
 
     private void CalculateMovement()
@@ -65,6 +70,30 @@ public class DroneEnemy : MonoBehaviour
 
         // Move "Drone" enemy along x-axis with updated xOffset
         transform.Translate(new Vector3(xOffset, 0f, 0f) * Time.deltaTime);
+        
     }
 
+    void FireLaser()
+    {
+        if (Time.time > _canFire)
+        {
+            _fireRate = Random.Range(3f, 7f);
+            _canFire = Time.time + _fireRate;
+            GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+
+            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+            for (int i = 0; i < lasers.Length; i++)
+            {
+                lasers[i].AssignEnemyLaser();
+            }
+        }
+
 }
+
+
+}
+
+ 
+
+
