@@ -73,7 +73,7 @@ public class DroneEnemy : MonoBehaviour
         
     }
 
-    void FireLaser()
+    public void FireLaser()
     {
         if (Time.time > _canFire)
         {
@@ -88,8 +88,21 @@ public class DroneEnemy : MonoBehaviour
                 lasers[i].AssignEnemyLaser();
             }
         }
+    }
 
-}
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
+            //damage player
+            Player player = other.transform.GetComponent<Player>();
+            if (player != null)
+            {
+                player.Damage();
+            }
+        }
+    }
+
 
 
 }
