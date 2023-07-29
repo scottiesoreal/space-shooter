@@ -55,7 +55,7 @@ public class Enemy : MonoBehaviour
     }
     
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         CalculateMovement();
         
@@ -74,7 +74,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void CalculateMovement()
+    private void CalculateMovement()
     {
         // Apply downward movement
         transform.Translate(Vector3.down * _speed * Time.deltaTime);

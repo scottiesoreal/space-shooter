@@ -102,8 +102,13 @@ public class DroneEnemy : MonoBehaviour
             {
                 player.Damage();
                 EnemyDamage();
-            }                     
-            
+            }                 
+        } 
+
+        if (other.tag == "Laser")
+        {
+            Destroy(other.gameObject);
+            EnemyDamage();
         }
     }
 
@@ -119,8 +124,11 @@ public class DroneEnemy : MonoBehaviour
 
             if (_enemyLives < 1)
             {
+                Destroy(GetComponent<Collider2D>());
+                DestroyChildrenObjects();
                 Destroy(this.gameObject);
             }
+
         }
     }
 
@@ -136,6 +144,14 @@ public class DroneEnemy : MonoBehaviour
         {
             _isEnShieldActive = false;
             _enShieldVisualizer.SetActive(false);
+        }
+    }
+
+    private void DestroyChildrenObjects()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
         }
     }
 
