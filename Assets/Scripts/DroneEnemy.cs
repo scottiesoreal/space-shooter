@@ -22,20 +22,22 @@ public class DroneEnemy : MonoBehaviour
     private float _canFire = -1;//time stamp
 
     //Damage
-    //[SerializeField]
-    //private int _damage = 2;//Enemy "lives"/"health
-
-    //shield
-    //[SerializeField]
-    //private bool _isShieldActive = true;
+    [SerializeField]
+    private bool _isEnShieldActive = true;
     
+    [SerializeField]
+    private int _enemyLives = 2;//Enemy "lives"/"health
+
+
     //visualizer
-    //[SerializeField]
-    //private GameObject _shieldVisualizer;
+    [SerializeField]
+    private GameObject _enShieldVisualizer;
+    [SerializeField]
+    private SpriteRenderer _enShieldRenderer;
 
-    
-    
-    
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -77,7 +79,7 @@ public class DroneEnemy : MonoBehaviour
     {
         if (Time.time > _canFire)
         {
-            _fireRate = Random.Range(3f, 7f);
+            _fireRate = Random.Range(1f, 3f);
             _canFire = Time.time + _fireRate;
             GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
 
@@ -99,14 +101,42 @@ public class DroneEnemy : MonoBehaviour
             if (player != null)
             {
                 player.Damage();
+                EnemyDamage();
+            }                     
+            
+        }
+    }
+
+    public void EnemyDamage()
+    {
+        {
+            _enemyLives--;
+
+            if (_enemyLives < 2)
+            {
+                EnemyShieldActive();
+            }
+
+            if (_enemyLives < 1)
+            {
+                Destroy(this.gameObject);
             }
         }
     }
 
-
+    public void EnemyShieldActive()
+    {
+        if (_enemyLives == 2 )
+        {
+            _isEnShieldActive = true;
+            _enShieldVisualizer.SetActive(true);
+            _enShieldRenderer.color = Color.white;
+        }
+        if (_enemyLives < 2)
+        {
+            _isEnShieldActive = false;
+            _enShieldVisualizer.SetActive(false);
+        }
+    }
 
 }
-
- 
-
-

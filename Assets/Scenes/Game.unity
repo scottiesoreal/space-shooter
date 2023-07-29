@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -642,7 +642,7 @@ MonoBehaviour:
   _isThrusterRecharging: 0
   _isTripleShotActive: 0
   _isShieldActive: 0
-  _isSpeedBoostActive: 1
+  _isSpeedBoostActive: 0
   _isOmniShotActive: 0
   _isAntiAmmoActive: 0
   _isRightDamagedActive: 0
@@ -1336,9 +1336,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 444283759
   m_SortingLayer: 2
-  m_SortingOrder: 4
+  m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: 333b0196b7a764df5a7768ead9b69dbc, type: 3}
-  m_Color: {r: 0.084104665, g: 0.31608647, b: 0.4245283, a: 1}
+  m_Color: {r: 0.9528302, g: 0.9483357, b: 0.9483357, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2543,7 +2543,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1824391925}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.59, y: 4.63, z: 0}
+  m_LocalPosition: {x: -3.82, y: 0.14, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 922939055}
@@ -2562,11 +2562,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cc18516fe4716e46ae6d43f5b049d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 4
+  _speed: 3
   _zigzagSpeed: 3
-  _zigzagRange: 3
+  _zigzagRange: 2.09
   _laserPrefab: {fileID: 7946156430603736199, guid: 8882cc446d1bc3e4bbec493a51ddb85b,
     type: 3}
+  _isEnShieldActive: 1
+  _enemyLives: 2
+  _enShieldVisualizer: {fileID: 922939053}
+  _enShieldRenderer: {fileID: 922939054}
 --- !u!61 &1824391929
 BoxCollider2D:
   m_ObjectHideFlags: 0
