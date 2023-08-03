@@ -27,6 +27,13 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private int _totalEnemyWaveCount = 3;//number of waves to spawn
 
+    //Enemy Aggression probability
+    //[SerializeField]
+    //private float _aggressionProbability = .25f; // 25% chance of enemy being aggressive
+    
+    
+
+
 
     private bool _stopSpawning = false;
 
@@ -60,6 +67,9 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(10.0f);
         }
     }
+
+    //Enemy aggression behavior
+
 
     IEnumerator SpawnWavesRoutine()
     {

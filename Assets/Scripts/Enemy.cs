@@ -18,6 +18,16 @@ public class Enemy : MonoBehaviour
     private float _fireRate = 3.0f;
     private float _canFire = -1;
 
+    //Enenmy Aggression
+    [SerializeField]
+    private bool _isAggressive = false;
+    //Enemy ramming player when close
+    [SerializeField]
+    private float _rammingDistance = 2.0f;
+    
+    
+    //[SerializeField]
+    //private float _rammingSpeed = 5.0f;
 
     //audio
     [SerializeField]
@@ -98,7 +108,18 @@ public class Enemy : MonoBehaviour
         {
             float randomX = Random.Range(-9.50f, 9.50f);
             transform.position = new Vector3(randomX, 7.60f, 0);
-        }    
+        }
+        
+        //ramming behavior
+        if (_isAggressive)
+        {
+            Debug.Log ("Is Aggressive");
+            
+            if (Vector3.Distance(transform.position, _player.transform.position) < _rammingDistance)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, _speed * Time.deltaTime);
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
