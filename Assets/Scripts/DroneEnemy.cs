@@ -28,6 +28,8 @@ public class DroneEnemy : MonoBehaviour
     [SerializeField]
     private int _enemyLives = 2;//Enemy "lives"/"health
 
+    //Player
+    private Player _player; //Declares player variable
 
     //visualizer
     [SerializeField]
@@ -41,8 +43,18 @@ public class DroneEnemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _player = FindObjectOfType<Player>();
         
-    }
+        if (_player == null)
+        {
+            Debug.LogError("Player is NULL.");
+        }
+
+        //animation
+        //_anim = GetComponent<Animator>();
+
+        //audio source(?)
+    }   //
 
     // Update is called once per frame
     void Update()
@@ -102,13 +114,20 @@ public class DroneEnemy : MonoBehaviour
             {
                 player.Damage();
                 EnemyDamage();
-            }                 
+            }
+
+            _player = player;
         } 
 
         if (other.tag == "Laser")
         {
             Destroy(other.gameObject);
             EnemyDamage();
+            if (_enemyLives < 1 && _player != null)
+            {
+                _player.AddScore(20);
+            }            
+            
         }
     }
 
@@ -127,6 +146,7 @@ public class DroneEnemy : MonoBehaviour
                 Destroy(GetComponent<Collider2D>());
                 DestroyChildrenObjects();
                 Destroy(this.gameObject);
+            
             }
 
         }
