@@ -69,6 +69,12 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         CalculateMovement();
+
+        //check if player escaped ramming distance
+        if (_isRamming && transform.position.y < _player.transform.position.y)
+        {
+            StopRammingPlayer();
+        }
         
         if (Time.time > _canFire)
         {
@@ -112,9 +118,9 @@ public class Enemy : MonoBehaviour
         }
 
         //ramming behavior
-        if (_isAggressive)
+        if (_isAggressive && !_isRamming)
         {
-            Debug.Log("Is Aggressive");
+            Debug.Log("Aggressive enemy spawned!");
 
             // Check if the player is within ramming distance
             float distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
@@ -178,6 +184,11 @@ public class Enemy : MonoBehaviour
             Destroy(this.gameObject, 2.8f);
         }
 
+    }
+
+    public void SetAggressive(bool isAggressive)
+    {
+        _isAggressive = isAggressive;
     }
     
     private void DestroyChildrenObjects()

@@ -28,8 +28,8 @@ public class SpawnManager : MonoBehaviour
     private int _totalEnemyWaveCount = 3;//number of waves to spawn
 
     //Enemy Aggression probability
-    //[SerializeField]
-    //private float _aggressionProbability = .25f; // 25% chance of enemy being aggressive
+    [SerializeField]
+    private float _aggressionProbability = .25f; // 25% chance of enemy being aggressive
     
     
 
@@ -51,17 +51,24 @@ public class SpawnManager : MonoBehaviour
     {
         while (_stopSpawning == false)
         {
-            Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
-            GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
-            newEnemy.transform.parent = _enemyContainer.transform;
+            Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);//spawn at top of screen
+            GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);//spawn enemy
 
-            _enemySpawnedCount++;
+            //Enemy Aggression based on probability
+            float randomAggression = Random.value;
+            if (randomAggression < _aggressionProbability)
+            {
+                newEnemy.GetComponent<Enemy>().SetAggressive(true);
+            }
+
+            newEnemy.transform.parent = _enemyContainer.transform;//set parent to enemy container
+
+            _enemySpawnedCount++;//increment number of enemies spawned
 
             //check if desired number of enemies have spawned
             if (_enemySpawnedCount >= _enemiesPerSpawn)
             {
                 _stopSpawning = true;
-
             }
 
             yield return new WaitForSeconds(10.0f);
