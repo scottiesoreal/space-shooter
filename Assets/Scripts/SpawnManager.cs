@@ -5,12 +5,18 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    //Enemies
+    private List<GameObject> _enemyPrefabs;//list of enemy prefabs
+    [SerializeField]
+    private GameObject _droneEnemyPrefab;
     [SerializeField]
     private GameObject _enemyPrefab;
     [SerializeField]
     private GameObject _enemyContainer;
+    
+    //Powerups
     [SerializeField]
-    private GameObject[] powerups;
+    private GameObject[] powerups;//array of powerups
 
 
     //wave
@@ -40,7 +46,11 @@ public class SpawnManager : MonoBehaviour
 
     public void StartSpawning()
     {
+        _enemyPrefabs = new List<GameObject>();
+        _enemyPrefabs.Add(_enemyPrefab);
 
+
+        //Initialize other routines
         StartCoroutine(SpawnPowerupRoutine());
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnWavesRoutine());
@@ -85,13 +95,29 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(20.5f); // Wave delay
 
             _stopSpawning = false;
-            _enemySpawnedCount = 0; //reset spawn count for each wave
+            _enemySpawnedCount = 0; // Reset spawn count for each wave
 
             // Increase enemies per wave
             _enemiesPerSpawn += _enemiesPerWaveIncrement;
 
-            // start spawning enemies for the current wave
-            StartCoroutine(SpawnEnemyRoutine());
+            // Randomly choose between original enemy and drone enemy
+            for (int i = 0; i < _enemiesPerSpawn; i++)
+            {
+                GameObject enemyToSpawn;
+                float randomEnemy = Random.value;
+
+                if (randomEnemy < 0.5f) // 50% chance to spawn original enemy
+                    enemyToSpawn = _enemyPrefabs[0];
+                else // 50% chance to spawn drone enemy
+                    enemyToSpawn = _droneEnemyPrefab;
+
+                Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
+                GameObject newEnemy = Instantiate(enemyToSpawn, posToSpawn, Quaternion.identity);
+
+                // ... (Other settings and scripts for enemy spawning)
+
+                newEnemy.transform.parent = _enemyContainer.transform;
+            }
 
             // Increment the wave # for next iteration
             _currentWave++;
