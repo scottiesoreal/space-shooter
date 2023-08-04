@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
     //Enemy ramming player when close
     [SerializeField]
     private float _rammingDistance = 2.0f;
+    private bool _isRamming = false;
     
     
     //[SerializeField]
@@ -109,17 +110,31 @@ public class Enemy : MonoBehaviour
             float randomX = Random.Range(-9.50f, 9.50f);
             transform.position = new Vector3(randomX, 7.60f, 0);
         }
-        
+
         //ramming behavior
         if (_isAggressive)
         {
-            Debug.Log ("Is Aggressive");
-            
-            if (Vector3.Distance(transform.position, _player.transform.position) < _rammingDistance)
+            Debug.Log("Is Aggressive");
+
+            // Check if the player is within ramming distance
+            float distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
+
+            if (distanceToPlayer < _rammingDistance)
             {
+
+                // Turn on ramming
+                _isRamming = true;
+                // Move towards the player to initiate ramming
                 transform.position = Vector3.MoveTowards(transform.position, _player.transform.position, _speed * Time.deltaTime);
+                
             }
+           
         }
+    }
+
+    private void StopRammingPlayer()
+    {
+        _isRamming = false;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
