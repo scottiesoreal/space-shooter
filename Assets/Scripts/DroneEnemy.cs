@@ -68,13 +68,6 @@ public class DroneEnemy : MonoBehaviour
         // Move down at the given speed
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
-        // If the bottom of the screen, respawn at the top with a new random x position
-        if (transform.position.y < -5.5f)
-        {
-            float randomX = Random.Range(-8f, 8f);
-            transform.position = new Vector3(randomX, 7, 0);
-        }
-
         // Calculate horizontal movement (zigzag) based on time and speed
         float zigzagDirection = Mathf.Sin(Time.time * _zigzagSpeed);
         float moveDirection = zigzagDirection > 0 ? 1f : -1f;

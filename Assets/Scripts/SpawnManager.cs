@@ -49,6 +49,8 @@ public class SpawnManager : MonoBehaviour
         _enemyPrefabs = new List<GameObject>();
         _enemyPrefabs.Add(_enemyPrefab);
 
+        Debug.Log("DroneEnemy Prefab: " + _droneEnemyPrefab);
+
 
         //Initialize other routines
         StartCoroutine(SpawnPowerupRoutine());
@@ -59,10 +61,13 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnEnemyRoutine()
     {
-        while (_stopSpawning == false)
+        // Wait for a short delay before starting the spawning
+        yield return new WaitForSeconds(5.0f);
+
+        for (int i = 0; i < _enemiesPerSpawn; i++)
         {
-            Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);//spawn at top of screen
-            GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);//spawn enemy
+            Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f); // spawn at top of screen
+            GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity); // spawn enemy
 
             //Enemy Aggression based on probability
             float randomAggression = Random.value;
@@ -71,25 +76,24 @@ public class SpawnManager : MonoBehaviour
                 newEnemy.GetComponent<Enemy>().SetAggressive(true);
             }
 
-            newEnemy.transform.parent = _enemyContainer.transform;//set parent to enemy container
+            newEnemy.transform.parent = _enemyContainer.transform; // set parent to enemy container
 
-            _enemySpawnedCount++;//increment number of enemies spawned
-
-            //check if desired number of enemies have spawned
-            if (_enemySpawnedCount >= _enemiesPerSpawn)
-            {
-                _stopSpawning = true;
-            }
-
-            yield return new WaitForSeconds(10.0f);
+            yield return new WaitForSeconds(1.0f); // Wait for 1 second between each enemy spawn
         }
+
+
     }
 
     //Enemy aggression behavior
 
-
     IEnumerator SpawnWavesRoutine()
     {
+        int maxEnemiesInWave = 5; // Initial max enemies in the wave
+        float minRespawnDelay = 15f; // Minimum respawn delay
+        float maxRespawnDelay = 80f; // Initial maximum respawn delay
+        float respawnDelayIncrement = 5f; // Incremental respawn delay decrease
+        float droneSpawnProbability = 0.2f; // Probability of spawning drone in the wave
+
         while (_currentWave <= _totalEnemyWaveCount)
         {
             yield return new WaitForSeconds(20.5f); // Wave delay
@@ -97,19 +101,23 @@ public class SpawnManager : MonoBehaviour
             _stopSpawning = false;
             _enemySpawnedCount = 0; // Reset spawn count for each wave
 
-            // Increase enemies per wave
-            _enemiesPerSpawn += _enemiesPerWaveIncrement;
+            // Update maxEnemiesInWave for the current wave
+            maxEnemiesInWave += 2; // Increase by 2 for each wave
+
+            // Update respawn delay values for the current wave
+            minRespawnDelay = Mathf.Max(minRespawnDelay - respawnDelayIncrement, 5f);
+            maxRespawnDelay = Mathf.Max(maxRespawnDelay - respawnDelayIncrement, 5f);
 
             // Randomly choose between original enemy and drone enemy
-            for (int i = 0; i < _enemiesPerSpawn; i++)
+            for (int i = 0; i < maxEnemiesInWave; i++)
             {
                 GameObject enemyToSpawn;
                 float randomEnemy = Random.value;
 
-                if (randomEnemy < 0.5f) // 50% chance to spawn original enemy
-                    enemyToSpawn = _enemyPrefabs[0];
-                else // 50% chance to spawn drone enemy
+                if (randomEnemy < droneSpawnProbability) // Spawn drone
                     enemyToSpawn = _droneEnemyPrefab;
+                else // Spawn original enemy
+                    enemyToSpawn = _enemyPrefab;
 
                 Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
                 GameObject newEnemy = Instantiate(enemyToSpawn, posToSpawn, Quaternion.identity);
@@ -117,12 +125,40 @@ public class SpawnManager : MonoBehaviour
                 // ... (Other settings and scripts for enemy spawning)
 
                 newEnemy.transform.parent = _enemyContainer.transform;
+                _enemySpawnedCount++;
+
+                // Check if desired number of enemies have spawned
+                if (_enemySpawnedCount >= maxEnemiesInWave)
+                    break;
+
+                // Randomly wait between minRespawnDelay and maxRespawnDelay
+                float respawnDelay = Random.Range(minRespawnDelay, maxRespawnDelay);
+                yield return new WaitForSeconds(respawnDelay);
             }
+
+            // Wait until all enemies for the wave are destroyed
+            while (_enemyContainer.transform.childCount > 0)
+            {
+                yield return null; // Wait until all enemies are destroyed
+            }
+
+            // Wait for a fixed delay between waves
+            yield return new WaitForSeconds(10.0f);
 
             // Increment the wave # for next iteration
             _currentWave++;
         }
+
+        // All waves have been spawned, so we can stop spawning in this routine
+        _stopSpawning = true;
     }
+
+
+
+
+
+
+
 
     IEnumerator SpawnPowerupRoutine()
     {
