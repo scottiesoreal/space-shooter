@@ -128,7 +128,7 @@ public class Player : MonoBehaviour
 
         Vector3 inputDirection = new Vector3(horizontalInput, verticalInput, 0);
 
-        _isSpeedBoostActive = Input.GetKey(KeyCode.LeftShift);
+        _isSpeedBoostActive = Input.GetKey(KeyCode.LeftShift);//checks if left shift is pressed
 
         if (_isSpeedBoostActive)
         {
@@ -139,22 +139,22 @@ public class Player : MonoBehaviour
             transform.Translate(inputDirection * _speedBase * Time.deltaTime);
         }
 
-        if (transform.position.y >= 0)
+        if (transform.position.y >= 6)
         {
-            transform.position = new Vector3(transform.position.x, 0, 0);
+            transform.position = new Vector3(transform.position.x, 6, 0);//locks player to no > 6 on y axis
         }
         else if (transform.position.y <= -3.8f)
         {
-            transform.position = new Vector3(transform.position.x, -3.8f, 0);
+            transform.position = new Vector3(transform.position.x, -3.8f, 0);//locks player to no < -3.8 on y axis
         }
 
         if (transform.position.x >= 9.25f)
         {
-            transform.position = new Vector3(9.25f, transform.position.y, 0);
+            transform.position = new Vector3(9.25f, transform.position.y, 0);//locks player to no > 9.25 on x axis
         }
         else if (transform.position.x <= -9.25f)
         {
-            transform.position = new Vector3(-9.25f, transform.position.y, 0);
+            transform.position = new Vector3(-9.25f, transform.position.y, 0);//locks player to no < -9.25 on x axis
         }
     }
 

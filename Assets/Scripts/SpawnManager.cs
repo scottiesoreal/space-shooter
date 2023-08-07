@@ -6,6 +6,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     //Enemies
+    [SerializeField]
     private List<GameObject> _enemyPrefabs;//list of enemy prefabs
     [SerializeField]
     private GameObject _droneEnemyPrefab;
