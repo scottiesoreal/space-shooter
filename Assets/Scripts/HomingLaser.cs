@@ -5,7 +5,7 @@ using UnityEngine;
 //public class HomingLaser : MonoBehaviour
 //{
     //[SerializeField] 
-    //private float _speed = 5f;
+    //private float _advDroneSpeed = 5f;
     //[SerializeField] 
     //private float _rotationSpeed = 200f;
     //public Transform target;
@@ -34,10 +34,10 @@ using UnityEngine;
 
         //rotate the projectile to face the target
         //Quaternion rotation = Quaternion.LookRotation(direction);
-        //transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * _speed);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * _advDroneSpeed);
 
         //Move projectile towards the target
-        //transform.Translate(direction.normalized * _speed * Time.deltaTime);
+        //transform.Translate(direction.normalized * _advDroneSpeed * Time.deltaTime);
 
 
 
