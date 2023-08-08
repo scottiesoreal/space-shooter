@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2878,16 +2878,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 983484177}
     m_Modifications:
-    - target: {fileID: 3467678871700265234, guid: 86828e45561427d40835cfc8d62bd14a,
-        type: 3}
-      propertyPath: m_Simulated
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3467678871700265234, guid: 86828e45561427d40835cfc8d62bd14a,
-        type: 3}
-      propertyPath: m_GravityScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3504721943329429536, guid: 86828e45561427d40835cfc8d62bd14a,
         type: 3}
       propertyPath: m_RootOrder
@@ -2896,12 +2886,12 @@ PrefabInstance:
     - target: {fileID: 3504721943329429536, guid: 86828e45561427d40835cfc8d62bd14a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.65
+      value: 0.87
       objectReference: {fileID: 0}
     - target: {fileID: 3504721943329429536, guid: 86828e45561427d40835cfc8d62bd14a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.9
+      value: 2.01
       objectReference: {fileID: 0}
     - target: {fileID: 3504721943329429536, guid: 86828e45561427d40835cfc8d62bd14a,
         type: 3}
@@ -2948,18 +2938,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: AdvancedDrone
       objectReference: {fileID: 0}
-    - target: {fileID: 4574984283500952250, guid: 86828e45561427d40835cfc8d62bd14a,
+    - target: {fileID: 3629600375477379080, guid: 86828e45561427d40835cfc8d62bd14a,
         type: 3}
-      propertyPath: _speed
-      value: 0
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3629600375477379080, guid: 86828e45561427d40835cfc8d62bd14a,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3629600375477379080, guid: 86828e45561427d40835cfc8d62bd14a,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: 444283759
       objectReference: {fileID: 0}
     - target: {fileID: 4574984283500952250, guid: 86828e45561427d40835cfc8d62bd14a,
         type: 3}
-      propertyPath: _turnSpeed
-      value: 300
+      propertyPath: _fireAngle
+      value: 5
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3467678871700265234, guid: 86828e45561427d40835cfc8d62bd14a, type: 3}
+    - target: {fileID: 4574984283500952250, guid: 86828e45561427d40835cfc8d62bd14a,
+        type: 3}
+      propertyPath: _laserPrefab
+      value: 
+      objectReference: {fileID: 5294812925896529912, guid: cbbcae0e8186feb49bc017390dad604d,
+        type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86828e45561427d40835cfc8d62bd14a, type: 3}
 --- !u!4 &4573127066378340563 stripped
 Transform:
@@ -2967,30 +2972,3 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1140612332424941811}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4574984283500952249 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3506579151728405066, guid: 86828e45561427d40835cfc8d62bd14a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1140612332424941811}
-  m_PrefabAsset: {fileID: 0}
---- !u!50 &4574984283500952252
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4574984283500952249}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0

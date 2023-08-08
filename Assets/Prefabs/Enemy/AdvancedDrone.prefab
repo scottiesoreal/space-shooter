@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3504721943329429536}
   - component: {fileID: 3629600375477379080}
-  - component: {fileID: 3467678871700265234}
   - component: {fileID: 3506579151728405064}
   - component: {fileID: 4574984283500952250}
+  - component: {fileID: 4574984283500952252}
   m_Layer: 0
   m_Name: AdvancedDrone
   m_TagString: Enemy
@@ -84,27 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &3467678871700265234
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3506579151728405066}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &3506579151728405064
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -143,11 +122,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecf77a62ab6f3fa4683fd97a534aa258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0
-  _turnSpeed: 2
-  _fireRate: 2.5
+  _turnSpeed: 300
+  _fireRate: 1
   _canFire: -1
   _detectionDistance: 5
-  _fireAngle: 10
+  _fireAngle: 20
   _laserPrefab: {fileID: 5294812925896529912, guid: cbbcae0e8186feb49bc017390dad604d,
     type: 3}
+  _enemyInRange: 0
+--- !u!50 &4574984283500952252
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3506579151728405066}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

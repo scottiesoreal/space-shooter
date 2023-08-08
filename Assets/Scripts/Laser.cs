@@ -10,57 +10,42 @@ public class Laser : MonoBehaviour
     private float _speed = 8.0f;
     private bool _isEnemyLaser = false;
     private bool _hasDamagedPlayer = false;
+    private Vector3 _initialDirection = Vector3.up;
+
+    public void SetDirection(Vector3 direction)
+    {
+        _initialDirection = direction.normalized;
+    }
 
     void Update()
     {
         if (_isEnemyLaser == false)
         {
-            MoveUp();
-            
+            MoveInDirection(_initialDirection); // Move the laser in the set initial direction
         }
         else
         {
-            MoveDown();            
+            MoveInDirection(-_initialDirection); // Move the enemy laser in the opposite direction
         }
     }
 
-
-
-    void MoveUp()
+    private void MoveInDirection(Vector3 direction)
     {
-        //translate = laser move up
-        transform.Translate(Vector3.up * _speed * Time.deltaTime);
+        transform.Translate(direction * _speed * Time.deltaTime);
 
-
-        if (transform.position.y > 8.0f)
+        // check if laser is out of bounds
+        if (transform.position.y > 8.0f || transform.position.y < -8.0f || transform.position.x > 11.3f || transform.position.x < -11.3f)
         {
-            //check if this object has a parent
+            // check if object has a parent
             if (transform.parent != null)
             {
                 Destroy(transform.parent.gameObject);
             }
-            //destroy parent
             Destroy(this.gameObject);
         }
     }
 
-    void MoveDown()
-    {
-        //translate = laser move up
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
-
-    
-        if (transform.position.y < -8.0f)
-        {
-            //check if this object has a parent
-            if(transform.parent != null)
-            {
-                Destroy(transform.parent.gameObject);
-            }
-           
-            Destroy(this.gameObject);
-        }
-    }
+   
     
     public void AssignEnemyLaser()
     {

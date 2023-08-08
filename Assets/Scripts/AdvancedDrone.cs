@@ -24,7 +24,7 @@ public class AdvancedDrone : MonoBehaviour
     [SerializeField]
     private float _detectionDistance = 5f;//distance from player to fire
     [SerializeField]
-    private float _fireAngle = 10f;//angle from player to fire
+    private float _fireAngle = 5f;//angle from player to fire
     [SerializeField]
     private GameObject _laserPrefab;
 
@@ -34,7 +34,8 @@ public class AdvancedDrone : MonoBehaviour
     // Forward direction of the drone
     private Vector3 _forwardDirection = Vector3.down; // Initialize the forward direction to be downward
 
-
+    [SerializeField]
+    private bool _enemyInRange = false;
 
 
 
@@ -62,6 +63,7 @@ public class AdvancedDrone : MonoBehaviour
     private void Update()
     {
         CalculateMovement();
+        FireLaser();
     }
 
     private void CalculateMovement()
@@ -72,7 +74,8 @@ public class AdvancedDrone : MonoBehaviour
             float distanceToPlayer = Vector3.Distance(transform.position, _playerTransform.position);
             if (distanceToPlayer <= _detectionDistance)
             {
-               
+
+                _enemyInRange = true;
                 Vector3 directionToPlayer = (_playerTransform.position - transform.position).normalized;
 
                 //Calculate the angle  with the X-axis
@@ -83,14 +86,52 @@ public class AdvancedDrone : MonoBehaviour
 
                 //rotate towards this target rotation (only rotating in the Z-axis)
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _turnSpeed * Time.deltaTime);
-
                
             }
+            else
+            {
+                _enemyInRange = false;
+            }
+            
         }
     }
 
-    private void Laser()
+    private void FireLaser()
     {
+        
+        Debug.Log("FireLaser() called");
+        if (_enemyInRange && Time.time > _canFire)
+        {
+            Vector3 directionToPlayer = (_playerTransform.position - transform.position).normalized;//direction from drone to player
+            float angleToPlayer = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;//angle from drone to player
+
+            //Check if the angle to the player is within the fire angle
+            if (Mathf.Abs(angleToPlayer) <= _fireAngle)
+            {
+                _canFire = Time.time + _fireRate;
+                _fireRate = Random.Range(0.3f, 3.5f);
+                GameObject laser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+                Laser[] lasers = laser.GetComponentsInChildren<Laser>();//get laser components
+                foreach (Laser l in lasers)
+                {
+                    l.AssignEnemyLaser();//assign laser as enemy laser
+                }
+            }
+
+        }
 
     }
+
+    //test
+    //_fireRate = Random.Range(1f, 3f);
+            //_canFire = Time.time + _fireRate;
+           // GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+
+    //Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+            //for (int i = 0; i<lasers.Length; i++)
+            //{
+                //lasers[i].AssignEnemyLaser();
+
+        
 }
