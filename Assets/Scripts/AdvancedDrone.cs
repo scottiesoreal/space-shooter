@@ -1,99 +1,96 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class AdvancedDrone : MonoBehaviour
 {
-    //movement variables
-    [SerializeField]
-    private float _speed = 0f;
+    //drone movement variables
+    //drone will move downward at speed of 2.5f
+    //drone will have line of sight
+    //will turn towards player and fire if within 5f of player
+
+    //movement and firing variables
+    //[SerializeField]
+    //private float _speed = 1.5f;//movement speed
     
 
-    //laser variables
+    [SerializeField]
+    private float _turnSpeed = 2.0f;//how fast drone will face the player
+    [SerializeField]
+    private float _fireRate = 2.5f;
+    [SerializeField]
+    private float _canFire = -1f;//time stamp for next fire
+    [SerializeField]
+    private float _detectionDistance = 5f;//distance from player to fire
+    [SerializeField]
+    private float _fireAngle = 10f;//angle from player to fire
+    [SerializeField]
     private GameObject _laserPrefab;
 
-    //firing variables
-    private float _fireRate = 1.5f;
-    private float _canFire = -1;
-
-    //enemy line of sight variables
-    [SerializeField]
-    private float _lineOfSight = 5.0f;
-
-    //enemy damage/lives variables
-    [SerializeField]
-    private int _lives = 3;
-    [SerializeField]
-    private bool _isDead = false;
-
     //player variables
-    private Player _player;
-        
-    
-    
-    
+    private Player _player; //Declares player variable
+    private Transform _playerTransform; // Reference to the player's Transform component
+    // Forward direction of the drone
+    private Vector3 _forwardDirection = Vector3.down; // Initialize the forward direction to be downward
+
+
+
+
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
-        _player = GameObject.Find("Player").GetComponent<Player>();
+        GameObject playerObject = GameObject.Find("Player");
+
+        if (playerObject != null)
+        {
+            // Get the Transform component of the player GameObject.
+            _player = playerObject.GetComponent<Player>();
+            _playerTransform = playerObject.transform;
+        }
 
         if (_player == null)
         {
             Debug.LogError("Player is NULL.");
         }
-
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        CalculateAdDroneMovement();
+        CalculateMovement();
     }
 
-    private void CalculateAdDroneMovement()
+    private void CalculateMovement()
     {
-        //apply downward movement
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
-
-        //if player is within 5f of enemy's y position, enemy faces direction of player and fires
-        if (_player != null)
+                
+        if (_playerTransform != null)
         {
-            if (Vector3.Distance(transform.position, _player.transform.position) < _lineOfSight)
+            float distanceToPlayer = Vector3.Distance(transform.position, _playerTransform.position);
+            if (distanceToPlayer <= _detectionDistance)
             {
-                AdvancedDroneFiring();
-            }
-        }
+               
+                Vector3 directionToPlayer = (_playerTransform.position - transform.position).normalized;
 
-    }
+                //Calculate the angle  with the X-axis
+                float angleToPlayer = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
 
+                
+                Quaternion targetRotation = Quaternion.Euler(0f, 0f, angleToPlayer + 90f); 
 
+                //rotate towards this target rotation (only rotating in the Z-axis)
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _turnSpeed * Time.deltaTime);
 
-    public void AdvancedDroneFiring()
-    {
-        // Check if the player is within the line of sight distance
-        if (_player != null && Vector3.Distance(transform.position, _player.transform.position) < _lineOfSight)
-        {
-            // Calculate direction to the player
-            Vector3 directionToPlayer = (_player.transform.position - transform.position).normalized;
-
-            // Calculate the rotation angle towards the player
-            float targetRotationAngle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg - 90f;
-
-            // Smoothly rotate the drone towards the player
-            float rotationStep = _rotationSpeed * Time.deltaTime;
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0f, 0f, targetRotationAngle), rotationStep);
-
-            // Check if it's time to fire
-            if (Time.time > _canFire)
-            {
-                _fireRate = 2.5f;
-                _canFire = Time.time + _fireRate;
-
-                // Instantiate the laser at the front of the drone
-                Instantiate(_laserPrefab, transform.position + transform.up * 0.5f, transform.rotation);
+               
             }
         }
     }
 
+    private void Laser()
+    {
 
+    }
 }
