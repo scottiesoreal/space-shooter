@@ -54,8 +54,19 @@ public class Laser : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-               
-        if (other.tag == "Player" && _isEnemyLaser && !_hasDamagedPlayer == true)
+        if (other.CompareTag("PowerUp") && _isEnemyLaser) // Check if it's a power-up and fired by an enemy
+        {
+            PowerUp powerUp = other.GetComponent<PowerUp>();
+            if (powerUp != null)
+            {
+                Destroy(other.gameObject); // Destroy the power-up
+                Destroy(this.gameObject); // Destroy the enemy's laser
+                return; // Exit the method to avoid damaging the player
+            }
+
+        }
+
+        if (other.tag == "Player" && _isEnemyLaser && _hasDamagedPlayer == true)
         {
             
             Player player = other.GetComponent<Player>();
@@ -67,6 +78,6 @@ public class Laser : MonoBehaviour
             }
         }
 
-    }
+    }   
 
 }

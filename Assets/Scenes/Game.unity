@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1547,7 +1547,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 983484176}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.39, y: 2.17, z: 0}
+  m_LocalPosition: {x: 4.31, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4573127066378340563}
@@ -1566,7 +1566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8107258c179836e42b6cc87a093cbcb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
+  _speed: 0
 --- !u!50 &983484179
 Rigidbody2D:
   serializedVersion: 4
@@ -2886,12 +2886,12 @@ PrefabInstance:
     - target: {fileID: 3504721943329429536, guid: 86828e45561427d40835cfc8d62bd14a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3504721943329429536, guid: 86828e45561427d40835cfc8d62bd14a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.64
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3504721943329429536, guid: 86828e45561427d40835cfc8d62bd14a,
         type: 3}
@@ -2933,6 +2933,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3506579151728405064, guid: 86828e45561427d40835cfc8d62bd14a,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.306118
+      objectReference: {fileID: 0}
+    - target: {fileID: 3506579151728405064, guid: 86828e45561427d40835cfc8d62bd14a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3506579151728405064, guid: 86828e45561427d40835cfc8d62bd14a,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 0.35894108
+      objectReference: {fileID: 0}
     - target: {fileID: 3506579151728405066, guid: 86828e45561427d40835cfc8d62bd14a,
         type: 3}
       propertyPath: m_Name
@@ -2948,6 +2963,12 @@ PrefabInstance:
       propertyPath: _fireRate
       value: 0.52
       objectReference: {fileID: 0}
+    - target: {fileID: 4574984283500952250, guid: 86828e45561427d40835cfc8d62bd14a,
+        type: 3}
+      propertyPath: _laserPrefab
+      value: 
+      objectReference: {fileID: 3989493896082541150, guid: cbb5bd37f288b704c9b212e903a08c36,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86828e45561427d40835cfc8d62bd14a, type: 3}
 --- !u!4 &4573127066378340563 stripped

@@ -47,6 +47,7 @@ public class AdvancedDrone : MonoBehaviour
     {
         GameObject playerObject = GameObject.Find("Player");
 
+
         if (playerObject != null)
         {
             // Get the Transform component of the player GameObject.
@@ -138,7 +139,7 @@ public class AdvancedDrone : MonoBehaviour
 
             
             //DestroyChildrenObjects();
-            Destroy(this.gameObject, 2.8f);
+            Destroy(this.gameObject);
         }
 
         if (other.tag == "Laser")
@@ -151,13 +152,13 @@ public class AdvancedDrone : MonoBehaviour
             }
 
             Destroy(GetComponent<Collider2D>());
-            _anim.SetTrigger("OnEnemyDeath");
-            _speed = 0;
-            _audioSource.Play();
+            //_anim.SetTrigger("OnEnemyDeath");
+            //_speed = 0;
+            //_audioSource.Play();
 
             Destroy(GetComponent<Collider2D>());
-            DestroyChildrenObjects();
-            Destroy(this.gameObject, 2.8f);
+            //DestroyChildrenObjects();
+            Destroy(this.gameObject);
         }
 
     }

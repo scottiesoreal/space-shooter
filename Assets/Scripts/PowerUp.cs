@@ -10,6 +10,7 @@ public class PowerUp : MonoBehaviour
     private int powerUpID;
     [SerializeField]
     private GameObject _powerUpPrefab;
+    private Player _player;
 
     [SerializeField]
     private AudioSource _audioSource;
@@ -78,9 +79,27 @@ public class PowerUp : MonoBehaviour
             {
                 Debug.LogError("Player component not found on player object");
             }
-        }   
+        }
+        if (other.tag == "Laser")
+        {
+            Destroy(other.gameObject);
+            Player player = GameObject.Find("Player").GetComponent<Player>();
+            if (_player != null)
+            {
+                _player.AddScore(10);
+            }
 
-}
+            Destroy(GetComponent<Collider2D>());
+            //_anim.SetTrigger("OnEnemyDeath");
+            _speed = 0;
+            //_audioSource.Play();
+
+            Destroy(GetComponent<Collider2D>());
+            //DestroyChildrenObjects();
+            Destroy(this.gameObject);
+        }
+
+    }
 
     void PowerUpMovement()
     {
@@ -94,5 +113,8 @@ public class PowerUp : MonoBehaviour
             transform.position = new Vector3(Random.Range(randomX, 9.50f), 7.60f, 0);
         }
     }
-
 }
+
+    
+
+
