@@ -2886,12 +2886,12 @@ PrefabInstance:
     - target: {fileID: 3504721943329429536, guid: 86828e45561427d40835cfc8d62bd14a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.87
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 3504721943329429536, guid: 86828e45561427d40835cfc8d62bd14a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.01
+      value: 5.64
       objectReference: {fileID: 0}
     - target: {fileID: 3504721943329429536, guid: 86828e45561427d40835cfc8d62bd14a,
         type: 3}
@@ -2938,32 +2938,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: AdvancedDrone
       objectReference: {fileID: 0}
-    - target: {fileID: 3629600375477379080, guid: 86828e45561427d40835cfc8d62bd14a,
+    - target: {fileID: 4574984283500952250, guid: 86828e45561427d40835cfc8d62bd14a,
         type: 3}
-      propertyPath: m_SortingLayer
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3629600375477379080, guid: 86828e45561427d40835cfc8d62bd14a,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3629600375477379080, guid: 86828e45561427d40835cfc8d62bd14a,
-        type: 3}
-      propertyPath: m_SortingLayerID
-      value: 444283759
+      propertyPath: _canFire
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4574984283500952250, guid: 86828e45561427d40835cfc8d62bd14a,
         type: 3}
-      propertyPath: _fireAngle
-      value: 5
+      propertyPath: _fireRate
+      value: 0.52
       objectReference: {fileID: 0}
-    - target: {fileID: 4574984283500952250, guid: 86828e45561427d40835cfc8d62bd14a,
-        type: 3}
-      propertyPath: _laserPrefab
-      value: 
-      objectReference: {fileID: 5294812925896529912, guid: cbbcae0e8186feb49bc017390dad604d,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86828e45561427d40835cfc8d62bd14a, type: 3}
 --- !u!4 &4573127066378340563 stripped

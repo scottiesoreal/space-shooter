@@ -70,9 +70,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1152134415
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 444283759
+  m_SortingLayer: 2
+  m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 3c6d6674bfcb5ac498628dff731a28f5, type: 3}
   m_Color: {r: 0.8584906, g: 0.536272, b: 0.1822268, a: 1}
   m_FlipX: 0
@@ -123,11 +123,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _turnSpeed: 300
-  _fireRate: 1
+  _fireRate: 0.52
   _canFire: -1
   _detectionDistance: 5
-  _fireAngle: 20
-  _laserPrefab: {fileID: 5294812925896529912, guid: cbbcae0e8186feb49bc017390dad604d,
+  _fireAngle: 5
+  _laserPrefab: {fileID: 7946156430603736199, guid: 8882cc446d1bc3e4bbec493a51ddb85b,
     type: 3}
   _enemyInRange: 0
 --- !u!50 &4574984283500952252

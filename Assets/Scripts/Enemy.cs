@@ -68,23 +68,22 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        CalculateMovement();
+        CalculateMovement();      
+        FireLaser(); 
+    }
 
-        //check if player escaped ramming distance
-        if (_isRamming && transform.position.y < _player.transform.position.y)
-        {
-            StopRammingPlayer();
-        }
-        
+    
+    private void FireLaser()
+    {
         if (Time.time > _canFire)
         {
             _fireRate = Random.Range(3f, 7f);
             _canFire = Time.time + _fireRate;
             GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
-            
+
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
-            
-            for (int i = 0; i < lasers.Length; i ++)
+
+            for (int i = 0; i < lasers.Length; i++)
             {
                 lasers[i].AssignEnemyLaser();
             }
@@ -136,6 +135,12 @@ public class Enemy : MonoBehaviour
             }
            
         }
+        //check if player escaped ramming distance
+        if (_isRamming && transform.position.y < _player.transform.position.y)
+        {
+            StopRammingPlayer();
+        }
+
     }
 
     private void StopRammingPlayer()

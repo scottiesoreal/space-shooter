@@ -78,9 +78,10 @@ public class DroneEnemy : MonoBehaviour
         // Move "Drone" enemy along x-axis with updated xOffset
         transform.Translate(new Vector3(xOffset, 0f, 0f) * Time.deltaTime);
         
+
     }
 
-    public void FireLaser()
+    private void FireLaser()
     {
         if (Time.time > _canFire)
         {
