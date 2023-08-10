@@ -11,6 +11,22 @@ public class Laser : MonoBehaviour
     private bool _isEnemyLaser = false;
     private bool _hasDamagedPlayer = false;
     private Vector3 _initialDirection = Vector3.up;
+    private AdvancedDrone _firingDrone;//Reference to the AdvDroneMover that fired this laser
+
+    public bool IsEnemyLaser
+    {
+        get { return _isEnemyLaser; }
+    }
+
+    public void SetFiringDrone(AdvancedDrone drone)
+    {
+        _firingDrone = drone;
+    }
+
+    public AdvancedDrone GetFiringDrone()
+    {
+        return _firingDrone;
+    }
 
     public void SetDirection(Vector3 direction)
     {

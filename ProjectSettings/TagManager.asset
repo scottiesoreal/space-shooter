@@ -11,6 +11,8 @@ TagManager:
   - Shield
   - Shield_PU
   - Enemy_Laser
+  - PowerUp
+  - AdvancedDroneLaser
   layers:
   - Default
   - TransparentFX

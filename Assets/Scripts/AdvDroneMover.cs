@@ -7,8 +7,22 @@ public class AdvDroneMover : MonoBehaviour
     //movement
     [SerializeField]
     private float _speed = 2.0f;
+    
+    //laser detection
+    [SerializeField]
+    private float _laserDetectionDistance = 2.0f;
+    
+    [SerializeField]
+    private bool _laserInRange = false;
+
+    //laser dodge
+    //[SerializeField]
+    //private float _laserEscapeSpeed = 5.0f;
 
     private Player _player;
+
+    private bool _avoidingLaser = false;
+    private Vector3 _avoidanceDirection = Vector3.zero;
 
 
 
@@ -29,15 +43,65 @@ public class AdvDroneMover : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Movement();
+        LaserDetection();
+        if (!_avoidingLaser)
+        {
+            Movement();
+        }
+        else
+        {
+            LaserDodge();
+        }
+        
     }
 
     //movement downward
     private void Movement()
     {
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        if (_laserInRange == false)
+        {
+            transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        }
+        else
+        {
+            LaserDodge();
+        }
+        
     }
 
+    private void LaserDetection()
+    {
+        Laser[] lasers = FindObjectsOfType<Laser>();
+        _laserInRange = false;//
+        
+        foreach (Laser laser in lasers)
+        {
+            //Get the enemy that fired the laser
+            //AdvancedDrone firingDrone = laser.GetFiringDrone();
+
+            //check if firing enemy is advanced drone attached
+            //if (firingDrone != null && firingDrone.CompareTag("Enemy") && firingDrone.gameObject == this.gameObject)
+            //{
+              //  continue; 
+            //}
+
+            if (laser.tag == "AdvancDroneLaser")
+            {
+                continue;
+            }
+            
+            float distanceToLaser = Vector3.Distance(transform.position, laser.transform.position);
+
+            if (distanceToLaser <= _laserDetectionDistance)
+            {
+                _laserInRange = true;
+                //_avoidingLaser = true;
+                //_avoidanceDirection = transform.position - laser.transform.position).normalized;
+                break;
+            }
+        }
+
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -77,6 +141,13 @@ public class AdvDroneMover : MonoBehaviour
             Destroy(this.gameObject, 2.8f);
         }
 
+
+    }
+
+    
+
+    private void LaserDodge()
+    {
 
     }
 

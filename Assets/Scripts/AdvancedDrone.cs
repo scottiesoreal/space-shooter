@@ -18,6 +18,8 @@ public class AdvancedDrone : MonoBehaviour
     [SerializeField]
     private float _turnSpeed = 2.0f;//how fast drone will face the player
     [SerializeField]
+    private bool _enemyInRange = false;
+    [SerializeField]
     private float _fireRate = 2.5f;
     [SerializeField]
     private float _canFire = -1f;//time stamp for next fire
@@ -32,10 +34,11 @@ public class AdvancedDrone : MonoBehaviour
     //player variables
     private Player _player; //Declares player variable
     private Transform _playerTransform; // Reference to the player's Transform component
+    [SerializeField]
+    private bool _isEnemyLaser = false;
     
 
-    [SerializeField]
-    private bool _enemyInRange = false;
+   
 
 
 
@@ -113,6 +116,10 @@ public class AdvancedDrone : MonoBehaviour
 
             // Set the direction of the laser to be its local up (you can set this in the Laser script)
             laser.GetComponent<Laser>().SetDirection(Vector3.up);
+
+            //Set the firing drone reference in laser
+            laser.GetComponent<Laser>().SetFiringDrone(GetComponent<AdvancedDrone>());
+            laser.tag = "AdvancedDroneLaser";
 
             _canFire = Time.time + _fireRate; // Update the canFire timestamp
         }
