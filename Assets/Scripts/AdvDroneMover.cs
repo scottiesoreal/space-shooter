@@ -8,12 +8,7 @@ public class AdvDroneMover : MonoBehaviour
     [SerializeField]
     private float _speed = 2.0f;
     
-    //laser detection
-    [SerializeField]
-    private float _laserDetectionDistance = 2.0f;
     
-    [SerializeField]
-    private bool _laserInRange = false;
 
     //laser dodge
     //[SerializeField]
@@ -76,14 +71,8 @@ public class AdvDroneMover : MonoBehaviour
         
         foreach (Laser laser in lasers)
         {
-            //Get the enemy that fired the laser
-            //AdvancedDrone firingDrone = laser.GetFiringDrone();
-
-            //check if firing enemy is advanced drone attached
-            //if (firingDrone != null && firingDrone.CompareTag("Enemy") && firingDrone.gameObject == this.gameObject)
-            //{
-              //  continue; 
-            //}
+            
+            
 
             if (laser.tag == "AdvancDroneLaser")
             {

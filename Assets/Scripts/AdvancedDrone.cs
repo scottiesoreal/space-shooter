@@ -100,6 +100,14 @@ public class AdvancedDrone : MonoBehaviour
         }
     }
 
+    public void HandleLaserDetected()
+    {
+        if (!_isEnemyLaser)
+        {
+            //laser dodge behavior
+        }
+    }
+
     private void FireLaser()
     {
         

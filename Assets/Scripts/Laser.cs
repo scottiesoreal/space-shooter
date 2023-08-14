@@ -52,7 +52,7 @@ public class Laser : MonoBehaviour
         // check if laser is out of bounds
         if (transform.position.y > 8.0f || transform.position.y < -8.0f || transform.position.x > 11.3f || transform.position.x < -11.3f)
         {
-            // check if object has a parent
+            // check if object has a parent or child
             if (transform.parent != null)
             {
                 Destroy(transform.parent.gameObject);
