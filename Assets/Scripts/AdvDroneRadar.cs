@@ -10,6 +10,11 @@ public class AdvDroneRadar : MonoBehaviour
     [SerializeField]
     private bool _laserInRange = false;
 
+    // Properties to access the variables
+    public float LaserDetectionDistance => _laserDetectionDistance;
+    public bool LaserInRange => _laserInRange;
+    public Vector3 DetectedLaserPosition { get; private set; }
+
 
     private Player _player;
 
@@ -40,20 +45,21 @@ public class AdvDroneRadar : MonoBehaviour
         if (Vector3.Distance(transform.position, _player.transform.position) < _laserDetectionDistance)
         {
             _laserInRange = true;
+            Debug.Log("Laser detected");
             //Report laser detection to parent of drone script
             transform.parent.GetComponent<AdvancedDrone>().HandleLaserDetected();
         }
         else
         {
             _laserInRange = false;
+            Debug.Log("Laser not detected");
         }
-
-
-
 
     }
 
-
-
+    public void SetLaserInRange(bool value)
+    {
+        _laserInRange = value;
+    }
 
 }

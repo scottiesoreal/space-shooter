@@ -11,13 +11,16 @@ public class AdvDroneMover : MonoBehaviour
     
 
     //laser dodge
-    //[SerializeField]
-    //private float _laserEscapeSpeed = 5.0f;
+    [SerializeField]
+    private float _laserEscapeSpeed = 1.0f;
 
     private Player _player;
+    private AdvDroneRadar _radar;
 
     private bool _avoidingLaser = false;
     private Vector3 _avoidanceDirection = Vector3.zero;
+    private Vector3 _detectedLaserPosition = Vector3.zero; // Added line to store detected laser position
+
 
 
 
@@ -25,7 +28,8 @@ public class AdvDroneMover : MonoBehaviour
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
-        //audio source(?)
+        _radar = GetComponentInChildren<AdvDroneRadar>();//Assign the AdvDroneRadar reference
+
 
         if (_player == null)
         {
@@ -53,7 +57,7 @@ public class AdvDroneMover : MonoBehaviour
     //movement downward
     private void Movement()
     {
-        if (_laserInRange == false)
+        if (!_radar.LaserInRange) // Access the property from AdvDroneRadar
         {
             transform.Translate(Vector3.down * _speed * Time.deltaTime);
         }
@@ -61,35 +65,29 @@ public class AdvDroneMover : MonoBehaviour
         {
             LaserDodge();
         }
-        
     }
 
     private void LaserDetection()
     {
         Laser[] lasers = FindObjectsOfType<Laser>();
-        _laserInRange = false;//
-        
+        _radar.SetLaserInRange(false); // Access the property from AdvDroneRadar
+
+
         foreach (Laser laser in lasers)
         {
-            
-            
-
-            if (laser.tag == "AdvancDroneLaser")
+            if (laser.tag == "AdvancedDroneLaser")
             {
                 continue;
             }
-            
+
             float distanceToLaser = Vector3.Distance(transform.position, laser.transform.position);
 
-            if (distanceToLaser <= _laserDetectionDistance)
+            if (distanceToLaser <= _radar.LaserDetectionDistance) // Access the property from AdvDroneRadar
             {
-                _laserInRange = true;
-                //_avoidingLaser = true;
-                //_avoidanceDirection = transform.position - laser.transform.position).normalized;
+                _radar.SetLaserInRange(true); // Access the property from AdvDroneRadar
                 break;
             }
         }
-
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -137,7 +135,15 @@ public class AdvDroneMover : MonoBehaviour
 
     private void LaserDodge()
     {
+        
+        // Calculate a direction away from the laser's position
+        _avoidanceDirection = transform.position - _detectedLaserPosition; // Access the property from AdvDroneRadar
 
+        //normallize the direction to maintain constant speed
+        _avoidanceDirection.Normalize();
+
+        //move in avoidance direction
+        transform.Translate(_avoidanceDirection * _speed * _laserEscapeSpeed * Time.deltaTime);
     }
 
     private void DestroyChildrenObjects()
