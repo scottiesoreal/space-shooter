@@ -13,6 +13,7 @@ TagManager:
   - Enemy_Laser
   - PowerUp
   - AdvancedDroneLaser
+  - Boss
   layers:
   - Default
   - TransparentFX
