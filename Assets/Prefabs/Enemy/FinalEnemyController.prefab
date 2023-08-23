@@ -154,7 +154,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 0
-  _isMovingToCenter: 1
   _isMovingLeft: 1
 --- !u!50 &6830017083535487413
 Rigidbody2D:

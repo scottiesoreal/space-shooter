@@ -11,6 +11,10 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _droneEnemyPrefab;
     [SerializeField]
+    private GameObject _advancedDroneEnemyPrefab;
+    [SerializeField]
+    private GameObject _finalEnemyPrefab;
+    [SerializeField]
     private GameObject _enemyPrefab;
     [SerializeField]
     private GameObject _enemyContainer;

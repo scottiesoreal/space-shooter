@@ -12,6 +12,7 @@ public class Laser : MonoBehaviour
     private bool _hasDamagedPlayer = false;
     private Vector3 _initialDirection = Vector3.up;
     private AdvancedDrone _firingDrone;//Reference to the AdvDroneMover that fired this laser
+    private FinalEnemyController _firingFinalEnemy;//Reference to the FinalEnemyController that fired this laser
 
     public bool IsEnemyLaser
     {
@@ -22,6 +23,11 @@ public class Laser : MonoBehaviour
     {
         _firingDrone = drone;
     }
+
+    //public void SetFinalEnemyFiring()
+    //{
+    //    _firingFinalEnemy(FinalEnemyController);
+    //}
 
     public AdvancedDrone GetFiringDrone()
     {

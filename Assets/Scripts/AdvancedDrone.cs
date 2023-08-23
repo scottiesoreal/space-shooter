@@ -5,14 +5,6 @@ using UnityEngine;
 
 public class AdvancedDrone : MonoBehaviour
 {
-    //drone movement variables
-    //drone will move downward at speed of 2.5f
-    //drone will have line of sight
-    //will turn towards player and fire if within 5f of player
-
-    //movement and firing variables
-    //[SerializeField]
-    //private float _speed = 1.5f;//movement speed
     
 
     [SerializeField]
