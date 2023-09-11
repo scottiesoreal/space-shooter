@@ -69,7 +69,7 @@ public class FinalEnemyController : MonoBehaviour
             // Move right until reaching the right limit
             _isMovingLeft = false;//Stop Moving Left: Imagine you were moving to the left, but now, just stop. No more left movement.
             _isMovingRight = true;//Start Moving Right: Imagine you were moving to the right, but now, just start. No more right movement.
-            while (transform.position.x > _rightLimit)//While you are moving to the right, keep moving to the right until you reach the right limit.
+            while (transform.position.x < _rightLimit)//While you are moving to the right, keep moving to the right until you reach the right limit.
             {
                 yield return null;//Wait for the next frame to move to the right.
             }
@@ -80,9 +80,10 @@ public class FinalEnemyController : MonoBehaviour
             _isReturningCenter = true;//Start moving to the center
             while (transform.position.x > _centerPosition.x)//While you are moving to the center, keep moving to the center until you reach the center.
             {
-                _isReturningCenter = true;
                 yield return null;//Wait for the next frame to move to the center.
+                _isReturningCenter = true;
             }
+            _isReturningCenter = false;
             yield return new WaitForSeconds(5f); // Wait for 5 seconds at center position
 
             
