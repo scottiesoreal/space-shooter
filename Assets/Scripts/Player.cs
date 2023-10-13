@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     private GameObject _tripleShotPrefab;
     [SerializeField] 
     private GameObject _omniShotPrefab;
+    [SerializeField]
+    private GameObject _playerHomingPrefab;
     [SerializeField] 
     private float _fireRate = 0.4f;
     private float _canFire = -1f;
@@ -36,6 +38,7 @@ public class Player : MonoBehaviour
 
     private SpawnManager _spawnManager;
 
+    //Powerups
     [SerializeField]
     private bool _isTripleShotActive = false;
     [SerializeField] 
@@ -46,6 +49,8 @@ public class Player : MonoBehaviour
     private bool _isOmniShotActive = false;
     [SerializeField] 
     private bool _isAntiAmmoActive = false;
+    [SerializeField]
+    private bool _isHomingAmmoActive = false;
 
     [SerializeField] 
     private bool _isRightDamagedActive = false;
@@ -175,6 +180,11 @@ public class Player : MonoBehaviour
         {
             Instantiate(_omniShotPrefab, transform.position, Quaternion.identity);
         }
+        else if (_isHomingAmmoActive)
+        {
+            Instantiate(_playerHomingPrefab, transform.position, Quaternion.identity);
+        }
+        
         else
         {
             Instantiate(_laserPrefab, transform.position + Vector3.up * .6f, Quaternion.identity);
@@ -323,6 +333,23 @@ public class Player : MonoBehaviour
             _shieldStrength = 3;
         }
     }
+
+    public void HomingMissleActive()
+    {
+        if (!_isHomingAmmoActive)
+        {
+            _isHomingAmmoActive = true;
+            StartCoroutine(HomingMisslePowerDownRoutine());
+        }
+        
+
+    }
+
+    IEnumerator HomingMisslePowerDownRoutine()
+        {
+        yield return new WaitForSeconds(7.5f);
+            _isHomingAmmoActive = false;
+        }
 
     public void AddScore(int points)
     {

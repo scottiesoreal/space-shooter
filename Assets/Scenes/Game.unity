@@ -615,7 +615,7 @@ PrefabInstance:
     - target: {fileID: 1453431742200020505, guid: dfb5b824ac3683d49b0925b3d6250723,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2079447233072073461, guid: dfb5b824ac3683d49b0925b3d6250723,
         type: 3}
@@ -670,6 +670,11 @@ PrefabInstance:
     - target: {fileID: 2079447233072073461, guid: dfb5b824ac3683d49b0925b3d6250723,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111582401223501602, guid: dfb5b824ac3683d49b0925b3d6250723,
+        type: 3}
+      propertyPath: _speed
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -727,6 +732,7 @@ MonoBehaviour:
   _isSpeedBoostActive: 0
   _isOmniShotActive: 0
   _isAntiAmmoActive: 0
+  _isHomingAmmoActive: 0
   _isRightDamagedActive: 0
   _isLeftDamagedActive: 0
   _shieldVisualizer: {fileID: 940136997}
