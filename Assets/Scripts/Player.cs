@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
     [SerializeField] 
     private bool _isAntiAmmoActive = false;
     [SerializeField]
-    private bool _isHomingAmmoActive = false;
+    private bool _isPlayerHomingActive = false;
 
     [SerializeField] 
     private bool _isRightDamagedActive = false;
@@ -180,7 +180,7 @@ public class Player : MonoBehaviour
         {
             Instantiate(_omniShotPrefab, transform.position, Quaternion.identity);
         }
-        else if (_isHomingAmmoActive)
+        else if (_isPlayerHomingActive)
         {
             Instantiate(_playerHomingPrefab, transform.position, Quaternion.identity);
         }
@@ -334,21 +334,21 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void HomingMissleActive()
+    public void PlayerHomingActive()
     {
-        if (!_isHomingAmmoActive)
+        if (!_isPlayerHomingActive)
         {
-            _isHomingAmmoActive = true;
-            StartCoroutine(HomingMisslePowerDownRoutine());
+            _isPlayerHomingActive = true;
+            StartCoroutine(PlayerHomingPowerDownRoutine());
         }
         
 
     }
 
-    IEnumerator HomingMisslePowerDownRoutine()
+    IEnumerator PlayerHomingPowerDownRoutine()
         {
         yield return new WaitForSeconds(7.5f);
-            _isHomingAmmoActive = false;
+            _isPlayerHomingActive = false;
         }
 
     public void AddScore(int points)
