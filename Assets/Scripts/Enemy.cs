@@ -180,12 +180,12 @@ public class Enemy : MonoBehaviour
             }
 
             Destroy(GetComponent<Collider2D>());
-            //_anim.SetTrigger("OnEnemyDeath");
+            _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
-            //_audioSource.Play();
+            _audioSource.Play();
 
             Destroy(GetComponent<Collider2D>());
-            //DestroyChildrenObjects();
+            DestroyChildrenObjects();
             Destroy(this.gameObject, 2.8f);
         }
 

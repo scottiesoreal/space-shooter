@@ -4,29 +4,29 @@ using UnityEngine;
 
 public class HomingShot : MonoBehaviour
 {
-    [SerializeField]
-    private float _speed = 8.0f;
-    private float _homingSpeed = 10f;
-    [SerializeField]
-    private float _homingDetectionDistance = 2.5f;
-    private bool _isEnemyLaser = false;//is this a player or enemy laser
-    private Vector3 _initialDirection = Vector3.up;//initial direction of laser
+    //[SerializeField]
+    //private float _speed = 8.0f;
+    //private float _homingSpeed = 10f;
+    //[SerializeField]
+    //private float _homingDetectionDistance = 2.5f;
+    //private bool _isEnemyLaser = false;//is this a player or enemy laser
+    //private Vector3 _initialDirection = Vector3.up;//initial direction of laser
     
     //homeing laser functions
-    [SerializeField]
-    private bool _homingInRange = false;
+    //[SerializeField]
+    //private bool _homingInRange = false;
 
-    private void Update()
-    {
-       if (!_homingInRange)
-        {
-            MoveInDirection(_initialDirection); // Move the laser in the set initial direction
-        }
-        else
-        {
-            HomingLaser();
-        }
-    }
+    //private void Update()
+    //{
+    //   if (!_homingInRange)
+    //    {
+            //MoveInDirection(_initialDirection); // Move the laser in the set initial direction
+    //    }
+    //    else
+    //    {
+            //HomingLaser();
+    //    }
+    //}
 
     //access variables
     //laser chasing
@@ -46,11 +46,5 @@ public class HomingShot : MonoBehaviour
     void Start()
     {
         //find enemy tags
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

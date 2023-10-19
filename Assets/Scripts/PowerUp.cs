@@ -66,9 +66,9 @@ public class PowerUp : MonoBehaviour
                     case 6://negative ammo power up
                         player.AntiAmmo();
                         break;
-                    case 7://Homing missle power up
-                       player.HomingMissleActive();
-                       break;
+                    //case 7://Homing missle power up
+                       //player.HomingMissleActive();
+                       //break;
 
                         
                     default:
