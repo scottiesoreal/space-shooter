@@ -10,10 +10,16 @@ public class SpawnManager : MonoBehaviour
     private GameObject _enemyContainer;
     [SerializeField]
     private GameObject[] _powerups;
-    
 
+    //time keeping variable
+    [SerializeField]
+    private float _totalTime = 0.0f;
 
-    private bool _stopSpawning = false;
+    //Enemy Spawns
+    [SerializeField]
+    private bool _stopEnemySpawning = false;//declared at the class level for full availablity
+    [SerializeField]
+    private bool _stopDroneEnemySpawning = true;
 
 
     public void StartSpawning()
@@ -26,21 +32,28 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnEnemyRoutine()
     {
-        while (_stopSpawning == false)
+        while (_stopEnemySpawning == false)
         {
+            if (_totalTime >= 20f)
+            {
+                _stopEnemySpawning = true;
+            }
+            
             Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
             GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
-            newEnemy.transform.parent = _enemyContainer.transform;
-            yield return new WaitForSeconds(5.0f);
+            newEnemy.transform.parent = _enemyContainer.transform;//set parent of enemy to enemy container
+            yield return new WaitForSeconds(5.0f);//wait 5 seconds before spawning next enemy
+
+            _totalTime += 5.0f;//increment time by 5 seconds
         }
     }
 
     IEnumerator SpawnPowerupRoutine()
     {
-        _stopSpawning = false; //Reset stop spawning at begining of each wave
+        _stopEnemySpawning = false; //Reset stop spawning at begining of each wave
         bool shieldSpawnOnce = false; //Flag to track first shield spawn
 
-        while (_stopSpawning == false)
+        while (_stopEnemySpawning == false)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 7.6f, 0f);
 
@@ -93,6 +106,6 @@ public class SpawnManager : MonoBehaviour
 
     public void OnPlayerDeath()
     {
-        _stopSpawning = true;
+        _stopEnemySpawning = true;
     }
 }
