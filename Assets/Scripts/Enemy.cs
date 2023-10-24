@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     private float _angle = 0f;
     [SerializeField]
     private GameObject _laserPrefab;
-    private Player _player;
+    private Player _player;//reference to player script
     private Animator _anim;
     private float _fireRate = 3.0f;
     private float _canFire = -1;
@@ -39,8 +39,8 @@ public class Enemy : MonoBehaviour
     {
 
         
-        _player = GameObject.Find("Player").GetComponent<Player>();
-        _audioSource = GetComponent<AudioSource>();
+        _player = GameObject.Find("Player").GetComponent<Player>();//assign component to Player
+        _audioSource = GetComponent<AudioSource>();//assign component to Audio
         
         if (_player == null)
         {

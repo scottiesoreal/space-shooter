@@ -13,7 +13,12 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] 
     private GameObject _droneContainer;
     [SerializeField]
-    private GameObject[] _powerups;
+    private GameObject[] _powerups;//array of powerups
+    
+    private Player _player;//reference to player script
+
+    //[SerializeField]
+    //private GameManager _gameManager;
 
     //time keeping variable
     [SerializeField]
@@ -65,9 +70,9 @@ public class SpawnManager : MonoBehaviour
     public void StartSpawning()
     {
         StartCoroutine(SpawnEnemyRoutine());
-        
+
         StartCoroutine(SpawnPowerupRoutine());
-        
+
     }
 
 
@@ -82,7 +87,7 @@ public class SpawnManager : MonoBehaviour
                 _stopEnemySpawning = true;
                 _isWaitingBetweenWaves = true;
             }
-            
+
             Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
             GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;//set parent of enemy to enemy container
@@ -93,7 +98,7 @@ public class SpawnManager : MonoBehaviour
 
             _totalTime += 5.0f;//increment time by 5 seconds
         }
-                       
+
     }
 
     IEnumerator SpawnDroneEnemy()//Second wave
@@ -112,7 +117,7 @@ public class SpawnManager : MonoBehaviour
             }
 
             Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
-            GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
+            GameObject newEnemy = Instantiate(_droneEnemyPrefab, posToSpawn, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;//set parent of enemy to enemy container
             yield return new WaitForSeconds(5.0f);//wait 5 seconds before spawning next enemy
 
