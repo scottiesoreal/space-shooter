@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -121,6 +121,36 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &33448529
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 33448530}
+  m_Layer: 0
+  m_Name: DroneContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &33448530
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 33448529}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 324143138}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &142619183
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,23 +459,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d0e7f7fb2ad5bf4eb4f6d5a48cc19fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyPrefabs: []
-  _droneEnemyPrefab: {fileID: 6059752144775322504, guid: 62ae02922f516be468a9f11970e7f147,
-    type: 3}
-  _advancedDroneEnemyPrefab: {fileID: 2471896435256006031, guid: 62ed7b8a052e73d45b677007bcc66601,
-    type: 3}
-  _finalEnemyPrefab: {fileID: 0}
   _enemyPrefab: {fileID: 1453431742200020505, guid: dfb5b824ac3683d49b0925b3d6250723,
     type: 3}
   _enemyContainer: {fileID: 414003719}
+  _droneEnemyPrefab: {fileID: 3881770972294973448, guid: fe80fa32aaebd6847ace61e28862fd5d,
+    type: 3}
+  _droneContainer: {fileID: 33448529}
   _powerups: []
-  _enemySpawnedCount: 0
-  _enemiesPerSpawn: 5
-  _currentWave: 1
-  _initialEnemiesPerSpawm: 5
-  _enemiesPerWaveIncrement: 5
-  _totalEnemyWaveCount: 3
-  _aggressionProbability: 0.25
+  _totalTime: 0
+  _betweenWaveTime: 0
+  _isWaitingBetweenWaves: 0
+  _waveNumber: 0
+  _stopEnemySpawning: 0
+  _stopDroneEnemySpawning: 1
 --- !u!4 &324143138
 Transform:
   m_ObjectHideFlags: 0
@@ -458,6 +484,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 414003720}
+  - {fileID: 33448530}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
