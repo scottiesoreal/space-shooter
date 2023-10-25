@@ -7,8 +7,8 @@ public class AdvDroneMover : MonoBehaviour
     //movement
     [SerializeField]
     private float _speed = 2.0f;
-    
-    
+
+
 
     //laser dodge
     [SerializeField]
@@ -16,7 +16,7 @@ public class AdvDroneMover : MonoBehaviour
 
     private Player _player;
     private AdvDroneRadar _radar;
-
+    [SerializeField]
     private bool _avoidingLaser = false;
     private Vector3 _avoidanceDirection = Vector3.zero;
     private Vector3 _detectedLaserPosition = Vector3.zero; // Added line to store detected laser position
@@ -73,7 +73,7 @@ public class AdvDroneMover : MonoBehaviour
         _radar.SetLaserInRange(false); // Access the property from AdvDroneRadar
 
 
-        foreach (Laser laser in lasers)
+        foreach (Laser laser in lasers)// Access the property from AdvDroneRadar
         {
             if (laser.tag == "AdvancedDroneLaser")
             {
@@ -102,10 +102,10 @@ public class AdvDroneMover : MonoBehaviour
                 player.Damage();
             }
 
-            _speed = 0;
+            _speed = 0;//stop movement after destroyed
             Destroy(GetComponent<Collider2D>());
             DestroyChildrenObjects();
-            //Destroy(this.gameObject, 2.8f);
+            Destroy(this.gameObject, 2.8f);
 
         }
 
@@ -121,7 +121,7 @@ public class AdvDroneMover : MonoBehaviour
             Destroy(GetComponent<Collider2D>());
             //_anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
-           // _audioSource.Play();
+            //_audioSource.Play();
 
             Destroy(GetComponent<Collider2D>());
             DestroyChildrenObjects();

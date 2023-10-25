@@ -72,16 +72,16 @@ public class AdvancedDrone : MonoBehaviour
             {
 
                 _enemyInRange = true;
-                Vector3 directionToPlayer = (_playerTransform.position - transform.position).normalized;
+                Vector3 directionToPlayer = (_playerTransform.position - transform.position).normalized;//get direction to player
 
                 //Calculate the angle  with the X-axis
-                float angleToPlayer = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;
+                float angleToPlayer = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;//convert to degrees
 
                 
-                Quaternion targetRotation = Quaternion.Euler(0f, 0f, angleToPlayer + 90f); 
+                Quaternion targetRotation = Quaternion.Euler(0f, 0f, angleToPlayer + 90f); // Add 90 degrees to the angle to face the player
 
                 //rotate towards this target rotation (only rotating in the Z-axis)
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _turnSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _turnSpeed * Time.deltaTime);//rotate towards player
                
             }
             else
@@ -126,47 +126,50 @@ public class AdvancedDrone : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Player")
-        {
+    //private void OnTriggerEnter2D(Collider2D other)
+    //{
+      //  if (other.tag == "Player")
+        //{
             //damage player
-            Player player = other.transform.GetComponent<Player>();
-            if (player != null)
-            {
-                player.Damage();
-            }
+          //  Player player = other.transform.GetComponent<Player>();
+            //if (player != null)
+            //{
+              //  player.Damage();
+            //}
 
-            Destroy(GetComponent<Collider2D>());
-            //_anim.SetTrigger("OnEnemyDeath");//trigger anim
+            //Destroy(GetComponent<Collider2D>());
+            //_anim.SetTrigger("OnEnemyDeath");//trigger anim            
+            //_audioSource.Play();           
             
-            //_audioSource.Play();
+            //Transform parentTransform = transform.parent;
 
-            //Destroy parent object
+            //Destroy(this.gameObject);
 
-            
-            //DestroyChildrenObjects();
-            Destroy(this.gameObject);
-        }
+            //if (parentTransform != null)
+            //{
+              //  Destroy(parentTransform.gameObject);
+            //}
 
-        if (other.tag == "Laser")
-        {
-            Destroy(other.gameObject);
-            Player player = GameObject.Find("Player").GetComponent<Player>();
-            if (_player != null)
-            {
-                _player.AddScore(10);
-            }
+        //}
 
-            Destroy(GetComponent<Collider2D>());
+        //if (other.tag == "Laser")
+        //{
+          //  Destroy(other.gameObject);
+            //Player player = GameObject.Find("Player").GetComponent<Player>();
+            //if (_player != null)
+            //{
+            //    _player.AddScore(10);
+            //}
+
+            //Destroy(GetComponent<Collider2D>());
             //_anim.SetTrigger("OnEnemyDeath");
             //_speed = 0;
             //_audioSource.Play();
 
-            Destroy(GetComponent<Collider2D>());
+            //Destroy(GetComponent<Collider2D>());
             //DestroyChildrenObjects();
-            Destroy(this.gameObject);
-        }
+            //Destroy(this.gameObject);
+        //}
 
-    }
+    //}
 }

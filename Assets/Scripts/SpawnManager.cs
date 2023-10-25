@@ -13,6 +13,11 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] 
     private GameObject _droneContainer;
     [SerializeField]
+    private GameObject _advDroneEnemyPrefab;
+    [SerializeField] 
+    private GameObject _advDroneEnemyContainer;
+    
+    [SerializeField]
     private GameObject[] _powerups;//array of powerups
     
     private Player _player;//reference to player script
@@ -44,6 +49,9 @@ public class SpawnManager : MonoBehaviour
     private bool _stopEnemySpawning = false;//declared at the class level for full availablity
     [SerializeField]
     private bool _stopDroneEnemySpawning = true;
+    [SerializeField]
+    private bool _stopAdvDroneEnemySpawing = true;
+
 
 
     void Update()
@@ -61,10 +69,10 @@ public class SpawnManager : MonoBehaviour
                 _waveNumber += 1;
 
                 StartCoroutine(SpawnDroneEnemy());
-                //StartCoroutine(Advandceddroneenemey());
-
+               
             }
         }
+
     }
 
     public void StartSpawning()
@@ -116,11 +124,37 @@ public class SpawnManager : MonoBehaviour
                 _isWaitingBetweenWaves = true;
             }
 
+            _waveNumber += 1;
+
             Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
             GameObject newEnemy = Instantiate(_droneEnemyPrefab, posToSpawn, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;//set parent of enemy to enemy container
             yield return new WaitForSeconds(5.0f);//wait 5 seconds before spawning next enemy
 
+            _totalTime += 5.0f;//increment time by 5 seconds
+        }
+    }
+
+    IEnumerator SpawnAdvDroneEnemy()//Third wave
+    {
+        if (_waveNumber == 3)
+        {
+            _stopDroneEnemySpawning = false;
+        }
+
+        while (_stopDroneEnemySpawning == false)
+        {
+            if (_totalTime >= 65f)
+            {
+                _stopDroneEnemySpawning = true;
+                _isWaitingBetweenWaves = true;
+            }
+
+            Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
+            GameObject newEnemy = Instantiate(_advDroneEnemyPrefab, posToSpawn, Quaternion.identity);//spawns advDrone Prefab
+            newEnemy.transform.parent = _enemyContainer.transform;//set parent of enemy to enemy container
+            yield return new WaitForSeconds(5.0f);//wait 5 seconds before spawning next enemy
+      
             _totalTime += 5.0f;//increment time by 5 seconds
         }
     }
