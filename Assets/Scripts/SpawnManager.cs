@@ -58,117 +58,115 @@ public class SpawnManager : MonoBehaviour
 
     public void StartSpawning()
     {
-        StartCoroutine(SpawnEnemyRoutine());
+        StartCoroutine(SpawnWaveRoutine());
         StartCoroutine(SpawnPowerupRoutine());
 
     }
 
 
-    IEnumerator SpawnEnemyRoutine()//first wave
+    IEnumerator SpawnWaveRoutine()
     {
         _waveNumber += 1;
 
-        while (!_stopEnemySpawning)
+        while (true)  // Keeps the routine going indefinitely.
         {
-            if (_totalTime >= 15f) //&& _enemyCount >= 5f)
+            switch (_waveNumber)
             {
-                _stopEnemySpawning = true;               
+                case 1:
+                    // Spawn regular enemies
+                    if (_totalTime >= 15f)
+                    {
+                        _stopEnemySpawning = true;
+                    }
+
+                    if (!_stopEnemySpawning)
+                    {
+                        SpawnEnemy(_enemyPrefab, _enemyContainer);
+                        yield return new WaitForSeconds(5.0f);
+                        _totalTime += 5.0f;
+                    }
+                    else
+                    {
+                        yield return StartCoroutine(WaitBetweenWaves());
+                        _waveNumber++;
+                    }
+                    break;
+
+                case 2:
+                    // Spawn drone enemies
+                    if (_totalTime >= 35f)
+                    {
+                        _stopDroneEnemySpawning = true;
+                    }
+
+                    if (!_stopDroneEnemySpawning)
+                    {
+                        SpawnEnemy(_droneEnemyPrefab, _enemyContainer);
+                        yield return new WaitForSeconds(5.0f);
+                        _totalTime += 5.0f;
+                    }
+                    else
+                    {
+                        yield return StartCoroutine(WaitBetweenWaves());
+                        _waveNumber++;
+                    }
+                    break;
+
+                case 3:
+                    // Spawn advanced drone enemies
+                    if (_totalTime >= 65f)
+                    {
+                        _stopAdvDroneEnemySpawning = true;
+                    }
+
+                    if (!_stopAdvDroneEnemySpawning)
+                    {
+                        SpawnEnemy(_advDroneEnemyPrefab, _enemyContainer);
+                        yield return new WaitForSeconds(5.0f);
+                        _totalTime += 5.0f;
+                    }
+                    else
+                    {
+                        yield return StartCoroutine(WaitBetweenWaves());
+                        _waveNumber++;  // Or reset to 1 if you want to loop back to the first wave after the last wave.
+                    }
+                    break;
             }
 
-            Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
-            GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
-            newEnemy.transform.parent = _enemyContainer.transform;//set parent of enemy to enemy container
-
-            //_enemyCount += 1;//increment enemy count
-
-            yield return new WaitForSeconds(5.0f);//wait 5 seconds before spawning next enemy
-
-            _totalTime += 5.0f;//increment time by 5 seconds
+            yield return null;  // Ensures the loop doesn't run too fast and hog CPU.
         }
-
-        _isWaitingBetweenWaves = true;
-        while (_isWaitingBetweenWaves)
-        {
-            _betweenWaveTime += Time.deltaTime;//increment time between waves in real time
-            if (_betweenWaveTime >= 12.0f)
-            {
-                _isWaitingBetweenWaves = false;
-                _betweenWaveTime = 0.0f;//reset timer for future waves
-                _stopEnemySpawning = false;
-                _stopDroneEnemySpawning = false;
-                _waveNumber += 1;                
-            }
-
-            yield return null;
-        }
-
-        StartCoroutine(SpawnDroneEnemy());
     }
 
-    IEnumerator SpawnDroneEnemy()//Second wave
+    void SpawnEnemy(GameObject enemyPrefab, GameObject container)
     {
-        if (_waveNumber == 2)
-        {
-            _stopDroneEnemySpawning = false;
-        }
+        Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
+        GameObject newEnemy = Instantiate(enemyPrefab, posToSpawn, Quaternion.identity);
+        newEnemy.transform.parent = container.transform;
+    }
 
-        while (_stopDroneEnemySpawning == false)
-        {
-            if (_totalTime >= 35f)
-            {
-                _stopDroneEnemySpawning = true;
-            }
-
-            Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
-            GameObject newEnemy = Instantiate(_droneEnemyPrefab, posToSpawn, Quaternion.identity);
-            newEnemy.transform.parent = _enemyContainer.transform;//set parent of enemy to enemy container
-            yield return new WaitForSeconds(5.0f);//wait 5 seconds before spawning next enemy
-
-            _totalTime += 5.0f;//increment time by 5 seconds
-        }
-
+    IEnumerator WaitBetweenWaves()
+    {
         _isWaitingBetweenWaves = true;
         while (_isWaitingBetweenWaves)
         {
-            _betweenWaveTime += Time.deltaTime;//increment time between waves in real time
+            _betweenWaveTime += Time.deltaTime;
             if (_betweenWaveTime >= 12f)
             {
                 _isWaitingBetweenWaves = false;
-                _betweenWaveTime = 0.0f;//reset timer for future waves
-                _stopEnemySpawning = false;
-                _stopDroneEnemySpawning = false;
-                _waveNumber += 1;
+                ResetWaveSettings();
             }
-            yield return null;//wait for next frame
+            yield return null;
         }
-
-        StartCoroutine(SpawnAdvDroneEnemy());
     }
 
-
-    IEnumerator SpawnAdvDroneEnemy()//Third wave
+    void ResetWaveSettings()
     {
-        if (_waveNumber == 3)
-        {
-            _stopDroneEnemySpawning = false;
-        }
-
-        while (_stopDroneEnemySpawning == false)
-        {
-            if (_totalTime >= 65f)
-            {
-                _stopDroneEnemySpawning = true;
-                _isWaitingBetweenWaves = true;
-            }
-
-            Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
-            GameObject newEnemy = Instantiate(_advDroneEnemyPrefab, posToSpawn, Quaternion.identity);//spawns advDrone Prefab
-            newEnemy.transform.parent = _enemyContainer.transform;//set parent of enemy to enemy container
-            yield return new WaitForSeconds(5.0f);//wait 5 seconds before spawning next enemy
-      
-            _totalTime += 5.0f;//increment time by 5 seconds
-        }
+        _betweenWaveTime = 0.0f;
+        _stopEnemySpawning = false;
+        _stopDroneEnemySpawning = false;
+        _stopAdvDroneEnemySpawning = false;
     }
+
 
 
     IEnumerator SpawnPowerupRoutine()
