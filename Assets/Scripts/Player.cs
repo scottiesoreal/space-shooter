@@ -342,7 +342,6 @@ public class Player : MonoBehaviour
             StartCoroutine(HomingShotPowerdown());
         }
         
-
     }
 
     IEnumerator HomingShotPowerdown()

@@ -287,6 +287,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: HomingPowerUpPreF
       objectReference: {fileID: 0}
+    - target: {fileID: 2370197548890924314, guid: d61b0a5930bae4642b260fc396379ff3,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8602183565357326331, guid: d61b0a5930bae4642b260fc396379ff3,
         type: 3}
       propertyPath: m_RootOrder
@@ -295,12 +300,12 @@ PrefabInstance:
     - target: {fileID: 8602183565357326331, guid: d61b0a5930bae4642b260fc396379ff3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.1776476
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8602183565357326331, guid: d61b0a5930bae4642b260fc396379ff3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.3166924
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8602183565357326331, guid: d61b0a5930bae4642b260fc396379ff3,
         type: 3}
@@ -754,6 +759,53 @@ MonoBehaviour:
   _powerUpPrefab: {fileID: 578423992}
   _audioSource: {fileID: 0}
   _powerUpClip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
+--- !u!61 &578423996
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578423992}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.024, y: 1.024}
+    newSize: {x: 1.024, y: 1.024}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.024, y: 1.024}
+  m_EdgeRadius: 0
+--- !u!50 &578423997
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578423992}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &737323852
 GameObject:
   m_ObjectHideFlags: 0
@@ -809,7 +861,7 @@ MonoBehaviour:
   _isSpeedBoostActive: 0
   _isOmniShotActive: 0
   _isAntiAmmoActive: 0
-  _isHomingShotActive: 0
+  _isHomingShotActive: 1
   _isRightDamagedActive: 0
   _isLeftDamagedActive: 0
   _shieldVisualizer: {fileID: 940136997}
@@ -860,7 +912,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 444283759
   m_SortingLayer: 2
-  m_SortingOrder: 5
+  m_SortingOrder: 7
   m_Sprite: {fileID: 21300000, guid: 1b4a8fdd39d3a45d0a9ee484ad6800ec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -880,7 +932,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 737323852}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.8, z: 0}
+  m_LocalPosition: {x: 0, y: -1.28, z: 0}
   m_LocalScale: {x: 0.3925022, y: 0.40779448, z: 0.40779448}
   m_Children:
   - {fileID: 940136999}
@@ -1167,7 +1219,7 @@ GameObject:
   - component: {fileID: 791065385}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2230,12 +2282,12 @@ PrefabInstance:
     - target: {fileID: 552331703715711777, guid: 4dda8ddd2b9087f4a92dc8cc5b86dc53,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.2847424
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 552331703715711777, guid: 4dda8ddd2b9087f4a92dc8cc5b86dc53,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.624135
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 552331703715711777, guid: 4dda8ddd2b9087f4a92dc8cc5b86dc53,
         type: 3}
