@@ -66,11 +66,11 @@ public class PowerUp : MonoBehaviour
                     case 6://negative ammo power up
                         player.AntiAmmo();
                         break;
-                    //case 7://Homing missle power up
-                       //player.HomingMissleActive();
-                       //break;
+                    case 7:
+                        player.HomingShotActive();
+                        break;
 
-                        
+
                     default:
                         Debug.LogError("Unknown powerup ID: " + powerUpID);
                         break;

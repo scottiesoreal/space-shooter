@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
     [SerializeField] 
     private bool _isAntiAmmoActive = false;
     [SerializeField]
-    private bool _isPlayerHomingActive = false;
+    private bool _isHomingShotActive = false;
 
     [SerializeField] 
     private bool _isRightDamagedActive = false;
@@ -165,7 +165,7 @@ public class Player : MonoBehaviour
 
     void FireLaser()
     {
-        if (_ammoCount <= 0)
+        if (_ammoCount <= 0)//checks if ammo is 0
         {
             return;
         }
@@ -180,7 +180,7 @@ public class Player : MonoBehaviour
         {
             Instantiate(_omniShotPrefab, transform.position, Quaternion.identity);
         }
-        else if (_isPlayerHomingActive)
+        else if (_isHomingShotActive)
         {
             Instantiate(_playerHomingPrefab, transform.position, Quaternion.identity);
         }
@@ -334,21 +334,21 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void PlayerHomingActive()
+    public void HomingShotActive()
     {
-        if (!_isPlayerHomingActive)
+        if (!_isHomingShotActive)
         {
-            _isPlayerHomingActive = true;
-            StartCoroutine(PlayerHomingPowerDownRoutine());
+            _isHomingShotActive = true;
+            StartCoroutine(HomingShotPowerdown());
         }
         
 
     }
 
-    IEnumerator PlayerHomingPowerDownRoutine()
+    IEnumerator HomingShotPowerdown()
         {
         yield return new WaitForSeconds(7.5f);
-            _isPlayerHomingActive = false;
+            _isHomingShotActive = false;
         }
 
     public void AddScore(int points)
