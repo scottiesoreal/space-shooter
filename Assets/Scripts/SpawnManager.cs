@@ -170,58 +170,58 @@ public class SpawnManager : MonoBehaviour
 
 
     IEnumerator SpawnPowerupRoutine()
+{
+    _stopEnemySpawning = false; // Reset stop spawning at the beginning of each wave
+    bool shieldSpawnOnce = false; // Flag to track first shield spawn
+
+    while (!_stopEnemySpawning)
     {
-        _stopEnemySpawning = false; //Reset stop spawning at begining of each wave
-        bool shieldSpawnOnce = false; //Flag to track first shield spawn
+        Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 7.6f, 0f);
 
-        while (_stopEnemySpawning == false)
+        // Define the probabilities of spawning each powerup
+        // Ensure the sum of all probabilities is equal to 1.0
+
+        float ammoPickupProbability = 0.45f;         // 55% chance of ammo pickup
+        float shieldPickupProbability = shieldSpawnOnce ? 0.9f : 0.2f;  // 90% chance for the first spawn, 20% for subsequent spawns
+        float antiAmmoPickupProbability = 0.04f;     // 4% chance of anti ammo pickup
+        float homingShotProbability = 0.15f;         // 15% chance of homing shot
+
+        // Generate a random number between 0.0 and 1.0
+        float randomPickup = Random.value;
+
+        if (randomPickup < ammoPickupProbability)
         {
-            Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 7.6f, 0f);
-
-            //Define the probabiliies of spawning each powerup
-            //Ensure the sum of all probabilities is equal to 1.0
-
-
-            //float healthPickupProbability = 0.1f; //10% chance of health pickup (if more than 1 powerup)
-            float ammoPickupProbability = 0.6f; //60% chance of ammo pickup
-            float shieldPickupProbability = shieldSpawnOnce ? 0.9f : 0.25f; // 90% chance for the first spawn, 25% for subsequent spawns
-            float antiAmmoPickupProbability = 0.05f; //5% chance of anti ammo pickup
-
-            //Generate a random number between 0.0 and 1.0
-            float randomPickup = Random.value;
-
-            //Determine which powerup to spawn based on the probability
-            if (randomPickup < ammoPickupProbability)
-            {
-                int randomAmmoPickup = Random.Range(3, _powerups.Length); //element 3 is ammo pickup
-                Instantiate(_powerups[randomAmmoPickup], posToSpawn, Quaternion.identity);
-            }
-            else if (randomPickup < (ammoPickupProbability + antiAmmoPickupProbability))
-            {
-                //Spawn the anti ammo pickup
-                int randomAntiAmmoPickup = Random.Range(6, _powerups.Length); //element 6 is anti ammo pickup
-                Instantiate(_powerups[randomAntiAmmoPickup], posToSpawn, Quaternion.identity);
-            }
-
-            else if (randomPickup < (ammoPickupProbability + shieldPickupProbability))
-            {
-                //Spawn the shield pickup
-                int randomShieldPickup = Random.Range(2, _powerups.Length); //element 2 is shield pickup
-            }
-            else
-            {
-                //Spawn health pickup... There's only one for now
-                Instantiate(_powerups[2], posToSpawn, Quaternion.identity);
-            }
-
-            //Wait between 3 and 8 seconds before spawning next powerup
-            yield return new WaitForSeconds(Random.Range(3, 8));
-
-
-
+            int randomAmmoPickup = Random.Range(3, _powerups.Length);
+            Instantiate(_powerups[randomAmmoPickup], posToSpawn, Quaternion.identity);
+        }
+        else if (randomPickup < (ammoPickupProbability + antiAmmoPickupProbability))
+        {
+            int randomAntiAmmoPickup = Random.Range(6, _powerups.Length);
+            Instantiate(_powerups[randomAntiAmmoPickup], posToSpawn, Quaternion.identity);
+        }
+        else if (randomPickup < (ammoPickupProbability + shieldPickupProbability + antiAmmoPickupProbability))
+        {
+            int randomShieldPickup = Random.Range(2, _powerups.Length);
+            Instantiate(_powerups[randomShieldPickup], posToSpawn, Quaternion.identity);
+        }
+        else if (randomPickup < (ammoPickupProbability + shieldPickupProbability + antiAmmoPickupProbability + homingShotProbability))
+        {
+            // Add the logic for spawning the homing shot powerup.
+           
+            int randomHomingPickup = Random.Range(7, _powerups.Length);
+            Instantiate(_powerups[randomHomingPickup], posToSpawn, Quaternion.identity);
+        }
+        else
+        {
+            // Spawn health pickup... There's only one for now
+            Instantiate(_powerups[2], posToSpawn, Quaternion.identity);
         }
 
+        // Wait between 3 and 8 seconds before spawning next powerup
+        yield return new WaitForSeconds(Random.Range(3, 8));
     }
+}
+
 
 
 
