@@ -16,6 +16,10 @@ public class SpawnManager : MonoBehaviour
     private GameObject _advDroneEnemyPrefab;
     [SerializeField] 
     private GameObject _advDroneEnemyContainer;
+    [SerializeField]
+    private GameObject _bossPrefab;
+    [SerializeField] 
+    private GameObject _bossContainer;
     
     [SerializeField]
     private GameObject[] _powerups;//array of powerups
@@ -131,6 +135,16 @@ public class SpawnManager : MonoBehaviour
                         _waveNumber++;  // Or reset to 1 if you want to loop back to the first wave after the last wave.
                     }
                     break;
+                case 4:
+                    SpawnBoss();
+                    // Once spawned, break out of spawn loop to prevent further waves from spawing
+                    _stopEnemySpawning = true;
+                    _stopDroneEnemySpawning = true;
+                    _stopAdvDroneEnemySpawning = true;
+                    yield break;
+
+
+
             }
 
             yield return null;  // Ensures the loop doesn't run too fast and hog CPU.
@@ -142,6 +156,13 @@ public class SpawnManager : MonoBehaviour
         Vector3 posToSpawn = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0f);
         GameObject newEnemy = Instantiate(enemyPrefab, posToSpawn, Quaternion.identity);
         newEnemy.transform.parent = container.transform;
+    }
+
+    void SpawnBoss()
+    {
+        Vector3 posToSpawn = new Vector3(0f, 12, 0f);
+        GameObject newBoss = Instantiate(_bossPrefab, posToSpawn, Quaternion.identity);
+        newBoss.transform.parent = _bossContainer.transform;
     }
 
     IEnumerator WaitBetweenWaves()
