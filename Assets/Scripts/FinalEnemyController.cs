@@ -18,8 +18,15 @@ public class FinalEnemyController : MonoBehaviour
         Waiting,
         MovingLeft,
         MovingRight,
-        ReturningCenter
+        ReturningCenter,
+        PhaseTransition,
+        Phase2,
+        Phase3
     }
+
+    
+
+    private bool _isInvincible = false;
 
     private BossState _currentState = BossState.Descending;
 
@@ -46,6 +53,8 @@ public class FinalEnemyController : MonoBehaviour
 
     private IEnumerator Descend()
     {
+        _isInvincible = true; //Boss is invincible while descending
+        
         Vector3 startPos = transform.position;
         Vector3 endPos = new Vector3(startPos.x, 3f, startPos.z);
 
@@ -55,12 +64,14 @@ public class FinalEnemyController : MonoBehaviour
             yield return null;
         }
 
+        
         _currentState = BossState.Waiting;
         StartCoroutine(StartMovingSequenceAfterDelay(5f)); // Wait for 5 seconds after descending.
     }
 
     private IEnumerator StartMovingSequenceAfterDelay(float delay)
     {
+        _isInvincible = false; //Boss is vulnerable after descending
         yield return new WaitForSeconds(delay);
         _currentState = BossState.MovingLeft;
     }
@@ -72,6 +83,49 @@ public class FinalEnemyController : MonoBehaviour
             CalculateMovement();
             FireLaser();
         }
+        else if (_hitCount >= 25 && _currentState != BossState.PhaseTransition)
+        {
+            StartPhaseTransition();
+        }
+
+        if (_currentState == BossState.Phase2 && _hitCount < 70)
+        {
+            // Phase 2 behaviors
+        }
+
+    }
+
+    private void StartPhaseTransition()
+    {
+        StopAllCoroutines(); //halts all phase 1 activity
+        _currentState = BossState.PhaseTransition;
+        _isInvincible = true;
+        _hitCount = 0;
+        StartCoroutine(PhaseTransitionDelay(5f));
+    }
+       
+    private IEnumerator PhaseTransitionDelay(float delay) //
+    {
+        yield return new WaitForSeconds(delay);
+        StartCoroutine(MoveToPhase2StartPosition());
+    }
+
+    private IEnumerator MoveToPhase2StartPosition()
+    {
+        Vector3 startPhase2Position = Vector3.zero; // The target position for phase 2
+
+        while (transform.position != startPhase2Position)
+        {
+            // Move towards (0,0,0) using MoveTowards at the boss's speed
+            transform.position = Vector3.MoveTowards(transform.position, startPhase2Position, _speed * Time.deltaTime);
+            yield return null; // Wait until next frame before continuing the loop
+        }
+
+        // Once the boss is in position, update the state to Phase2
+        yield return new WaitForSeconds(5f);
+        _currentState = BossState.Phase2;
+        _isInvincible = false;
+        // Here you can start phase 2 behaviors or set a flag to trigger them in Update
     }
 
     private void CalculateMovement()
@@ -144,6 +198,8 @@ public class FinalEnemyController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (_isInvincible) return; // Ignore collisions while invincible
+        
         if (other.tag == "Player")
         {
             Player player = other.transform.GetComponent<Player>();
@@ -160,8 +216,17 @@ public class FinalEnemyController : MonoBehaviour
         {
             Destroy(other.gameObject);
             _hitCount++;
-            _player.AddScore(50);            
-            
+            if (_player != null)
+            {
+               _player.AddScore(50);
+            }
+                        
+            //check if time to transition to phase 2
+            if (_hitCount >= 25 && _currentState != BossState.PhaseTransition && _currentState != BossState.Phase2)
+            {
+                StartPhaseTransition();
+            }
+
         }
    
 
