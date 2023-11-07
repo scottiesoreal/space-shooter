@@ -3,13 +3,29 @@ using UnityEngine;
 
 public class FinalEnemyController : MonoBehaviour
 {
-    // Movement and positioning variables
-    [SerializeField]
-    private float _speed = 2.0f;
+    //Phase1
+    //Movement and positioning variables
+
+    
+    private float _speed = 2.0f;//phase 1: movement speed
     private Vector3 _centerPosition = new Vector3(0f, 3f, 0f);
-    //private Vector3 _phase1CenterPosition = new Vector3(0f, 3f, 0f);
     private float _leftLimit = -8.5f;
     private float _rightLimit = 8.5f;
+
+
+    //Phase2
+    [SerializeField]
+    private float _turnSpeed = 1.5f; //how fast the boss will face the player
+    //Detection distance
+    [SerializeField]
+    private float _detectionDistance = 5f; //distance from player to fire
+    [SerializeField]
+    private float _fireAngle = 5f; //angle from player to fire
+    [SerializeField]
+    private bool _enemyInRange = false;
+    
+    
+
 
     // State for the boss behavior
     private enum BossState
@@ -49,6 +65,29 @@ public class FinalEnemyController : MonoBehaviour
     private void Start()
     {
         StartCoroutine(Descend());
+        _player = FindObjectOfType<Player>();
+    }
+
+
+    private void Update()
+    {
+        if (_currentState != BossState.Descending && _hitCount < 25)
+        {
+            CalculateMovement();
+            FireLaser();
+        }
+        else if (_hitCount >= 25 && _currentState != BossState.PhaseTransition)
+        {
+            StartPhaseTransition();
+        }
+
+        if (_currentState == BossState.Phase2 && _hitCount < 70)
+        {
+            // Phase 2 behaviors
+            FacePlayer();
+            //FireLaser();
+        }
+
     }
 
     private IEnumerator Descend()
@@ -76,24 +115,6 @@ public class FinalEnemyController : MonoBehaviour
         _currentState = BossState.MovingLeft;
     }
 
-    private void Update()
-    {
-        if (_currentState != BossState.Descending && _hitCount < 25)
-        {
-            CalculateMovement();
-            FireLaser();
-        }
-        else if (_hitCount >= 25 && _currentState != BossState.PhaseTransition)
-        {
-            StartPhaseTransition();
-        }
-
-        if (_currentState == BossState.Phase2 && _hitCount < 70)
-        {
-            // Phase 2 behaviors
-        }
-
-    }
 
     private void StartPhaseTransition()
     {
@@ -163,6 +184,18 @@ public class FinalEnemyController : MonoBehaviour
             {
                 StartCoroutine(WaitAndChangeState(BossState.MovingLeft));
             }
+        }
+    }
+
+    private void FacePlayer()
+    {
+        if (_player != null)
+        {
+            Vector3 directionToPlayer = (_player.transform.position - transform.position).normalized;//get direction to player
+            //Calculate the angle to player
+            float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;//convert to degrees
+            Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle + 90f));// Add 90 degrees to the angle to face the player;may need adjustments
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _turnSpeed * Time.deltaTime);//rotate towards player
         }
     }
 
