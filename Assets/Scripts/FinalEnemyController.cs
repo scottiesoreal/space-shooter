@@ -51,6 +51,7 @@ public class FinalEnemyController : MonoBehaviour
     private GameObject _laserPrefab; // Normal laser
     [SerializeField]
     private float _fireRate = 2.5f;
+    private float _phase2FireRate = 0.5f; // Higher rate of fire for Phase 2
     private float _canFire = -1f; // Timestamp for next fire
 
     // Game object variables
@@ -214,20 +215,45 @@ public class FinalEnemyController : MonoBehaviour
     {
         if (_currentState != BossState.Descending && _currentState != BossState.Waiting && Time.time > _canFire)
         {
-            _fireRate = Random.Range(.3f, 1.7f);
-            _canFire = Time.time + _fireRate;
-            GameObject enemyLaser = Instantiate(_laserPrefab, transform.position + new Vector3(0f, -1.5f, 0f), Quaternion.identity);
+            // Adjust the fire rate based on the current state
+            if (_currentState == BossState.Phase2)
+            {
+                _fireRate = _phase2FireRate; // A higher rate of fire for Phase 2
+            }
+            else
+            {
+                // Random fire rate for other phases or specific phase 1 fire rate
+                _fireRate = Random.Range(.3f, 1.7f);
+            }
 
-            //Assign it as enemy laser
+            _canFire = Time.time + _fireRate;
+
+            // Determine the position and rotation of the laser based on the boss's orientation
+            Vector3 laserPos = transform.position; // Adjust if the laser should come from a specific point on the boss
+            Quaternion laserRot = (_currentState == BossState.Phase2)
+                ? Quaternion.Euler(0f, 0f, transform.eulerAngles.z) // Phase 2: Use boss's current rotation
+                : Quaternion.identity; // Other Phases: Default downward direction
+
+            GameObject enemyLaser = Instantiate(_laserPrefab, laserPos, laserRot);
+
+            // Assign it as enemy laser and set the direction based on the boss's current rotation for Phase 2
             Laser laserScript = enemyLaser.GetComponent<Laser>();
             if (laserScript != null)
             {
+                if (_currentState == BossState.Phase2)
+                {
+                    laserScript.SetDirection(transform.up); // Phase 2: Use the boss's current 'up' direction
+                }
                 laserScript.AssignEnemyLaser();
             }
         }
     }
 
-    
+
+    private void Phase2FireLaser()
+    {
+
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {

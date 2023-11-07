@@ -3056,7 +3056,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9db8f8d36d077d740b9f8eb7d0766449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 3
+  _turnSpeed: 60
+  _detectionDistance: 5
+  _fireAngle: 5
+  _enemyInRange: 0
   _laserPrefab: {fileID: 5294812925896529912, guid: cbbcae0e8186feb49bc017390dad604d,
     type: 3}
   _fireRate: 0.01
