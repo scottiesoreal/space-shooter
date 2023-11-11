@@ -192,7 +192,7 @@ public class FinalEnemyController : MonoBehaviour
     {
         if (_player != null)
         {
-            Vector3 directionToPlayer = (_player.transform.position - transform.position).normalized;//get direction to player
+            Vector3 directionToPlayer = (_player.transform.position - transform.position).normalized;
             //Calculate the angle to player
             float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;//convert to degrees
             Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle + 90f));// Add 90 degrees to the angle to face the player;may need adjustments
@@ -222,19 +222,21 @@ public class FinalEnemyController : MonoBehaviour
             }
             else
             {
-                // Random fire rate for other phases or specific phase 1 fire rate
+                // Random fire rate for phase 1 fire rate
                 _fireRate = Random.Range(.3f, 1.7f);
             }
 
             _canFire = Time.time + _fireRate;
 
             // Determine the position and rotation of the laser based on the boss's orientation
-            Vector3 laserPos = transform.position; // Adjust if the laser should come from a specific point on the boss
+            Vector3 laserPos = transform.position + new Vector3(0, 1, 0); // This is an example offset
+            // Adjust if the laser should come from a specific point on the boss
             Quaternion laserRot = (_currentState == BossState.Phase2)
                 ? Quaternion.Euler(0f, 0f, transform.eulerAngles.z) // Phase 2: Use boss's current rotation
                 : Quaternion.identity; // Other Phases: Default downward direction
 
             GameObject enemyLaser = Instantiate(_laserPrefab, laserPos, laserRot);
+            Debug.Log("Laser instantiated at: " + laserPos + " with rotation: " + laserRot); //
 
             // Assign it as enemy laser and set the direction based on the boss's current rotation for Phase 2
             Laser laserScript = enemyLaser.GetComponent<Laser>();
@@ -250,10 +252,10 @@ public class FinalEnemyController : MonoBehaviour
     }
 
 
-    private void Phase2FireLaser()
-    {
+    //private void Phase2FireLaser()
+    //{
 
-    }
+    //}
 
     private void OnTriggerEnter2D(Collider2D other)
     {
