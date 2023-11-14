@@ -25,8 +25,16 @@ public class FinalEnemyController : MonoBehaviour
     private bool _enemyInRange = false;
     [SerializeField]
     private Transform _laserFirePos;
-    
-    
+    [SerializeField]
+    private bool _isFiringRapid = false;
+    [SerializeField]
+    private float _betweenBursts = 0.0f;
+    //private float _burstDuration = 1.5f; // Duration of each firing burst
+    //private float _timeSinceLastBurst = 0f; // Time since the last burst started
+
+
+
+
 
 
     // State for the boss behavior
@@ -52,8 +60,8 @@ public class FinalEnemyController : MonoBehaviour
     [SerializeField]
     private GameObject _laserPrefab; // Normal laser
     [SerializeField]
-    private float _fireRate = 2.5f;
-    private float _phase2FireRate = 0.5f; // Higher rate of fire for Phase 2
+    private float _fireRate = 1f;
+    private float _phase2FireRate = .15f; // Higher rate of fire for Phase 2
     private float _canFire = -1f; // Timestamp for next fire
 
     // Game object variables
@@ -218,6 +226,13 @@ public class FinalEnemyController : MonoBehaviour
         
     }
 
+    private IEnumerator RapidFireRoutine()
+    {
+        _isFiringRapid = true;
+        _fireRate = _phase2FireRate;
+        yield return new WaitForSeconds(1.5f);
+    }
+
     private void FireLaser()
     {
         if (_currentState != BossState.Descending && _currentState != BossState.Waiting && Time.time > _canFire)
@@ -225,7 +240,10 @@ public class FinalEnemyController : MonoBehaviour
             // Adjust the fire rate based on the current state
             if (_currentState == BossState.Phase2)
             {
-                _fireRate = _phase2FireRate; // A higher rate of fire for Phase 2; currently not working as planned
+                
+                RapidFireRoutine();
+                //_isFiringRapid = true;
+                //_fireRate = _phase2FireRate; // A higher rate of fire for Phase 2; currently not working as planned
             }
             else
             {
@@ -255,8 +273,15 @@ public class FinalEnemyController : MonoBehaviour
     }
 
 
-    //private void Phase2FireLaser()
+    //private IEnumerator WaitBetweenBursts()
     //{
+      //  _isFiringRapid = false;
+      //  while (!_isFiringRapid)
+      //  {
+
+        //}
+
+        //float burst
 
     //}
 

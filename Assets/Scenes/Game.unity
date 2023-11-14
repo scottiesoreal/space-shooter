@@ -3093,7 +3093,7 @@ MonoBehaviour:
   _laserFirePos: {fileID: 1109256759}
   _laserPrefab: {fileID: 5294812925896529912, guid: cbbcae0e8186feb49bc017390dad604d,
     type: 3}
-  _fireRate: 0.01
+  _fireRate: 1
   _hitCount: 0
 --- !u!61 &6830017082828588723
 BoxCollider2D:
