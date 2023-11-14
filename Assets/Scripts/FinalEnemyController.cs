@@ -74,7 +74,7 @@ public class FinalEnemyController : MonoBehaviour
 
     private void Update()
     {
-        if (_currentState != BossState.Descending && _hitCount < 25)
+        if (_currentState != BossState.Descending && _currentState != BossState.PhaseTransition && _hitCount < 25)
         {
             CalculateMovement();
             FireLaser();
@@ -159,6 +159,7 @@ public class FinalEnemyController : MonoBehaviour
             if (transform.position.x > _leftLimit)
             {
                 transform.position += Vector3.left * _speed * Time.deltaTime;
+                FireLaser();
             }
             else
             {
@@ -170,6 +171,8 @@ public class FinalEnemyController : MonoBehaviour
             if (transform.position.x < _rightLimit)
             {
                 transform.position += Vector3.right * _speed * Time.deltaTime;
+                FireLaser();
+
             }
             else
             {
@@ -182,6 +185,7 @@ public class FinalEnemyController : MonoBehaviour
             {
                 Vector3 targetPosition = new Vector3(_centerPosition.x, 3f, _centerPosition.z);
                 transform.position = Vector3.MoveTowards(transform.position, _centerPosition, _speed * Time.deltaTime);
+                FireLaser();
             }
             else
             {
@@ -209,6 +213,7 @@ public class FinalEnemyController : MonoBehaviour
         if (_hitCount < 25) // Continue movement if phase 1 still active
         {
             _currentState = newState;
+            
         }
         
     }
