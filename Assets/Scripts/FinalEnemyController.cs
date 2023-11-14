@@ -23,6 +23,8 @@ public class FinalEnemyController : MonoBehaviour
     private float _fireAngle = 5f; //angle from player to fire
     [SerializeField]
     private bool _enemyInRange = false;
+    [SerializeField]
+    private Transform _laserFirePos;
     
     
 
@@ -218,7 +220,7 @@ public class FinalEnemyController : MonoBehaviour
             // Adjust the fire rate based on the current state
             if (_currentState == BossState.Phase2)
             {
-                _fireRate = _phase2FireRate; // A higher rate of fire for Phase 2
+                _fireRate = _phase2FireRate; // A higher rate of fire for Phase 2; currently not working as planned
             }
             else
             {
@@ -235,17 +237,13 @@ public class FinalEnemyController : MonoBehaviour
                 ? Quaternion.Euler(0f, 0f, transform.eulerAngles.z) // Phase 2: Use boss's current rotation
                 : Quaternion.identity; // Other Phases: Default downward direction
 
-            GameObject enemyLaser = Instantiate(_laserPrefab, laserPos, laserRot);
+            GameObject enemyLaser = Instantiate(_laserPrefab, _laserFirePos.position, laserRot);
             Debug.Log("Laser instantiated at: " + laserPos + " with rotation: " + laserRot); //
 
             // Assign it as enemy laser and set the direction based on the boss's current rotation for Phase 2
             Laser laserScript = enemyLaser.GetComponent<Laser>();
             if (laserScript != null)
             {
-                if (_currentState == BossState.Phase2)
-                {
-                    laserScript.SetDirection(transform.up); // Phase 2: Use the boss's current 'up' direction
-                }
                 laserScript.AssignEnemyLaser();
             }
         }
