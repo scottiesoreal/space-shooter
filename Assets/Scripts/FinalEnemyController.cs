@@ -99,6 +99,8 @@ public class FinalEnemyController : MonoBehaviour
             //FireLaser();
         }
 
+        //if (_currentState == BossState.P)
+
     }
 
     private IEnumerator Descend()
@@ -228,7 +230,7 @@ public class FinalEnemyController : MonoBehaviour
 
     private IEnumerator RapidFireRoutine()
     {
-        _isFiringRapid = true;
+        //_isFiringRapid = true;
         _fireRate = _phase2FireRate;
         yield return new WaitForSeconds(1.5f);
     }
@@ -240,10 +242,10 @@ public class FinalEnemyController : MonoBehaviour
             // Adjust the fire rate based on the current state
             if (_currentState == BossState.Phase2)
             {
-                
+
                 RapidFireRoutine();
                 //_isFiringRapid = true;
-                //_fireRate = _phase2FireRate; // A higher rate of fire for Phase 2; currently not working as planned
+                _fireRate = _phase2FireRate; // A higher rate of fire for Phase 2; currently not working as planned
             }
             else
             {
