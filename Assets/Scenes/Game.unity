@@ -3097,7 +3097,7 @@ MonoBehaviour:
   _laserPrefab: {fileID: 5294812925896529912, guid: cbbcae0e8186feb49bc017390dad604d,
     type: 3}
   _fireRate: 1
-  _hitCount: 20
+  _hitCount: 24
 --- !u!61 &6830017082828588723
 BoxCollider2D:
   m_ObjectHideFlags: 0

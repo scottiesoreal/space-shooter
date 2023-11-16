@@ -109,7 +109,10 @@ public class FinalEnemyController : MonoBehaviour
                     StartCoroutine(RapidFireRoutine());
                 }
                 break;
+            case BossState.Phase3:
+                // Logic for phase 3
                 // Add cases for other states as needed
+                break;
         }
     }
 
@@ -150,6 +153,7 @@ public class FinalEnemyController : MonoBehaviour
 
     private IEnumerator PhaseTransitionDelay(float delay) //
     {
+        Debug.Log("Phase transition started");
         yield return new WaitForSeconds(delay);
         StartCoroutine(MoveToPhase2StartPosition());
     }
@@ -170,6 +174,18 @@ public class FinalEnemyController : MonoBehaviour
         _currentState = BossState.Phase2;
         _isInvincible = false;
         // Here you can start phase 2 behaviors or set a flag to trigger them in Update
+    }
+
+    private IEnumerator StartPhase3()
+    {
+        if (_currentState == BossState.Phase3)
+        {
+            //debug log that says, "Phase 3 started"
+            yield return new WaitForSeconds(5f);
+            Debug.Log("Phase 3 started");
+            
+        }
+        
     }
 
     private void CalculateMovement()
@@ -285,7 +301,7 @@ public class FinalEnemyController : MonoBehaviour
         if (Time.time > _canFire)
         {
             // Determine the position and rotation of the laser based on the boss's orientation
-            Vector3 laserPos = transform.position + new Vector3(0, 1, 0); // This is an example offset
+            Vector3 laserPos = transform.position + new Vector3(0, 1, 0); // Default position is the boss's position
             // Adjust if the laser should come from a specific point on the boss
             Quaternion laserRot = (_currentState == BossState.Phase2)
                 ? Quaternion.Euler(0f, 0f, transform.eulerAngles.z) // Phase 2: Use boss's current rotation
@@ -346,6 +362,13 @@ public class FinalEnemyController : MonoBehaviour
             if (_hitCount >= 25 && _currentState != BossState.PhaseTransition && _currentState != BossState.Phase2)
             {
                 StartPhaseTransition();
+            }
+            //check if time to transition to phase 3
+            if (_hitCount >= 70 && _currentState == BossState.Phase2 && _currentState != BossState.PhaseTransition && _currentState != BossState.Phase3)
+            {
+
+                StartPhaseTransition();
+                //StartCoroutine(StartPhase3());
             }
 
         }
