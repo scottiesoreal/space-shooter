@@ -6,7 +6,7 @@ public class FinalEnemyController : MonoBehaviour
     //Phase1
     //Movement and positioning variables
 
-    
+
     private float _speed = 2.0f;//phase 1: movement speed
     private Vector3 _centerPosition = new Vector3(0f, 3f, 0f);
     private float _leftLimit = -8.5f;
@@ -28,9 +28,12 @@ public class FinalEnemyController : MonoBehaviour
     [SerializeField]
     private bool _isFiringRapid = false;
     [SerializeField]
-    private float _betweenBursts = 0.0f;
+    private bool _isRapidFireRunning = false;
+    [SerializeField]
+    private int _numberOfShotsPerBurst = 30;
     //private float _burstDuration = 1.5f; // Duration of each firing burst
-    //private float _timeSinceLastBurst = 0f; // Time since the last burst started
+    private float _timeSinceLastBurst = 0f; // Time since the last burst started
+
 
 
 
@@ -50,7 +53,7 @@ public class FinalEnemyController : MonoBehaviour
         Phase3
     }
 
-    
+
 
     private bool _isInvincible = false;
 
@@ -61,7 +64,7 @@ public class FinalEnemyController : MonoBehaviour
     private GameObject _laserPrefab; // Normal laser
     [SerializeField]
     private float _fireRate = 1f;
-    private float _phase2FireRate = .15f; // Higher rate of fire for Phase 2
+    private float _phase2FireRate = .1f; // Higher rate of fire for Phase 2
     private float _canFire = -1f; // Timestamp for next fire
 
     // Game object variables
@@ -82,31 +85,38 @@ public class FinalEnemyController : MonoBehaviour
 
     private void Update()
     {
-        if (_currentState != BossState.Descending && _currentState != BossState.PhaseTransition && _hitCount < 25)
+        switch (_currentState)
         {
-            CalculateMovement();
-            FireLaser();
+            case BossState.Descending:
+                // Descend logic should be handled inside the Descend coroutine.
+                break;
+            case BossState.Waiting:
+                // Logic for waiting state
+                break;
+            case BossState.MovingLeft:
+            case BossState.MovingRight:
+            case BossState.ReturningCenter:
+                CalculateMovement();
+                FireLaser();
+                break;
+            case BossState.PhaseTransition:
+                // Logic for phase transition
+                break;
+            case BossState.Phase2:
+                FacePlayer();
+                if (!_isRapidFireRunning)
+                {
+                    StartCoroutine(RapidFireRoutine());
+                }
+                break;
+                // Add cases for other states as needed
         }
-        else if (_hitCount >= 25 && _currentState != BossState.PhaseTransition)
-        {
-            StartPhaseTransition();
-        }
-
-        if (_currentState == BossState.Phase2 && _hitCount < 70)
-        {
-            // Phase 2 behaviors
-            FacePlayer();
-            //FireLaser();
-        }
-
-        //if (_currentState == BossState.P)
-
     }
 
     private IEnumerator Descend()
     {
         _isInvincible = true; //Boss is invincible while descending
-        
+
         Vector3 startPos = transform.position;
         Vector3 endPos = new Vector3(startPos.x, 3f, startPos.z);
 
@@ -116,7 +126,7 @@ public class FinalEnemyController : MonoBehaviour
             yield return null;
         }
 
-        
+
         _currentState = BossState.Waiting;
         StartCoroutine(StartMovingSequenceAfterDelay(5f)); // Wait for 5 seconds after descending.
     }
@@ -134,10 +144,10 @@ public class FinalEnemyController : MonoBehaviour
         StopAllCoroutines(); //halts all phase 1 activity
         _currentState = BossState.PhaseTransition;
         _isInvincible = true;
-        _hitCount = 0;
+        //_hitCount = 0;
         StartCoroutine(PhaseTransitionDelay(5f));
     }
-       
+
     private IEnumerator PhaseTransitionDelay(float delay) //
     {
         yield return new WaitForSeconds(delay);
@@ -223,38 +233,57 @@ public class FinalEnemyController : MonoBehaviour
         if (_hitCount < 25) // Continue movement if phase 1 still active
         {
             _currentState = newState;
-            
+
         }
-        
+
     }
 
     private IEnumerator RapidFireRoutine()
     {
-        //_isFiringRapid = true;
-        _fireRate = _phase2FireRate;
-        yield return new WaitForSeconds(1.5f);
+        _isRapidFireRunning = true;
+        while (_currentState == BossState.Phase2)
+        {
+            //burst of rapid fire
+            for (int i = 0; i < _numberOfShotsPerBurst; i++)
+            {
+                // Fire the laser at the rate determined by _phase2FireRate
+                FireLaserPhase2();
+                Debug.Log("Fired laser shot number: " + (i + 1));
+                yield return new WaitForSeconds(_phase2FireRate);
+            }
+
+            // After firing 30 shots, wait for a random time between 2 to 5 seconds
+            float pauseDuration = Random.Range(2f, 5f);
+            Debug.Log("Pausing for " + pauseDuration + " seconds"); // Logs the pause duration
+            yield return new WaitForSeconds(pauseDuration);
+
+        }
+        _isRapidFireRunning = false;
     }
+
+    // New method specifically for Phase 2 rapid fire
+    private void FireLaserPhase2()
+    {
+        // Instantiate the laser at the specified firing position
+        GameObject enemyLaser = Instantiate(_laserPrefab, _laserFirePos.position, Quaternion.Euler(0, 0, transform.eulerAngles.z));
+
+        // Assign it as enemy laser and set the direction based on the boss's current rotation for Phase 2
+        Laser laserScript = enemyLaser.GetComponent<Laser>();
+        if (laserScript != null)
+        {
+            laserScript.AssignEnemyLaser();
+        }
+
+        // No need to check Time.time > _canFire because the coroutine handles the firing rate
+        Debug.Log("Phase 2 Laser fired!");
+    }
+
+
 
     private void FireLaser()
     {
-        if (_currentState != BossState.Descending && _currentState != BossState.Waiting && Time.time > _canFire)
+        if (Time.time > _canFire)
         {
-            // Adjust the fire rate based on the current state
-            if (_currentState == BossState.Phase2)
-            {
-
-                RapidFireRoutine();
-                //_isFiringRapid = true;
-                _fireRate = _phase2FireRate; // A higher rate of fire for Phase 2; currently not working as planned
-            }
-            else
-            {
-                // Random fire rate for phase 1 fire rate
-                _fireRate = Random.Range(.3f, 1.7f);
-            }
-
-            _canFire = Time.time + _fireRate;
-
             // Determine the position and rotation of the laser based on the boss's orientation
             Vector3 laserPos = transform.position + new Vector3(0, 1, 0); // This is an example offset
             // Adjust if the laser should come from a specific point on the boss
@@ -263,7 +292,8 @@ public class FinalEnemyController : MonoBehaviour
                 : Quaternion.identity; // Other Phases: Default downward direction
 
             GameObject enemyLaser = Instantiate(_laserPrefab, _laserFirePos.position, laserRot);
-            Debug.Log("Laser instantiated at: " + laserPos + " with rotation: " + laserRot); //
+            //_fireRate = Random.Range(.10f, 1.0f);
+            _canFire = Time.time + _fireRate;
 
             // Assign it as enemy laser and set the direction based on the boss's current rotation for Phase 2
             Laser laserScript = enemyLaser.GetComponent<Laser>();
@@ -277,20 +307,20 @@ public class FinalEnemyController : MonoBehaviour
 
     //private IEnumerator WaitBetweenBursts()
     //{
-      //  _isFiringRapid = false;
-      //  while (!_isFiringRapid)
-      //  {
+    //  _isFiringRapid = false;
+    //  while (!_isFiringRapid)
+    //  {
 
-        //}
+    //}
 
-        //float burst
+    //float burst
 
     //}
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (_isInvincible) return; // Ignore collisions while invincible
-        
+
         if (other.tag == "Player")
         {
             Player player = other.transform.GetComponent<Player>();
@@ -309,9 +339,9 @@ public class FinalEnemyController : MonoBehaviour
             _hitCount++;
             if (_player != null)
             {
-               _player.AddScore(50);
+                _player.AddScore(50);
             }
-                        
+
             //check if time to transition to phase 2
             if (_hitCount >= 25 && _currentState != BossState.PhaseTransition && _currentState != BossState.Phase2)
             {
@@ -319,7 +349,7 @@ public class FinalEnemyController : MonoBehaviour
             }
 
         }
-   
+
 
     }
 
