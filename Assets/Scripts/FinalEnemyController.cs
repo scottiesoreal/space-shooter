@@ -88,7 +88,7 @@ public class FinalEnemyController : MonoBehaviour
         switch (_currentState)
         {
             case BossState.Descending:
-                // Descend logic should be handled inside the Descend coroutine.
+                // Descend logic inside the Descend coroutine.
                 break;
             case BossState.Waiting:
                 // Logic for waiting state
@@ -103,7 +103,7 @@ public class FinalEnemyController : MonoBehaviour
                 // Logic for phase transition
                 break;
             case BossState.Phase2:
-                FacePlayer();
+                FacePlayer();//face player logic
                 if (!_isRapidFireRunning)
                 {
                     StartCoroutine(RapidFireRoutine());
@@ -142,20 +142,36 @@ public class FinalEnemyController : MonoBehaviour
     }
 
 
-    private void StartPhaseTransition()
+    private void StartPhaseOneTransition()
     {
         StopAllCoroutines(); //halts all phase 1 activity
         _currentState = BossState.PhaseTransition;
         _isInvincible = true;
         //_hitCount = 0;
-        StartCoroutine(PhaseTransitionDelay(5f));
+        StartCoroutine(PhaseOneTransitionDelay(5f));
     }
 
-    private IEnumerator PhaseTransitionDelay(float delay) //
+    private void StartPhaseTwoTransition()
     {
-        Debug.Log("Phase transition started");
+        StopAllCoroutines(); //halts activity
+        _currentState = BossState.PhaseTransition;
+        _isInvincible = true;
+        //_hitCount = 0;
+        StartCoroutine(PhaseTwoTransitionDelay(5f));
+    }
+
+    private IEnumerator PhaseOneTransitionDelay(float delay) //
+    {
+        Debug.Log("Phase One transition started");
         yield return new WaitForSeconds(delay);
         StartCoroutine(MoveToPhase2StartPosition());
+    }
+
+    private IEnumerator PhaseTwoTransitionDelay(float delay) //
+    {
+        Debug.Log("Phase Two transition started");
+        yield return new WaitForSeconds(delay);
+        StartCoroutine(StartPhase3());
     }
 
     private IEnumerator MoveToPhase2StartPosition()
@@ -173,19 +189,22 @@ public class FinalEnemyController : MonoBehaviour
         yield return new WaitForSeconds(5f);
         _currentState = BossState.Phase2;
         _isInvincible = false;
-        // Here you can start phase 2 behaviors or set a flag to trigger them in Update
+        
     }
 
     private IEnumerator StartPhase3()
     {
+        
+        _currentState = BossState.Phase3;
+        
         if (_currentState == BossState.Phase3)
         {
             //debug log that says, "Phase 3 started"
             yield return new WaitForSeconds(5f);
             Debug.Log("Phase 3 started");
-            
+
         }
-        
+
     }
 
     private void CalculateMovement()
@@ -361,13 +380,13 @@ public class FinalEnemyController : MonoBehaviour
             //check if time to transition to phase 2
             if (_hitCount >= 25 && _currentState != BossState.PhaseTransition && _currentState != BossState.Phase2)
             {
-                StartPhaseTransition();
+                StartPhaseOneTransition();
             }
             //check if time to transition to phase 3
             if (_hitCount >= 70 && _currentState == BossState.Phase2 && _currentState != BossState.PhaseTransition && _currentState != BossState.Phase3)
             {
 
-                StartPhaseTransition();
+                StartPhaseTwoTransition();
                 //StartCoroutine(StartPhase3());
             }
 
