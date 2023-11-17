@@ -35,8 +35,14 @@ public class FinalEnemyController : MonoBehaviour
     private float _timeSinceLastBurst = 0f; // Time since the last burst started
 
 
-
-
+    //Phase 3
+    [SerializeField]
+    private bool _isShieldActive = false;
+    //private int _shieldStrength = 300;
+    [SerializeField]
+    private GameObject _shieldVisualizer;
+    [SerializeField]
+    private GameObject _shieldRenderer;
 
 
 
@@ -54,8 +60,9 @@ public class FinalEnemyController : MonoBehaviour
     }
 
 
-
+    [SerializeField]
     private bool _isInvincible = false;
+    
 
     private BossState _currentState = BossState.Descending;
 
@@ -136,40 +143,42 @@ public class FinalEnemyController : MonoBehaviour
 
     private IEnumerator StartMovingSequenceAfterDelay(float delay)
     {
-        _isInvincible = false; //Boss is vulnerable after descending
+        _isInvincible = true; //Boss is vulnerable after descending and begins MovingLeft
         yield return new WaitForSeconds(delay);
         _currentState = BossState.MovingLeft;
     }
 
 
-    private void StartPhaseOneTransition()
-    {
-        StopAllCoroutines(); //halts all phase 1 activity
-        _currentState = BossState.PhaseTransition;
-        _isInvincible = true;
-        //_hitCount = 0;
-        StartCoroutine(PhaseOneTransitionDelay(5f));
-    }
-
     private void StartPhaseTwoTransition()
     {
-        StopAllCoroutines(); //halts activity
+        StopAllCoroutines(); //halts all phase 1 activity
         _currentState = BossState.PhaseTransition;
         _isInvincible = true;
         //_hitCount = 0;
         StartCoroutine(PhaseTwoTransitionDelay(5f));
     }
 
-    private IEnumerator PhaseOneTransitionDelay(float delay) //
+    private void StartPhaseThreeTransition()
     {
-        Debug.Log("Phase One transition started");
-        yield return new WaitForSeconds(delay);
-        StartCoroutine(MoveToPhase2StartPosition());
+        StopAllCoroutines(); //halts activity
+        _currentState = BossState.PhaseTransition;
+        _isInvincible = true;
+        //_hitCount = 0;
+        StartCoroutine(PhaseThreeTransitionDelay(5f));
     }
 
     private IEnumerator PhaseTwoTransitionDelay(float delay) //
     {
+        Debug.Log("Phase One transition started");
+        _isInvincible = true;
+        yield return new WaitForSeconds(delay);
+        StartCoroutine(MoveToPhase2StartPosition());
+    }
+
+    private IEnumerator PhaseThreeTransitionDelay(float delay) //
+    {
         Debug.Log("Phase Two transition started");
+        _isInvincible = true;
         yield return new WaitForSeconds(delay);
         StartCoroutine(StartPhase3());
     }
@@ -187,7 +196,8 @@ public class FinalEnemyController : MonoBehaviour
 
         // Once the boss is in position, update the state to Phase2
         yield return new WaitForSeconds(5f);
-        _currentState = BossState.Phase2;
+        Debug.Log("Phase 2 Started");
+        _currentState = BossState.Phase2; 
         _isInvincible = false;
         
     }
@@ -197,15 +207,41 @@ public class FinalEnemyController : MonoBehaviour
         
         _currentState = BossState.Phase3;
         
+        
         if (_currentState == BossState.Phase3)
         {
             //debug log that says, "Phase 3 started"
-            yield return new WaitForSeconds(5f);
+            
+            _isInvincible = false;
+            BossShieldActive(); 
             Debug.Log("Phase 3 started");
+            yield return new WaitForSeconds(5f);           
+            
 
         }
 
     }
+
+    public void BossShieldActive()
+    {
+        if (_isShieldActive == false)
+        {
+            _isShieldActive = true;
+            _shieldVisualizer.SetActive(true);
+            _shieldRenderer.SetActive(true);
+            //_shieldStrength;
+        }
+        else if (_hitCount >= 170)
+        {
+            _isShieldActive = false;
+            _shieldVisualizer.SetActive(false);
+            _shieldRenderer.SetActive(false);
+        }
+
+
+
+    }
+
 
     private void CalculateMovement()
     {
@@ -214,6 +250,7 @@ public class FinalEnemyController : MonoBehaviour
             if (transform.position.x > _leftLimit)
             {
                 transform.position += Vector3.left * _speed * Time.deltaTime;
+                _isInvincible = false;
                 FireLaser();
             }
             else
@@ -327,7 +364,7 @@ public class FinalEnemyController : MonoBehaviour
                 : Quaternion.identity; // Other Phases: Default downward direction
 
             GameObject enemyLaser = Instantiate(_laserPrefab, _laserFirePos.position, laserRot);
-            //_fireRate = Random.Range(.10f, 1.0f);
+            _fireRate = Random.Range(.10f, 1.0f);
             _canFire = Time.time + _fireRate;
 
             // Assign it as enemy laser and set the direction based on the boss's current rotation for Phase 2
@@ -340,17 +377,6 @@ public class FinalEnemyController : MonoBehaviour
     }
 
 
-    //private IEnumerator WaitBetweenBursts()
-    //{
-    //  _isFiringRapid = false;
-    //  while (!_isFiringRapid)
-    //  {
-
-    //}
-
-    //float burst
-
-    //}
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -380,15 +406,21 @@ public class FinalEnemyController : MonoBehaviour
             //check if time to transition to phase 2
             if (_hitCount >= 25 && _currentState != BossState.PhaseTransition && _currentState != BossState.Phase2)
             {
-                StartPhaseOneTransition();
+                StartPhaseTwoTransition();
             }
             //check if time to transition to phase 3
-            if (_hitCount >= 70 && _currentState == BossState.Phase2 && _currentState != BossState.PhaseTransition && _currentState != BossState.Phase3)
+            if (_hitCount == 70 && _currentState != BossState.PhaseTransition && _currentState ==BossState.Phase2 && _currentState != BossState.Phase3)
             {
 
-                StartPhaseTwoTransition();
+                StartPhaseThreeTransition();
                 //StartCoroutine(StartPhase3());
             }
+            //turn off shield after 170 hits
+            if (_hitCount == 250 && _currentState == BossState.Phase3)
+            {
+                Destroy(this.gameObject);
+            }
+
 
         }
 
