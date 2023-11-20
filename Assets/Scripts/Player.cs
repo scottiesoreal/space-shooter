@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
     private float _thrusterScale;
     [SerializeField] 
     private bool _isThrusterRecharging = false;
+    
 
     private SpawnManager _spawnManager;
 
@@ -78,8 +79,16 @@ public class Player : MonoBehaviour
     private UIManager _uiManager;
     private ShakeCamera _camera;
 
+    //Boss Phase 3 related movement variables    
+    private FinalEnemyController _bossEnemy;//Reference to the FinalEnemyController
+    [SerializeField]
+    private bool _bossPhase3 = false;
+
     void Start()
     {
+        
+        
+        
         // take the current position = new position (0x, 0y, 0z)
         transform.position = new Vector3(0, 1, 0);
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>(); // find the object.
@@ -110,7 +119,24 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        CalculateMovement();
+        if (_bossEnemy != null)
+        {
+            // Check if the boss is in Phase 3
+            if (_bossEnemy.GetCurrentBossState() == FinalEnemyController.BossState.Phase3)
+            {
+                Phase3CalculateMovement();
+            }
+            else
+            {
+                CalculateMovement();
+            }
+        }
+        else//if not in phase 3, do normal movement
+        {
+            CalculateMovement();
+        }
+
+        //CalculateMovement();
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
@@ -161,6 +187,12 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(-9.25f, transform.position.y, 0);//locks player to no < -9.25 on x axis
         }
+    }
+
+    void Phase3CalculateMovement()
+    {
+
+        Debug.Log("starting phase 3 movement");
     }
 
     void FireLaser()

@@ -25,14 +25,14 @@ public class FinalEnemyController : MonoBehaviour
     private bool _enemyInRange = false;
     [SerializeField]
     private Transform _laserFirePos;
-    [SerializeField]
-    private bool _isFiringRapid = false;
+    
+    
+    //[SerializeField]
+    //private bool _isFiringRapid = false;
     [SerializeField]
     private bool _isRapidFireRunning = false;
     [SerializeField]
     private int _numberOfShotsPerBurst = 30;
-    //private float _burstDuration = 1.5f; // Duration of each firing burst
-    private float _timeSinceLastBurst = 0f; // Time since the last burst started
 
 
     //Phase 3
@@ -47,7 +47,7 @@ public class FinalEnemyController : MonoBehaviour
 
 
     // State for the boss behavior
-    private enum BossState
+    public enum BossState
     {
         Descending,
         Waiting,
@@ -59,6 +59,7 @@ public class FinalEnemyController : MonoBehaviour
         Phase3
     }
 
+    
 
     [SerializeField]
     private bool _isInvincible = false;
@@ -69,6 +70,8 @@ public class FinalEnemyController : MonoBehaviour
     // Laser firing variables
     [SerializeField]
     private GameObject _laserPrefab; // Normal laser
+    [SerializeField]
+    private GameObject _doubleLaserPrefab; // Double laser
     [SerializeField]
     private float _fireRate = 1f;
     private float _phase2FireRate = .1f; // Higher rate of fire for Phase 2
@@ -118,6 +121,8 @@ public class FinalEnemyController : MonoBehaviour
                 break;
             case BossState.Phase3:
                 // Logic for phase 3
+                FacePlayer();//face player logic
+               
                 // Add cases for other states as needed
                 break;
         }
@@ -202,19 +207,24 @@ public class FinalEnemyController : MonoBehaviour
         
     }
 
+    public BossState GetCurrentBossState()
+    {
+        return _currentState;
+    }
+
     private IEnumerator StartPhase3()
     {
         
         _currentState = BossState.Phase3;
         
-        
+
         if (_currentState == BossState.Phase3)
         {
             //debug log that says, "Phase 3 started"
-            
+            Debug.Log("Phase 3 started");
             _isInvincible = false;
             BossShieldActive(); 
-            Debug.Log("Phase 3 started");
+            
             yield return new WaitForSeconds(5f);           
             
 
@@ -310,6 +320,9 @@ public class FinalEnemyController : MonoBehaviour
 
     }
 
+    //Double-cannon fire routine
+    
+
     private IEnumerator RapidFireRoutine()
     {
         _isRapidFireRunning = true;
@@ -376,7 +389,10 @@ public class FinalEnemyController : MonoBehaviour
         }
     }
 
+    private void DoubleLaser()
+    {
 
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
