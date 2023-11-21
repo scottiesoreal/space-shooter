@@ -25,8 +25,10 @@ public class FinalEnemyController : MonoBehaviour
     private bool _enemyInRange = false;
     [SerializeField]
     private Transform _laserFirePos;
-    
-    
+    [SerializeField]
+    private Transform _doubleLaserFirePos;
+
+
     //[SerializeField]
     //private bool _isFiringRapid = false;
     [SerializeField]
@@ -122,7 +124,7 @@ public class FinalEnemyController : MonoBehaviour
             case BossState.Phase3:
                 // Logic for phase 3
                 FacePlayer();//face player logic
-               
+                DoubleLaser();
                 // Add cases for other states as needed
                 break;
         }
@@ -223,8 +225,8 @@ public class FinalEnemyController : MonoBehaviour
             //debug log that says, "Phase 3 started"
             Debug.Log("Phase 3 started");
             _isInvincible = false;
-            BossShieldActive(); 
-            
+            BossShieldActive();
+            //DoubleLaser();
             yield return new WaitForSeconds(5f);           
             
 
@@ -387,10 +389,48 @@ public class FinalEnemyController : MonoBehaviour
                 laserScript.AssignEnemyLaser();
             }
         }
+        
     }
 
     private void DoubleLaser()
     {
+        if (Time.time > _canFire && _currentState == BossState.Phase3)
+        {
+            // Determine the position and rotation of the laser based on the boss's orientation
+            Vector3 laserPos = transform.position + new Vector3(0, 1, 0); // Default position is the boss's position
+            // Adjust if the laser should come from a specific point on the boss
+            Quaternion laserRot = (_currentState == BossState.Phase3)
+                ? Quaternion.Euler(0f, 0f, transform.eulerAngles.z) // Phase 3: Use boss's current rotation
+                : Quaternion.identity; // Other Phases: Default downward direction
+
+            if(_doubleLaserPrefab == null)
+            {
+                Debug.LogError("Double Laser Prefab is null");
+            }
+            if(_doubleLaserFirePos == null)
+            {
+                Debug.LogError("Double Laser Fire Position is null");
+            }   
+            else
+            {
+                GameObject enemyLaser = Instantiate(_doubleLaserPrefab, _doubleLaserFirePos.position, laserRot);
+                _fireRate = Random.Range(.50f, 1.0f);
+                _canFire = Time.time + _fireRate;
+                Debug.Log("Double laser fired!");
+
+                // Assign it as enemy laser and set the direction based on the boss's current rotation for Phase 2
+                Laser laserScript = enemyLaser.GetComponent<Laser>();
+                if (laserScript != null)
+                {
+                    laserScript.AssignEnemyLaser();
+                }
+            }
+           
+
+            
+        }
+        
+        
 
     }
 

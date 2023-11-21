@@ -61,6 +61,8 @@ MonoBehaviour:
   _isInvincible: 0
   _laserPrefab: {fileID: 5294812925896529912, guid: cbbcae0e8186feb49bc017390dad604d,
     type: 3}
+  _doubleLaserPrefab: {fileID: 4263754806421936125, guid: f066af171c2221f4aa9857d23c8aa57c,
+    type: 3}
   _fireRate: 1
   _hitCount: 24
 --- !u!61 &1055293515844219007
