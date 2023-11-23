@@ -37,7 +37,7 @@ public class DroneEnemy : MonoBehaviour
     [SerializeField]
     private SpriteRenderer _enShieldRenderer;
 
-
+    private FinalEnemyController _finalEnemyController;
 
 
     // Start is called before the first frame update
@@ -68,15 +68,29 @@ public class DroneEnemy : MonoBehaviour
         // Move down at the given speed
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
 
+        //wrap position vertically
+        if (transform.position.y < -6.5f)
+        {
+            transform.position = new Vector3(Random.Range(-9.5f, 9.5f), 6.5f, 0);
+        }
+
+       
+
+
+        
         // Calculate horizontal movement (zigzag) based on time and speed
         float zigzagDirection = Mathf.Sin(Time.time * _zigzagSpeed);
         float moveDirection = zigzagDirection > 0 ? 1f : -1f;
+
+
 
         // Calculate horizontal offset based on zigzagDirection and zigzagRange
         float xOffset = moveDirection * _zigzagRange;
 
         // Move "Drone" enemy along x-axis with updated xOffset
         transform.Translate(new Vector3(xOffset, 0f, 0f) * Time.deltaTime);
+
+       
         
 
     }

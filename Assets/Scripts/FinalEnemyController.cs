@@ -45,6 +45,14 @@ public class FinalEnemyController : MonoBehaviour
     private GameObject _shieldVisualizer;
     [SerializeField]
     private GameObject _shieldRenderer;
+    [SerializeField]
+    private int _maxEnemiesOnScreen = 3;
+    [SerializeField]
+    private bool _isBossDestroyed = false;
+    
+
+
+
 
 
 
@@ -78,10 +86,31 @@ public class FinalEnemyController : MonoBehaviour
     private float _fireRate = 1f;
     private float _phase2FireRate = .1f; // Higher rate of fire for Phase 2
     private float _canFire = -1f; // Timestamp for next fire
-
-    // Game object variables
     [SerializeField]
     private int _hitCount = 0; // tracking boss hits
+
+    // Enemy call variables
+
+    private Enemy _enemy;
+    private DroneEnemy _droneEnemy;
+    private AdvancedDrone _advDroneEnemy;
+    [SerializeField]
+    private GameObject _enemyPrefab;
+    [SerializeField]
+    private GameObject _enemyContainer;
+    [SerializeField]
+    private GameObject _droneEnemyPrefab;
+    [SerializeField]
+    private GameObject _droneContainer;
+    [SerializeField]
+    private GameObject _advDroneEnemyPrefab;
+    [SerializeField]
+    private GameObject _advDroneEnemyContainer;
+
+    [SerializeField]
+    private GameObject[] _enemyTypes; //array of enemy prefabs
+    [SerializeField]
+    private int _enemyType0Counter = 0; //counter for regular/first enemy type [0] for _isAggressive
 
 
     //Player
@@ -90,10 +119,25 @@ public class FinalEnemyController : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        StartCoroutine(Descend());
-        _player = FindObjectOfType<Player>();
+        
+        
+        if (_currentState == BossState.Phase3)
+        {
+            EnemySpawn();
+        }
+        else
+        {
+            StartCoroutine(Descend());
+        }
     }
 
+    
+
+
+    private void EnemySpawn()
+    {
+       
+    }
 
     private void Update()
     {
@@ -123,8 +167,17 @@ public class FinalEnemyController : MonoBehaviour
                 break;
             case BossState.Phase3:
                 // Logic for phase 3
-                FacePlayer();//face player logic
+                while (_currentState == BossState.Phase3 && _player != null)
+                {
+                    _player = FindObjectOfType<Player>();
+                    _enemy = FindObjectOfType<Enemy>();
+                    _droneEnemy = FindObjectOfType<DroneEnemy>();
+                    _advDroneEnemy = FindObjectOfType<AdvancedDrone>();
+                }
+                
+                StartCoroutine(Phase3EnemySpawn());
                 DoubleLaser();
+                
                 // Add cases for other states as needed
                 break;
         }
@@ -132,7 +185,9 @@ public class FinalEnemyController : MonoBehaviour
 
     private IEnumerator Descend()
     {
+        _isBossDestroyed = false;
         _isInvincible = true; //Boss is invincible while descending
+        
 
         Vector3 startPos = transform.position;
         Vector3 endPos = new Vector3(startPos.x, 3f, startPos.z);
@@ -322,8 +377,82 @@ public class FinalEnemyController : MonoBehaviour
 
     }
 
-    //Double-cannon fire routine
-    
+    //Spawn Enemy Phase 3 Coroutine
+    //All enemy types (Enemy, DroneEnemy, AdvancedDroneEnemy) will be spawned in this coroutine
+    //spawn will occur until boss is destroyed
+
+    public IEnumerator Phase3EnemySpawn()
+    {
+        while (_currentState == BossState.Phase3 && !_isBossDestroyed)
+        {
+            FacePlayer();//face player logic
+            if (_enemyType0Counter < _maxEnemiesOnScreen)
+            {
+                GameObject enemyPrefab = SelectRandomEnemyType();
+                float spawnX = GetRandomXPositionFor(enemyPrefab);
+                Vector3 spawnPosition = new Vector3(spawnX, 6.5f, 0f); // Assuming z-coordinate is 0
+
+                // Instantiate the enemy at the spawn position
+                GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+
+                // Determine the correct container for the enemy based on type
+                GameObject container = GetContainerForEnemy(enemyPrefab);
+                if (container != null)
+                {
+                    enemy.transform.SetParent(container.transform, false);
+                }
+
+                // Increment the counter of basic enemies
+                _enemyType0Counter++;
+
+                
+            }
+
+            // Wait for some time before spawning the next enemy
+            yield return new WaitForSeconds(5.0f);
+        }
+    }
+
+    private GameObject GetContainerForEnemy(GameObject enemyPrefab)
+    {
+        if (enemyPrefab == _enemyPrefab)
+        {
+            return _enemyContainer;
+        }
+        else if (enemyPrefab == _droneEnemyPrefab)
+        {
+            return _droneContainer;
+        }
+        else if (enemyPrefab == _advDroneEnemyPrefab)
+        {
+            return _advDroneEnemyContainer;
+        }
+        else
+        {
+            return null; // No container found for the prefab
+        }
+    }
+
+
+    private GameObject SelectRandomEnemyType()
+    {
+        int randomIndex = Random.Range(0, _enemyTypes.Length);
+        return _enemyTypes[randomIndex];
+    }
+
+    private float GetRandomXPositionFor(GameObject enemyPrefab)
+    {
+        float min = -9f;
+        float max = (enemyPrefab == _enemyTypes[2]) ? -3f : -4f; // AdvDroneEnemy is at index 2
+
+        float randomX = Random.Range(min, max);
+        if (Random.Range(0, 2) == 0) // Randomly choose left or right side
+            return randomX;
+        else
+            return -randomX;
+    }
+
+
 
     private IEnumerator RapidFireRoutine()
     {
