@@ -119,8 +119,8 @@ public class FinalEnemyController : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        
-        
+        _player = GameObject.Find("Player").GetComponent<Player>();
+
         if (_currentState == BossState.Phase3)
         {
             EnemySpawn();
@@ -141,6 +141,9 @@ public class FinalEnemyController : MonoBehaviour
 
     private void Update()
     {
+        
+        
+        
         switch (_currentState)
         {
             case BossState.Descending:
@@ -361,7 +364,19 @@ public class FinalEnemyController : MonoBehaviour
             //Calculate the angle to player
             float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;//convert to degrees
             Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle + 90f));// Add 90 degrees to the angle to face the player;may need adjustments
+
+            // Log the calculated angle and target rotation
+            Debug.Log("Calculated Angle: " + angle + ", Target Rotation: " + targetRotation);
+
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _turnSpeed * Time.deltaTime);//rotate towards player
+
+            // Log the current rotation of the boss
+            Debug.Log("Current Boss Rotation: " + transform.rotation);
+
+        }
+        else
+        {
+            Debug.Log("Player ref is null");
         }
     }
 
