@@ -94,8 +94,8 @@ public class FinalEnemyController : MonoBehaviour
     private Enemy _enemy;
     private DroneEnemy _droneEnemy;
     private AdvancedDrone _advDroneEnemy;
-   // [SerializeField]
-   // private GameObject ;
+    [SerializeField]
+    private GameObject _enemyPrefab;
     [SerializeField]
     private GameObject _enemyContainer;
     [SerializeField]
