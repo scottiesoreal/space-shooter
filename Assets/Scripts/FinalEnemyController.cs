@@ -123,6 +123,7 @@ public class FinalEnemyController : MonoBehaviour
     private void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
+        
 
         //if (_currentState == BossState.Phase3)
         //{
@@ -144,8 +145,8 @@ public class FinalEnemyController : MonoBehaviour
 
     private void Update()
     {
-        
-        
+
+
         
         switch (_currentState)
         {
@@ -173,12 +174,14 @@ public class FinalEnemyController : MonoBehaviour
                 break;
             case BossState.Phase3:
                 // Logic for phase 3
+                FacePlayer();//face player logic
+                
                 if (!_isPhase3Initialized)
                 {
                     _isPhase3Initialized = true;
                     StartCoroutine(Phase3EnemySpawn());
                     StartCoroutine(Phase3ShootingRoutine());
-                    //DoubleLaser();
+                    
                 }
                 break;
             //case BossState.Destroyed:
@@ -365,29 +368,31 @@ public class FinalEnemyController : MonoBehaviour
         }
     }
 
+
+
     private void FacePlayer()
     {
         if (_player != null)
         {
             Vector3 directionToPlayer = (_player.transform.position - transform.position).normalized;
             //Calculate the angle to player
-            float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg;//convert to degrees
-            Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle + 90f));// Add 90 degrees to the angle to face the player;may need adjustments
+            float angle = Mathf.Atan2(directionToPlayer.y, directionToPlayer.x) * Mathf.Rad2Deg; //convert to degrees
+            Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle + 90f)); // Add 90 degrees to the angle to face the player; may need adjustments
 
             // Log the calculated angle and target rotation
             Debug.Log("Calculated Angle: " + angle + ", Target Rotation: " + targetRotation);
 
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _turnSpeed * Time.deltaTime);//rotate towards player
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _turnSpeed * Time.deltaTime); //rotate towards player
 
             // Log the current rotation of the boss
             Debug.Log("Current Boss Rotation: " + transform.rotation);
-
         }
         else
         {
             Debug.Log("Player ref is null");
         }
     }
+
 
     private IEnumerator WaitAndChangeState(BossState newState)
     {
@@ -409,7 +414,7 @@ public class FinalEnemyController : MonoBehaviour
     {
         while (_currentState == BossState.Phase3) //&& !_isBossDestroyed)
         {
-            FacePlayer();//face player logic
+            
             if (_enemyType0Counter < _maxEnemiesOnScreen)
             {
                 GameObject enemyPrefab = SelectRandomEnemyType();
