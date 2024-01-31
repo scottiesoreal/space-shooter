@@ -49,7 +49,9 @@ public class FinalEnemyController : MonoBehaviour
     private int _maxEnemiesOnScreen = 3;
     [SerializeField]
     private bool _isBossDestroyed = false;
-    
+    [SerializeField]
+    private bool _isPhase3Initialized = false;
+
 
 
 
@@ -66,7 +68,8 @@ public class FinalEnemyController : MonoBehaviour
         ReturningCenter,
         PhaseTransition,
         Phase2,
-        Phase3
+        Phase3,
+        //Destroyed
     }
 
     
@@ -121,21 +124,21 @@ public class FinalEnemyController : MonoBehaviour
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
 
-        if (_currentState == BossState.Phase3)
+        //if (_currentState == BossState.Phase3)
+        //{
+          //  EnemySpawn();
+        //}
+        //else
         {
-            EnemySpawn();
+          StartCoroutine(Descend());
         }
-        else
-        {
-            StartCoroutine(Descend());
-        }
-    }
+    //}
 
     
 
 
-    private void EnemySpawn()
-    {
+    //private void EnemySpawn()
+    //{
        
     }
 
@@ -170,19 +173,23 @@ public class FinalEnemyController : MonoBehaviour
                 break;
             case BossState.Phase3:
                 // Logic for phase 3
-                while (_currentState == BossState.Phase3 && _player != null)
+                if (!_isPhase3Initialized)
                 {
-                    _player = FindObjectOfType<Player>();
-                    _enemy = FindObjectOfType<Enemy>();
-                    _droneEnemy = FindObjectOfType<DroneEnemy>();
-                    _advDroneEnemy = FindObjectOfType<AdvancedDrone>();
+                    _isPhase3Initialized = true;
+                    StartCoroutine(Phase3EnemySpawn());
+                    StartCoroutine(Phase3ShootingRoutine());
+                    //DoubleLaser();
                 }
+                break;
+            //case BossState.Destroyed:
+                // Logic for destroyed state
+
                 
-                StartCoroutine(Phase3EnemySpawn());
-                DoubleLaser();
+                //StartCoroutine(Phase3EnemySpawn());
+                //DoubleLaser();
                 
                 // Add cases for other states as needed
-                break;
+                //break;
         }
     }
 
@@ -292,6 +299,8 @@ public class FinalEnemyController : MonoBehaviour
 
     }
 
+    //boss destroyed state logic
+
     public void BossShieldActive()
     {
         if (_isShieldActive == false)
@@ -398,7 +407,7 @@ public class FinalEnemyController : MonoBehaviour
 
     public IEnumerator Phase3EnemySpawn()
     {
-        while (_currentState == BossState.Phase3 && !_isBossDestroyed)
+        while (_currentState == BossState.Phase3) //&& !_isBossDestroyed)
         {
             FacePlayer();//face player logic
             if (_enemyType0Counter < _maxEnemiesOnScreen)
@@ -467,9 +476,32 @@ public class FinalEnemyController : MonoBehaviour
             return -randomX;
     }
 
+    private void FireLaser()
+    {
+        if (Time.time > _canFire)
+        {
+            // Determine the position and rotation of the laser based on the boss's orientation
+            Vector3 laserPos = transform.position + new Vector3(0, 1, 0); // Default position is the boss's position
+            // Adjust if the laser should come from a specific point on the boss
+            Quaternion laserRot = (_currentState == BossState.Phase2)
+                ? Quaternion.Euler(0f, 0f, transform.eulerAngles.z) // Phase 2: Use boss's current rotation
+                : Quaternion.identity; // Other Phases: Default downward direction
 
+            GameObject enemyLaser = Instantiate(_laserPrefab, _laserFirePos.position, laserRot);
+            _fireRate = Random.Range(.10f, 1.0f);
+            _canFire = Time.time + _fireRate;
 
-    private IEnumerator RapidFireRoutine()
+            // Assign it as enemy laser and set the direction based on the boss's current rotation for Phase 2
+            Laser laserScript = enemyLaser.GetComponent<Laser>();
+            if (laserScript != null)
+            {
+                laserScript.AssignEnemyLaser();
+            }
+        }
+
+    }
+
+    private IEnumerator RapidFireRoutine()//phase 2 shooting routine
     {
         _isRapidFireRunning = true;
         while (_currentState == BossState.Phase2)
@@ -510,31 +542,15 @@ public class FinalEnemyController : MonoBehaviour
     }
 
 
-
-    private void FireLaser()
+    private IEnumerator Phase3ShootingRoutine()
     {
-        if (Time.time > _canFire)
+        while (_currentState == BossState.Phase3)// && !_isBossDestroyed_)
         {
-            // Determine the position and rotation of the laser based on the boss's orientation
-            Vector3 laserPos = transform.position + new Vector3(0, 1, 0); // Default position is the boss's position
-            // Adjust if the laser should come from a specific point on the boss
-            Quaternion laserRot = (_currentState == BossState.Phase2)
-                ? Quaternion.Euler(0f, 0f, transform.eulerAngles.z) // Phase 2: Use boss's current rotation
-                : Quaternion.identity; // Other Phases: Default downward direction
-
-            GameObject enemyLaser = Instantiate(_laserPrefab, _laserFirePos.position, laserRot);
-            _fireRate = Random.Range(.10f, 1.0f);
-            _canFire = Time.time + _fireRate;
-
-            // Assign it as enemy laser and set the direction based on the boss's current rotation for Phase 2
-            Laser laserScript = enemyLaser.GetComponent<Laser>();
-            if (laserScript != null)
-            {
-                laserScript.AssignEnemyLaser();
-            }
+            DoubleLaser();
+            yield return new WaitForSeconds(_fireRate);
         }
-        
     }
+    
 
     private void DoubleLaser()
     {
